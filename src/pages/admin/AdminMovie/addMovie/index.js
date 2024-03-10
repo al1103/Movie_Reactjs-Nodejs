@@ -42,7 +42,7 @@ const AddMovie = () => {
   };
   return (
     <AdminLayout>
-      <form method="post" onSubmit={handleSubmit}>
+      <form method="post" className="content-admin" onSubmit={handleSubmit}>
         <input
           className="inputAddMovie"
           type="text"

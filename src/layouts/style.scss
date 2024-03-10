@@ -16396,7 +16396,7 @@ fieldset:disabled .btn {
 .left-sidebar {
   width: 270px;
   background-color: #fff;
-  position: absolute;
+  position: fixed;
   -webkit-transition: 0.2s ease-in;
   transition: 0.2s ease-in;
   height: 100%;
@@ -16737,7 +16737,6 @@ fieldset:disabled .btn {
   }
   #main-wrapper[data-layout="vertical"][data-header-position="fixed"]
     .app-header {
-    width: calc(100% - 270px);
   }
   #main-wrapper[data-layout="vertical"][data-sidebartype="full"] .body-wrapper {
     margin-left: 270px;
@@ -16882,4 +16881,9 @@ ul {
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 450px;
+}
+
+.content-admin{
+    width: calc(100% - 300px);
+    margin-left: 300px;
 }
