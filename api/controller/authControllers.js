@@ -1,4 +1,7 @@
+const e = require("express");
 const Movie = require("../models/movies");
+const User = require("../models/users_model"); // Assuming your Mongoose model is named 'User'
+
 // exports.register = async (req, res) => {
 //   const username = req.body.username.toLowerCase();
 //   const user = await userModel.getUser(username);
@@ -20,22 +23,23 @@ const Movie = require("../models/movies");
 //     });
 //   }
 // };
+const pageLimit = 8;
 
 class AuthController {
   async deleteMovie(req, res) {
     try {
       Movie.deleteOne({ slug: req.params.slug }).then(() => res.redirect("/"));
     } catch (error) {
-       res.status(500).json({ error: "Internal Server Error" });
+      res.status(500).json({ error: "Internal Server Error" });
     }
   }
-  async index(req, res, next) {
+  async index(req, res) {
     try {
       Movie.find({}).then((movies) => {
         res.json(movies);
       });
-    } catch (next) {
-      next(next);
+    } catch (error) {
+      res.status(500).json({ error: "Internal Server Error" });
     }
   }
   async addMovie(req, res, next) {
@@ -60,7 +64,11 @@ class AuthController {
   async getOneFilm(req, res, next) {
     try {
       const movie = await Movie.findOne({ slug: req.params.slug });
-      res.json(movie);
+      if (!movie) {
+        return res.status(404).json({ message: "Phim không có" });
+      } else {
+        res.status(200).json(movie);
+      }
     } catch (error) {
       next(error);
     }
@@ -72,6 +80,21 @@ class AuthController {
       );
     } catch (error) {
       next(error);
+    }
+  }
+  async getUser(req, res) {
+    try {
+      res.status(200).send("hi");
+      // if(req.query.page){
+      //   const page = parseInt(req.query.page);
+      //   const skip = (page - 1) * pageLimit;
+      //   const user = await User.find().limit(pageLimit).skip(skip);
+      //   res.status(200).json(user)
+      // }else{
+      //   res.status(500).json({ error: "Internal Server Error" });
+      // }
+    } catch (error) {
+      res.status(500).json({ error: "Internal Server Error" });
     }
   }
 }

@@ -1,18 +1,28 @@
 import React, { useEffect, useState } from "react";
+import Pagination from "../../../../components/pagination";
 import AdminLayout from "../../../../layouts/AdminLayout";
 import { getListMovies } from "../../../../servers/api";
 const Admin = () => {
   const [listMovie, setListMovie] = useState([]);
-
+  const [selectedPage, setSelectedPage] = useState(1);
+  const totalPagesCalculated = Math.ceil(
+    8
+  );
+  const handlePageChange = (providedPage) => {
+    setSelectedPage(providedPage);
+  };
   useEffect(() => {
     const fetchListMovies = async () => {
-      const res = await getListMovies();
-      setListMovie(res);
+      try {
+        const res = await getListMovies(selectedPage);
+        setListMovie(res);
+      } catch (error) {
+        // Handle error here, like displaying an error message
+        console.error("Error fetching movies:", error);
+      }
     };
     fetchListMovies();
-  }, []);
-
-
+  }, [selectedPage]);
 
 
 
@@ -94,6 +104,10 @@ const Admin = () => {
             </div>
           </div>
         </div>
+      <Pagination
+              totalPagesCalculated={totalPagesCalculated}
+              handlePageChange={handlePageChange}
+            />
       </div>
     </AdminLayout>
   );

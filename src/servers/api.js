@@ -1,12 +1,10 @@
 import axios from "axios";
 const API_KEY = process.env.REACT_APP_API_KEY;
 const axiosClient = axios.create({ baseURL: API_KEY });
-const getListMovies = async () => {
+const getListMovies = async (page) => {
   try {
-    const { data } = await axiosClient({
-      method: "get",
-    });
-    return data[0].items;
+    const {data} = await axios.get(`https://phim.nguonc.com/api/films/phim-moi-cap-nhat?page=${page}`);
+    return data.items;
   } catch (error) {
     return error.message;
   }

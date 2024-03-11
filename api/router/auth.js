@@ -4,6 +4,7 @@ const router = express.Router();
 const authController = require('../controller/authControllers');
 
 
+router.get('/getuser', authController.getUser);
 router.put('/edit/:slug', authController.editMovie);
 router.get('/:slug', authController.getOneFilm);
 router.post('/addMovie', authController.addMovie);

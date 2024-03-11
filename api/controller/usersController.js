@@ -1,6 +1,7 @@
 const User = require("../models/users_model"); // Assuming your Mongoose model is named 'User'
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
+
 class UsersController {
   async createUser(req, res) {
     try {
@@ -61,5 +62,8 @@ class UsersController {
     }
   }
   
+  
 }
+
+
 module.exports = new UsersController();

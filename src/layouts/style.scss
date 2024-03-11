@@ -16887,3 +16887,17 @@ ul {
     width: calc(100% - 300px);
     margin-left: 300px;
 }
+.navigationButtons{
+  margin-bottom: 20px;
+  margin-top: 20px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  gap: 35px;
+}
+.navigationButtons > li {
+  font-size: 18px;
+}
+.navigationActive{
+  color: #5d87ff;
+}

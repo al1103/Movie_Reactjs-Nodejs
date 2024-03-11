@@ -9,7 +9,7 @@ function authorize(roles) {
     if (roles.includes(req.userRole)) {
       next();
     } else {
-      return res.sendStatus(403); // Or provide a more specific error
+      return res.status(403).json({ error: "Unauthorized" }); // Or provide a more specific error
     }
   };
 }
