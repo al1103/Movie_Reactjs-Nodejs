@@ -27,13 +27,6 @@ const User = require("../models/users_model"); // Assuming your Mongoose model i
 const pageLimit = 8;
 
 class AuthController {
-  async deleteMovie(req, res) {
-    try {
-      Movie.deleteOne({ slug: req.params.slug }).then(() => res.redirect("/"));
-    } catch (error) {
-      res.status(500).json({ error: "Internal Server Error" });
-    }
-  }
   async index(req, res) {
     try {
       Movie.find({}).then((movies) => {
@@ -83,21 +76,41 @@ class AuthController {
       next(error);
     }
   }
-  async getUser(req, res) {
+  async  getListUser(req, res) {
     try {
       const currentPage = parseInt(req.query.page) || 1;
       const perPage = 8;
-      // Lấy dữ liệu cho trang hiện tại
+  
+      // Calculate the number of documents to skip based on the current page
       const skip = (currentPage - 1) * perPage;
+  
+      // Query the database for users with pagination
       const users = await User.find({}).skip(skip).limit(perPage);
-      // Đếm tổng số trang
-      const totalPage = Math.ceil((await User.countDocuments()) / perPage);
+  
+      // Count total number of documents to calculate total pages
+      const totalUsers = await User.countDocuments();
+      const totalPage = Math.ceil(totalUsers / perPage);
+  
+      // Send the response with users, current page, and total pages
       res.json({ users, currentPage, totalPage });
+    } catch (error) {
+      // Handle any errors that occur during the process
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
+  
+  async getUser(req, res) {
+    try {
+      const user = await User.findOne({ _id: req.params.id });
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      res.status(200).json(user);
     } catch (error) {
       res.status(500).json({ error: "Internal Server Error" });
     }
   }
-  async  listMovie(req, res) {
+  async listMovie(req, res) {
     try {
       const currentPage = parseInt(req.query.page) || 1;
       const perPage = 8;
@@ -111,6 +124,17 @@ class AuthController {
     } catch (error) {
       console.error(error); // Log the error for debugging purposes
       res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
+  async deleteMovie(req, res) {
+    try {
+      const result = await Movie.deleteOne({ _id: req.params.id });
+      if (result.deletedCount === 0) {
+        return res.status(404).json({ message: "Phim không tồn tại" });
+      }
+      res.json({ message: "Phim đã được xóa" });
+    } catch (error) {
+      res.status(500).json({ error: "Lỗi máy chủ nội bộ" });
     }
   }
 }

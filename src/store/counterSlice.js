@@ -47,6 +47,7 @@ const todoSlice = createSlice({
       state.user = null;
       localStorage.removeItem("user");
       localStorage.removeItem("token");
+      
     }
   },
 });

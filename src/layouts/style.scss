@@ -16395,7 +16395,7 @@ fieldset:disabled .btn {
 }
 .left-sidebar {
   width: 270px;
-  background-color: #fff;
+  background-color: #151f30;
   position: fixed;
   -webkit-transition: 0.2s ease-in;
   transition: 0.2s ease-in;
@@ -16425,7 +16425,7 @@ fieldset:disabled .btn {
 }
 .nav-small-cap {
   margin-top: 24px;
-  color: #2a3547;
+  color: #fff;
   font-size: 12px;
   font-weight: 700;
   padding: 3px 12px;
@@ -16435,8 +16435,11 @@ fieldset:disabled .btn {
 .nav-small-cap .nav-small-cap-icon {
   display: none;
 }
+.sidebar-item svg,path{
+  stroke: #fff !important;
+}
 .sidebar-nav ul .sidebar-item .sidebar-link {
-  color: #2a3547;
+  color: #fff;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -16492,7 +16495,6 @@ fieldset:disabled .btn {
   position: relative;
   z-index: 50;
   width: 100%;
-  background: #fff;
   border-bottom: 1px solid #e5eaf0;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
   padding: 0 25px;
@@ -16886,6 +16888,7 @@ ul {
 .content-admin{
     width: calc(100% - 300px);
     margin-left: 300px;
+    margin-top: 80px;
 }
 .navigationButtons{
   margin-bottom: 20px;
@@ -16916,4 +16919,11 @@ ul {
 }
 .navigationButtons li{
   color: #fff;
+}
+#dropdown{
+  z-index: 9999999999999999999999;
+  left: -150px;
+}
+.login-card-body{
+  padding: 30px;
 }

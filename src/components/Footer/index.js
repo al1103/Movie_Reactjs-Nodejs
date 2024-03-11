@@ -7,8 +7,8 @@ const Footer = () => {
       <div className="footer-top">
         <div className="container">
           <div className="footer-brand-wrapper">
-            <a href="./index.html" className="logo">
-              <img src="./assets/images/logo.svg" alt="Filmlane logo" />
+            <a href="./" className="logo">
+              <img src="./assets/images/logo.svg" alt="Zilong logo" />
             </a>
             <ul className="footer-list">
               <li>
@@ -69,14 +69,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="footer-bottom">
-        <div className="container">
-          <p className="copyright">
-            © 2022 <a href="#">codewithsadee</a>. All Rights Reserved
-          </p>
-          <img src="./assets/images/footer-bottom-img.png" alt="Online banking companies logo" className="footer-bottom-img" />
-        </div>
-      </div>
+     
     </footer>
   );
 };

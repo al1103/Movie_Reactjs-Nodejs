@@ -6,9 +6,9 @@ const SiderBarAdmin = () => {
     <aside className="left-sidebar">
       <div>
         <div className="brand-logo d-flex align-items-center justify-content-between">
-          <a href="./index.html" className="text-nowrap logo-img">
+          <Link href="./index.html" className="text-nowrap logo-img">
             <img src="../assets/images/logos/dark-logo.svg" width={180} alt />
-          </a>
+          </Link>
           <div
             className="close-btn d-xl-none d-block sidebartoggler cursor-pointer"
             id="sidebarCollapse"
@@ -23,9 +23,9 @@ const SiderBarAdmin = () => {
               <span className="hide-menu">Home</span>
             </li>
             <li className="sidebar-item">
-              <a
+              <Link
+                to={"/admin"}
                 className="sidebar-link"
-                href="./index.html"
                 aria-expanded="false"
               >
                 <svg
@@ -38,38 +38,319 @@ const SiderBarAdmin = () => {
                   <path d="M19 5v2h-4V5h4M9 5v6H5V5h4m10 8v6h-4v-6h4M9 17v2H5v-2h4M21 3h-8v6h8V3zM11 3H3v10h8V3zm10 8h-8v10h8V11zm-10 4H3v6h8v-6z" />
                 </svg>
                 <span className="hide-menu">Dashboard</span>
-              </a>
+              </Link>
             </li>
             <li className="nav-small-cap">
               <span className="hide-menu">Movie Manager</span>
             </li>
             <li className="sidebar-item">
-              <a
+              <Link
+                to={"/admin/movieManager"}
                 className="sidebar-link"
                 href="./ui-buttons.html"
                 aria-expanded="false"
               >
                 <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fillrule="evenodd"
-                  strokelinejoin="round"
-                  strokemiterlimit={2}
+                  version="1.1"
+                  id="svg2781"
+                  xmlSpace="preserve"
                   width={24}
-                  cliprule="evenodd"
-                  viewBox="0 0 64 64"
-                  id="movie"
+                  viewBox="0 0 682.66669 682.66669"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  <g transform="translate(-2768 -328)">
-                    <path d="M2830,332C2830,330.895 2829.11,330 2828,330L2772,330C2770.89,330 2770,330.895 2770,332L2770,388C2770,389.105 2770.89,390 2772,390L2828,390C2829.11,390 2830,389.105 2830,388L2830,332ZM2826,386L2826,382L2822,382L2822,386L2826,386ZM2782,378L2782,386L2818,386L2818,378L2782,378ZM2778,386L2778,382L2774,382L2774,386L2778,386ZM2774,374L2774,378L2778,378L2778,374L2774,374ZM2826,378L2826,374L2822,374L2822,378L2826,378ZM2818,346L2782,346L2782,374L2818,374L2818,346ZM2826,370L2826,366L2822,366L2822,370L2826,370ZM2778,366L2774,366L2774,370L2778,370L2778,366ZM2796.05,350.297C2795.43,349.917 2794.66,349.901 2794.02,350.254C2793.39,350.608 2793,351.275 2793,352L2793,368C2793,368.725 2793.39,369.392 2794.02,369.746C2794.66,370.099 2795.43,370.083 2796.05,369.703L2809.05,361.703C2809.64,361.339 2810,360.695 2810,360C2810,359.305 2809.64,358.661 2809.05,358.297L2796.05,350.297ZM2797,355.579L2804.18,360C2804.18,360 2797,364.421 2797,364.421L2797,355.579ZM2826,362L2826,358L2822,358L2822,362L2826,362ZM2778,358L2774,358L2774,362L2778,362L2778,358ZM2826,354L2826,350L2822,350L2822,354L2826,354ZM2778,350L2774,350L2774,354L2778,354L2778,350ZM2774,342L2774,346L2778,346L2778,342L2774,342ZM2826,346L2826,342L2822,342L2822,346L2826,346ZM2818,334L2782,334L2782,342L2818,342L2818,334ZM2822,334L2822,338L2826,338L2826,334L2822,334ZM2774,338L2778,338L2778,334L2774,334L2774,338Z" />
+                  <defs id="defs2785">
+                    <clipPath clipPathUnits="userSpaceOnUse" id="clipPath2795">
+                      <path d="M 0,512 H 512 V 0 H 0 Z" id="path2793" />
+                    </clipPath>
+                  </defs>
+                  <g
+                    id="g2787"
+                    transform="matrix(1.3333333,0,0,-1.3333333,0,682.66667)"
+                  >
+                    <g id="g2789">
+                      <g id="g2791" clipPath="url(#clipPath2795)">
+                        <path
+                          d="M 466,15 H 46 v 482 h 420 z"
+                          style={{
+                            fill: "none",
+                            stroke: "#000000",
+                            strokeWidth: 30,
+                            strokeLinecap: "square",
+                            strokeLinejoin: "miter",
+                            strokeMiterlimit: 10,
+                            strokeDasharray: "none",
+                            strokeOpacity: 1,
+                          }}
+                          id="path2797"
+                        />
+                        <g id="g2799" transform="translate(406,15)">
+                          <path
+                            d="M 0,0 V 482"
+                            style={{
+                              fill: "none",
+                              stroke: "#000000",
+                              strokeWidth: 30,
+                              strokeLinecap: "butt",
+                              strokeLinejoin: "miter",
+                              strokeMiterlimit: 10,
+                              strokeDasharray: "none",
+                              strokeOpacity: 1,
+                            }}
+                            id="path2801"
+                          />
+                        </g>
+                        <g id="g2803" transform="translate(466,437)">
+                          <path
+                            d="M 0,0 H -60"
+                            style={{
+                              fill: "none",
+                              stroke: "#000000",
+                              strokeWidth: 30,
+                              strokeLinecap: "butt",
+                              strokeLinejoin: "miter",
+                              strokeMiterlimit: 10,
+                              strokeDasharray: "none",
+                              strokeOpacity: 1,
+                            }}
+                            id="path2805"
+                          />
+                        </g>
+                        <g id="g2807" transform="translate(466,376)">
+                          <path
+                            d="M 0,0 H -345"
+                            style={{
+                              fill: "none",
+                              stroke: "#000000",
+                              strokeWidth: 30,
+                              strokeLinecap: "butt",
+                              strokeLinejoin: "miter",
+                              strokeMiterlimit: 10,
+                              strokeDasharray: "none",
+                              strokeOpacity: 1,
+                            }}
+                            id="path2809"
+                          />
+                        </g>
+                        <g id="g2811" transform="translate(466,316)">
+                          <path
+                            d="M 0,0 H -60"
+                            style={{
+                              fill: "none",
+                              stroke: "#000000",
+                              strokeWidth: 30,
+                              strokeLinecap: "butt",
+                              strokeLinejoin: "miter",
+                              strokeMiterlimit: 10,
+                              strokeDasharray: "none",
+                              strokeOpacity: 1,
+                            }}
+                            id="path2813"
+                          />
+                        </g>
+                        <g id="g2815" transform="translate(466,256)">
+                          <path
+                            d="M 0,0 H -60"
+                            style={{
+                              fill: "none",
+                              stroke: "#000000",
+                              strokeWidth: 30,
+                              strokeLinecap: "butt",
+                              strokeLinejoin: "miter",
+                              strokeMiterlimit: 10,
+                              strokeDasharray: "none",
+                              strokeOpacity: 1,
+                            }}
+                            id="path2817"
+                          />
+                        </g>
+                        <g id="g2819" transform="translate(466,196)">
+                          <path
+                            d="M 0,0 H -60"
+                            style={{
+                              fill: "none",
+                              stroke: "#000000",
+                              strokeWidth: 30,
+                              strokeLinecap: "butt",
+                              strokeLinejoin: "miter",
+                              strokeMiterlimit: 10,
+                              strokeDasharray: "none",
+                              strokeOpacity: 1,
+                            }}
+                            id="path2821"
+                          />
+                        </g>
+                        <g id="g2823" transform="translate(466,136)">
+                          <path
+                            d="M 0,0 H -345"
+                            style={{
+                              fill: "none",
+                              stroke: "#000000",
+                              strokeWidth: 30,
+                              strokeLinecap: "butt",
+                              strokeLinejoin: "miter",
+                              strokeMiterlimit: 10,
+                              strokeDasharray: "none",
+                              strokeOpacity: 1,
+                            }}
+                            id="path2825"
+                          />
+                        </g>
+                        <g id="g2827" transform="translate(466,75)">
+                          <path
+                            d="M 0,0 H -60"
+                            style={{
+                              fill: "none",
+                              stroke: "#000000",
+                              strokeWidth: 30,
+                              strokeLinecap: "butt",
+                              strokeLinejoin: "miter",
+                              strokeMiterlimit: 10,
+                              strokeDasharray: "none",
+                              strokeOpacity: 1,
+                            }}
+                            id="path2829"
+                          />
+                        </g>
+                        <g id="g2831" transform="translate(106,15)">
+                          <path
+                            d="M 0,0 V 482"
+                            style={{
+                              fill: "none",
+                              stroke: "#000000",
+                              strokeWidth: 30,
+                              strokeLinecap: "butt",
+                              strokeLinejoin: "miter",
+                              strokeMiterlimit: 10,
+                              strokeDasharray: "none",
+                              strokeOpacity: 1,
+                            }}
+                            id="path2833"
+                          />
+                        </g>
+                        <g id="g2835" transform="translate(46,437)">
+                          <path
+                            d="M 0,0 H 60"
+                            style={{
+                              fill: "none",
+                              stroke: "#000000",
+                              strokeWidth: 30,
+                              strokeLinecap: "butt",
+                              strokeLinejoin: "miter",
+                              strokeMiterlimit: 10,
+                              strokeDasharray: "none",
+                              strokeOpacity: 1,
+                            }}
+                            id="path2837"
+                          />
+                        </g>
+                        <g id="g2839" transform="translate(46,376)">
+                          <path
+                            d="M 0,0 H 60"
+                            style={{
+                              fill: "none",
+                              stroke: "#000000",
+                              strokeWidth: 30,
+                              strokeLinecap: "butt",
+                              strokeLinejoin: "miter",
+                              strokeMiterlimit: 10,
+                              strokeDasharray: "none",
+                              strokeOpacity: 1,
+                            }}
+                            id="path2841"
+                          />
+                        </g>
+                        <g id="g2843" transform="translate(46,316)">
+                          <path
+                            d="M 0,0 H 60"
+                            style={{
+                              fill: "none",
+                              stroke: "#000000",
+                              strokeWidth: 30,
+                              strokeLinecap: "butt",
+                              strokeLinejoin: "miter",
+                              strokeMiterlimit: 10,
+                              strokeDasharray: "none",
+                              strokeOpacity: 1,
+                            }}
+                            id="path2845"
+                          />
+                        </g>
+                        <g id="g2847" transform="translate(46,256)">
+                          <path
+                            d="M 0,0 H 60"
+                            style={{
+                              fill: "none",
+                              stroke: "#000000",
+                              strokeWidth: 30,
+                              strokeLinecap: "butt",
+                              strokeLinejoin: "miter",
+                              strokeMiterlimit: 10,
+                              strokeDasharray: "none",
+                              strokeOpacity: 1,
+                            }}
+                            id="path2849"
+                          />
+                        </g>
+                        <g id="g2851" transform="translate(46,196)">
+                          <path
+                            d="M 0,0 H 60"
+                            style={{
+                              fill: "none",
+                              stroke: "#000000",
+                              strokeWidth: 30,
+                              strokeLinecap: "butt",
+                              strokeLinejoin: "miter",
+                              strokeMiterlimit: 10,
+                              strokeDasharray: "none",
+                              strokeOpacity: 1,
+                            }}
+                            id="path2853"
+                          />
+                        </g>
+                        <g id="g2855" transform="translate(46,136)">
+                          <path
+                            d="M 0,0 H 60"
+                            style={{
+                              fill: "none",
+                              stroke: "#000000",
+                              strokeWidth: 30,
+                              strokeLinecap: "butt",
+                              strokeLinejoin: "miter",
+                              strokeMiterlimit: 10,
+                              strokeDasharray: "none",
+                              strokeOpacity: 1,
+                            }}
+                            id="path2857"
+                          />
+                        </g>
+                        <g id="g2859" transform="translate(46,75)">
+                          <path
+                            d="M 0,0 H 60"
+                            style={{
+                              fill: "none",
+                              stroke: "#000000",
+                              strokeWidth: 30,
+                              strokeLinecap: "butt",
+                              strokeLinejoin: "miter",
+                              strokeMiterlimit: 10,
+                              strokeDasharray: "none",
+                              strokeOpacity: 1,
+                            }}
+                            id="path2861"
+                          />
+                        </g>
+                      </g>
+                    </g>
                   </g>
                 </svg>
+
                 <span className="hide-menu">List Movie</span>
-              </a>
+              </Link>
             </li>
             <li className="sidebar-item">
-              <a
+              <Link
+                to="/admin/addMovie"
                 className="sidebar-link"
-                href="./ui-alerts.html"
                 aria-expanded="false"
               >
                 <svg
@@ -85,15 +366,15 @@ const SiderBarAdmin = () => {
                   />
                 </svg>
                 <span className="hide-menu">Add Movie</span>
-              </a>
+              </Link>
             </li>
             <li className="nav-small-cap">
               <span className="hide-menu">User Manager</span>
             </li>
             <li className="sidebar-item">
-              <a
+              <Link
                 className="sidebar-link"
-                href="./ui-card.html"
+                to={"/admin/userManager"}
                 aria-expanded="false"
               >
                 <svg
@@ -115,32 +396,16 @@ const SiderBarAdmin = () => {
                   <path d="m3.722 28.091h12.278c.552 0 1 .448 1 1s-.448 1-1 1h-13.278c-.552 0-1-.447-1-1 0 0 0-.824 0-2 0-4.97 4.029-9 9-9h5.278c.552 0 1 .448 1 1s-.448 1-1 1h-5.278c-3.866 0-7 3.134-7 7z" />
                 </svg>
                 <span className="hide-menu">List Users</span>
-              </a>
+              </Link>
             </li>
 
-            <li className="sidebar-item">
-              <a
-                className="sidebar-link"
-                href="./ui-typography.html"
-                aria-expanded="false"
-              >
-                <svg
-                  viewBox="0 0 32 32"
-                  width={24}
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="m28 22.5h-3.5v-3.5a1 1 0 0 0 -2 0v3.5h-3.5a1 1 0 0 0 0 2h3.5v3.5a1 1 0 0 0 2 0v-3.5h3.5a1 1 0 0 0 0-2z" />
-                  <path d="m16 29h-10a1 1 0 0 1 -1-1 11.013 11.013 0 0 1 11-11 8.025 8.025 0 1 0 -4.289-1.258 13.012 13.012 0 0 0 -8.711 12.258 3 3 0 0 0 3 3h10a1 1 0 0 0 0-2zm-6-20a6 6 0 1 1 6 6 6.006 6.006 0 0 1 -6-6z" />
-                </svg>
-                <span className="hide-menu">Add User</span>
-              </a>
-            </li>
+            <li className="sidebar-item"></li>
             <li className="nav-small-cap">
               <i className="ti ti-dots nav-small-cap-icon fs-4" />
               <span className="hide-menu">AUTH</span>
             </li>
             <li className="sidebar-item">
-              <a
+              <Link
                 className="sidebar-link"
                 href="./authentication-login.html"
                 aria-expanded="false"
@@ -149,10 +414,10 @@ const SiderBarAdmin = () => {
                   <i className="ti ti-login" />
                 </span>
                 <span className="hide-menu">Login</span>
-              </a>
+              </Link>
             </li>
             <li className="sidebar-item">
-              <a
+              <Link
                 className="sidebar-link"
                 href="./authentication-register.html"
                 aria-expanded="false"
@@ -161,7 +426,7 @@ const SiderBarAdmin = () => {
                   <i className="ti ti-user-plus" />
                 </span>
                 <span className="hide-menu">Register</span>
-              </a>
+              </Link>
             </li>
           </ul>
         </nav>

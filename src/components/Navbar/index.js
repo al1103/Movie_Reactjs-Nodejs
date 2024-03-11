@@ -60,8 +60,8 @@ useEffect(() => {
     <div className="header" ref={headerRef}>
       <div className="container">
         <div className="overlay" data-overlay />
-        <a href="./index.html" className="logo">
-          <img src="./assets/images/logo.svg" alt="Filmlane logo" />
+        <a href="./" className="logo">
+          <img src="./assets/images/logo.svg" alt="zilong" />
         </a>
         <div className="header-actions">
           <button className="search-btn">

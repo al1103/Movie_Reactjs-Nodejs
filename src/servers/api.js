@@ -33,6 +33,22 @@ const addMovie = async (movie, token) => {
     return error.message;
   }
 };
+const deleteMovie = async (id, token) => {
+  try {
+    const { data } = await axiosClient({
+      method: "delete",
+      url: `/auth/deletemovie/${id}`, 
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token,
+      }
+    });
+    return data; // Returning data if needed
+  } catch (error) {
+    return error.message;
+  }
+}
+
 const editMovie = async (movie) => {
   try {
     const { data } = await axiosClient({
@@ -82,17 +98,34 @@ const getListUsers = async (page,token) => {
   try {
     const { data } = await axiosClient({
       method: "get",
-      url: "/auth/users?page=" + page,
+      url: "/auth/getListUser?page=" + page,
       headers: {
         "Content-Type": "application/json",
         'Authorization': 'Bearer ' + token,
       
       }
     })
+    return data;
   }
   catch (error) {
     return error.message;
   }
 }
+const getUser = async (id, token) => {
+  try {
+    const { data } = await axiosClient({
+      method: "get",
+      url: `/auth/users/${id}`,
+      headers: {
+        "Content-Type": "application/json",
+        'Authorization': 'Bearer ' + token
 
-export { getListMovies, addMovie, getOneFilm, editMovie ,updateFilm,getListUsers};
+      }
+    })
+    return data;
+  }
+  catch (error) {
+    return error.message;
+  }}
+
+export { getListMovies, addMovie, getOneFilm, editMovie ,updateFilm,getListUsers,deleteMovie,getUser};
