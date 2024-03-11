@@ -5,38 +5,36 @@ import { getListMovies } from "../../../../servers/api";
 const Admin = () => {
   const [listMovie, setListMovie] = useState([]);
   const [selectedPage, setSelectedPage] = useState(1);
-  const totalPagesCalculated = Math.ceil(
-    8
-  );
+  const [totalPagesCalculated, setTotalPagesCalculated] = useState(1);
+  const token = localStorage.getItem("token");
+
   const handlePageChange = (providedPage) => {
     setSelectedPage(providedPage);
   };
+
   useEffect(() => {
     const fetchListMovies = async () => {
       try {
-        const res = await getListMovies(selectedPage);
-        setListMovie(res);
+        const res = await getListMovies(selectedPage, token);
+        setListMovie(res.movies);
+        setTotalPagesCalculated(res.totalPage);
       } catch (error) {
-        // Handle error here, like displaying an error message
         console.error("Error fetching movies:", error);
       }
     };
     fetchListMovies();
-  }, [selectedPage]);
-
-
+  }, [selectedPage, token])
+  
 
   const getFullYear = (date) => {
     const newDate = new Date(date);
     const year = newDate.getFullYear();
     return year;
-  }
+  };
   return (
     <AdminLayout>
       <div className="body-wrapper content-admin">
         <div className="">
-
-
           <div className="col-lg-12 d-flex align-items-stretch">
             <div className="card w-100">
               <div className="card-body p-4">
@@ -56,7 +54,7 @@ const Admin = () => {
                         <th className="border-bottom-0">
                           <h6 className="fw-semibold mb-0">Name</h6>
                         </th>
-                       
+
                         <th className="border-bottom-0">
                           <h6 className="fw-semibold mb-0">Action</h6>
                         </th>
@@ -77,14 +75,20 @@ const Admin = () => {
                               />
                             </div>
                             <div className="d-flex flex-column flex-1  gap-2 ">
-                              <h6 className="fw-semibold mb-1 nameMovie">{movie.name}</h6>
-                              <span className="fw-normal nameMovie">{movie.original_name}</span>
+                              <h6 className="fw-semibold mb-1 nameMovie">
+                                {movie.name}
+                              </h6>
+                              <span className="fw-normal nameMovie">
+                                {movie.original_name}
+                              </span>
                             </div>
                           </td>
                           <td className="border-bottom-0">
-                            <p className="mb-0 fw-normal">{getFullYear(movie.modified)}</p>
+                            <p className="mb-0 fw-normal">
+                              {getFullYear(movie.modified)}
+                            </p>
                           </td>
-                          
+
                           <td className="border-bottom-0 w-25">
                             <div className="d-flex align-items-center gap-3">
                               <button className="fw-semibold mb-0 fs-4">
@@ -104,10 +108,10 @@ const Admin = () => {
             </div>
           </div>
         </div>
-      <Pagination
-              totalPagesCalculated={totalPagesCalculated}
-              handlePageChange={handlePageChange}
-            />
+        <Pagination
+          totalPagesCalculated={totalPagesCalculated}
+          handlePageChange={handlePageChange}
+        />
       </div>
     </AdminLayout>
   );

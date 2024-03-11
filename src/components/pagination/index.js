@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import ReactPaginate from "react-paginate";
 
 const Pagination = ({ totalPagesCalculated, handlePageChange }) => {
+  console.log(totalPagesCalculated)
   return (
+
     <>
       <ReactPaginate
         previousLabel={"Prev"}

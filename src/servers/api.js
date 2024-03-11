@@ -1,10 +1,17 @@
 import axios from "axios";
 const API_KEY = process.env.REACT_APP_API_KEY;
 const axiosClient = axios.create({ baseURL: API_KEY });
-const getListMovies = async (page) => {
+const getListMovies = async (page, token) => {
   try {
-    const {data} = await axios.get(`https://phim.nguonc.com/api/films/phim-moi-cap-nhat?page=${page}`);
-    return data.items;
+    const {data} = await axiosClient({
+      method: "get",
+      url: "/auth/getListMovies?page=" + page,
+      headers: {
+        'Authorization': 'Bearer ' + token,
+        'X-Requested-With': 'XMLHttpRequest'
+      }
+    });
+    return data;
   } catch (error) {
     return error.message;
   }
@@ -18,7 +25,7 @@ const addMovie = async (movie, token) => {
       url: "/auth/addMovie",
       headers: {
         "Content-Type": "application/json",
-        'authorization': `Bearer ${token}`
+        'Authorization': 'Bearer ' + token,
       },
     });
     return data;
@@ -63,7 +70,7 @@ const updateFilm = async (movie, token) => {
       url: `/auth/edit/${movie.slug}`,
       headers: {
         "Content-Type": "application/json",
-        'authorization': `Bearer ${token}`
+        'Authorization': `Bearer ${token}`
       },
     });
     return data;
@@ -71,6 +78,21 @@ const updateFilm = async (movie, token) => {
     return error.message;
   }
 };
+const getListUsers = async (page,token) => {
+  try {
+    const { data } = await axiosClient({
+      method: "get",
+      url: "/auth/users?page=" + page,
+      headers: {
+        "Content-Type": "application/json",
+        'Authorization': 'Bearer ' + token,
+      
+      }
+    })
+  }
+  catch (error) {
+    return error.message;
+  }
+}
 
-
-export { getListMovies, addMovie, getOneFilm, editMovie ,updateFilm};
+export { getListMovies, addMovie, getOneFilm, editMovie ,updateFilm,getListUsers};

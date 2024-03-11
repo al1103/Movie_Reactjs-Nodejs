@@ -1,5 +1,6 @@
-const e = require("express");
 const Movie = require("../models/movies");
+const jwt = require("jsonwebtoken");
+
 const User = require("../models/users_model"); // Assuming your Mongoose model is named 'User'
 
 // exports.register = async (req, res) => {
@@ -84,18 +85,34 @@ class AuthController {
   }
   async getUser(req, res) {
     try {
-      res.status(200).send("hi");
-      // if(req.query.page){
-      //   const page = parseInt(req.query.page);
-      //   const skip = (page - 1) * pageLimit;
-      //   const user = await User.find().limit(pageLimit).skip(skip);
-      //   res.status(200).json(user)
-      // }else{
-      //   res.status(500).json({ error: "Internal Server Error" });
-      // }
+      const currentPage = parseInt(req.query.page) || 1;
+      const perPage = 8;
+      // Lấy dữ liệu cho trang hiện tại
+      const skip = (currentPage - 1) * perPage;
+      const users = await User.find({}).skip(skip).limit(perPage);
+      // Đếm tổng số trang
+      const totalPage = Math.ceil((await User.countDocuments()) / perPage);
+      res.json({ users, currentPage, totalPage });
     } catch (error) {
       res.status(500).json({ error: "Internal Server Error" });
     }
   }
+  async  listMovie(req, res) {
+    try {
+      const currentPage = parseInt(req.query.page) || 1;
+      const perPage = 8;
+      // Lấy dữ liệu cho trang hiện tại
+      const skip = (currentPage - 1) * perPage;
+      const movies = await Movie.find({}).skip(skip).limit(perPage); // Fixed variable name 'users' to 'movies'
+      // Đếm tổng số trang
+      const totalMovies = await Movie.countDocuments(); // Use countDocuments() directly
+      const totalPage = Math.ceil(totalMovies / perPage); // Calculate total pages
+      res.status(200).json({ movies, currentPage, totalPage }); // Fixed object key 'Movie' to 'movies' for consistency
+    } catch (error) {
+      console.error(error); // Log the error for debugging purposes
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  }
 }
+
 module.exports = new AuthController();

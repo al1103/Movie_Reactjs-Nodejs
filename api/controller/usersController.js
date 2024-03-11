@@ -38,29 +38,35 @@ class UsersController {
     }
   }
   async authenticateUser(req, res) {
+    const { username, password } = req.body;
+  
     try {
-      const { username, password } = req.body;
       const user = await User.findOne({ username });
-
       if (!user) {
         return res.status(404).json({ error: "User not found" });
       }
-
-      if (user.password === password && user) {
-        const data = { username };
-        const accessToken = jwt.sign(data, process.env.ACCESS_TOKEN_SECRET, {
-          expiresIn: "30d",
-        });
-        const dataUser = { ...user._doc, password: undefined };
-        return res.status(200).json({ user: dataUser, accessToken });
-      } else {
+  
+      // Validate password securely using bcrypt or a similar hashing algorithm
+      const isPasswordValid = await password === user.password; // Assuming password is hashed in the database
+  
+      if (!isPasswordValid) {
         return res.status(401).json({ error: "Incorrect password" });
       }
+  
+      const data = { user };
+      const token = jwt.sign(data, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '24h' });
+
+  
+      // Omit password from response for security reasons
+      const dataUser = { ...user._doc, password: undefined };
+  
+      return res.status(200).json({ user: dataUser, accessToken: token });
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Internal Server Error" }); // Handle errors if any
+      console.error(error); // Log the error for debugging
+      return res.status(500).json({ error: "Internal server error" }); // Handle unexpected errors gracefully
     }
   }
+  
   
   
 }

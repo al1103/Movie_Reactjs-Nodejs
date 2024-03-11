@@ -16895,9 +16895,25 @@ ul {
   display: flex;
   gap: 35px;
 }
-.navigationButtons > li {
-  font-size: 18px;
-}
+
 .navigationActive{
-  color: #5d87ff;
+  color: #fff;
+}
+.navigationButtons {
+  @apply space-x-2 flex items-center justify-center flex-wrap;
+
+  a {
+    @apply bg-gray-800 px-3 py-1 rounded-md inline-block mb-2;
+  }
+}
+
+.navigationActive a {
+  @apply bg-green-600 ;
+}
+
+.navigationButtons li a{
+  color: #fff;
+}
+.navigationButtons li{
+  color: #fff;
 }

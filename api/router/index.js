@@ -15,10 +15,13 @@ function authorize(roles) {
 }
 
 function routes(app) {
-  app.use("/auth", authenToken, authorize(["admin"]), authRouter);
+  app.use("/auth", authenToken,  authorize(["admin"]) , authRouter);
   app.use("/users",  usersRouter);
   app.use("/site",  siteRouter);
   app.use("/",   siteRouter);
+
+
+  
 }
 
 module.exports = routes;

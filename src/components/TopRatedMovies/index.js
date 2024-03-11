@@ -7,7 +7,7 @@ const TopRatedMovies = () => {
     useEffect(() => {
       getListMovies().then((res) => {
             
-            setListTopMovie(res.slice(0, 4));
+            // setListTopMovie(res.slice(0, 4));
         });
     }, [])
   return (

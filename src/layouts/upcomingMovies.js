@@ -8,7 +8,7 @@ const UpcomingMovies = () => {
   useEffect(() => {
     getListMovies().then((res) => {
       const itemsToShow = res.slice(0, 4); // Lấy 4 items đầu tiên
-      setListMovie(itemsToShow);
+      // setListMovie(itemsToShow);
     });
   }, []);
 
