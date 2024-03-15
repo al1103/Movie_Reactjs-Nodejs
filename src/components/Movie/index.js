@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from "react";
-import "../scss/upcomingMovies.scss";
-import MovieCard from "../components/MovieCard";
-import { getListMovies } from "../servers/api";
-
-const UpcomingMovies = () => {
+import { getMovieAPI } from "../../servers/api";
+import MovieCard from "../MovieCard";
+import "./Movies.scss";
+const Movies = () => {
   const [listMovie, setListMovie] = useState([]);
+  const token = localStorage.getItem("token")
   useEffect(() => {
-    getListMovies().then((res) => {
-      const itemsToShow = res.slice(0, 4); // Lấy 4 items đầu tiên
-      // setListMovie(itemsToShow);
-    });
-  }, []);
+    const fetchData = async () => {
+      try {
+        const data = await getMovieAPI(token);
+        setListMovie(data.slice(0, 4));
+      } catch (error) {
+        console.error("Đã xảy ra lỗi:", error);
+      }
+    }
+    fetchData();
 
+  }, []);
   return (
     <div className="upcoming">
       <div className="container">
@@ -44,4 +49,6 @@ const UpcomingMovies = () => {
   );
 };
 
-export default UpcomingMovies;
+
+
+export default Movies;

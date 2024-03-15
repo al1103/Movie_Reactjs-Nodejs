@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const movieSchema = new mongoose.Schema({
   name: String,
@@ -7,12 +7,15 @@ const movieSchema = new mongoose.Schema({
   thumb_url: String,
   poster_url: String,
   category: String,
+  description: String,
+  quality: String,
+  episodes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Episode" }],
   modified: {
     type: Date,
     default: Date.now,
   },
 });
 
-const Movie = mongoose.model('Movie', movieSchema);
+const Movie = mongoose.model("Movie", movieSchema);
 
 module.exports = Movie;

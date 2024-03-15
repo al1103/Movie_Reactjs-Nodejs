@@ -1,15 +1,15 @@
-import React ,{useEffect, useState}from "react";
-import {getListMovies} from "../../servers/api";
+import React, { useEffect, useState } from "react";
+import { getListMovies } from "../../servers/apiNguonC";
 import MovieCard from "../MovieCard";
 import "./TopRatedMovies.scss";
 const TopRatedMovies = () => {
-    const [listTopMovie, setListTopMovie] = useState([]);
-    useEffect(() => {
-      getListMovies().then((res) => {
-            
-            // setListTopMovie(res.slice(0, 4));
-        });
-    }, [])
+  const [listTopMovie, setListTopMovie] = useState([]);
+  const token = localStorage.getItem("token");
+  useEffect(() => {
+    getListMovies(1, token).then((res) => {
+      setListTopMovie(res.items.slice(0, 4));
+    });
+  }, []);
   return (
     <div className="top-rated">
       <div className="container">
@@ -30,10 +30,11 @@ const TopRatedMovies = () => {
           </li>
         </ul>
         <ul className="movies-list">
-         {listTopMovie.map((movie, index) => (
-            <li key={index} >
+          {listTopMovie.map((movie, index) => (
+            <li key={index}>
               <MovieCard movie={movie} />
-            </li>))}
+            </li>
+          ))}
         </ul>
       </div>
     </div>

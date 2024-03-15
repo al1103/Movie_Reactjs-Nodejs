@@ -1,12 +1,12 @@
 import axios from "axios";
-const API_KEY = "https://phim.nguonc.com/api/film";
+const API_KEY = "https://phim.nguonc.com/api";
 const axiosClient = axios.create({ baseURL: API_KEY });
 
 const getOneFilmNguonC = async (slug) => {
     try {
       const { data } = await axiosClient({
         method: "get",
-        url: `/${slug}`,
+        url: `/film/${slug}`,
        
       });
       return data;
@@ -15,4 +15,19 @@ const getOneFilmNguonC = async (slug) => {
     }
   };
 
-  export { getOneFilmNguonC };
+  
+  const getListMovies = async (page) => {
+    try {
+      const {data} = await axiosClient({
+        method: "get",
+        url: "/films/phim-moi-cap-nhat?page=" + page,
+        headers: {
+          "Content-Type": "application/json",
+        }
+      });
+      return data;
+    } catch (error) {
+      return error.message;
+    }
+  };
+  export { getOneFilmNguonC,getListMovies};

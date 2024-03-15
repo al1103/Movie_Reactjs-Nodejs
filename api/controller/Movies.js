@@ -10,6 +10,15 @@ class Movies{
             next(err);
         }
     }
+    async getMovie(req, res, next) {
+        try{
+            const data = await Movie.find({});
+            res.json(data);
+        }
+        catch(err){
+            next(err);
+        }
+    }
    
 
     

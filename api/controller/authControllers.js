@@ -3,28 +3,6 @@ const jwt = require("jsonwebtoken");
 
 const User = require("../models/users_model"); // Assuming your Mongoose model is named 'User'
 
-// exports.register = async (req, res) => {
-//   const username = req.body.username.toLowerCase();
-//   const user = await userModel.getUser(username);
-//   if (user) res.status(409).send("Tên tài khoản đã tồn tại.");
-//   else {
-//     const hashPassword = req.body.password;
-//     const newUser = {
-//       username: username,
-//       password: hashPassword,
-//     };
-//     const createUser = await userModel.createUser(newUser);
-//     if (!createUser) {
-//       return res
-//         .status(400)
-//         .send("Có lỗi trong quá trình tạo tài khoản, vui lòng thử lại.");
-//     }
-//     return res.send({
-//       username,
-//     });
-//   }
-// };
-const pageLimit = 8;
 
 class AuthController {
   async index(req, res) {
@@ -57,7 +35,7 @@ class AuthController {
   }
   async getOneFilm(req, res, next) {
     try {
-      const movie = await Movie.findOne({ slug: req.params.slug });
+      const movie = await Movie.findOne({ _id: req.params.id });
       if (!movie) {
         return res.status(404).json({ message: "Phim không có" });
       } else {
@@ -98,7 +76,6 @@ class AuthController {
       res.status(500).json({ error: "Internal Server Error" });
     }
   }
-  
   async getUser(req, res) {
     try {
       const user = await User.findOne({ _id: req.params.id });
@@ -134,6 +111,19 @@ class AuthController {
       }
       res.json({ message: "Phim đã được xóa" });
     } catch (error) {
+      res.status(500).json({ error: "Lỗi máy chủ nội bộ" });
+    }
+  }
+  async UpdateMovie(req, res) {
+    try {
+      const result = await
+        Movie.updateOne({ _id: req.params.id }, req.body);
+      if (result.nModified === 0) {
+        return res.status(404).json({ message: "Phim không tồn tại" });
+      }
+      res.json({ message: "Phim đã được cập nhật" });
+    }
+    catch (error) {
       res.status(500).json({ error: "Lỗi máy chủ nội bộ" });
     }
   }

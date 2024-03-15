@@ -3,13 +3,13 @@ const API_KEY = process.env.REACT_APP_API_KEY;
 const axiosClient = axios.create({ baseURL: API_KEY });
 const getListMovies = async (page, token) => {
   try {
-    const {data} = await axiosClient({
+    const { data } = await axiosClient({
       method: "get",
       url: "/auth/getListMovies?page=" + page,
       headers: {
-        'Authorization': 'Bearer ' + token,
-        'X-Requested-With': 'XMLHttpRequest'
-      }
+        Authorization: "Bearer " + token,
+        "X-Requested-With": "XMLHttpRequest",
+      },
     });
     return data;
   } catch (error) {
@@ -25,7 +25,7 @@ const addMovie = async (movie, token) => {
       url: "/auth/addMovie",
       headers: {
         "Content-Type": "application/json",
-        'Authorization': 'Bearer ' + token,
+        Authorization: "Bearer " + token,
       },
     });
     return data;
@@ -37,17 +37,17 @@ const deleteMovie = async (id, token) => {
   try {
     const { data } = await axiosClient({
       method: "delete",
-      url: `/auth/deletemovie/${id}`, 
+      url: `/auth/deletemovie/${id}`,
       headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer " + token,
-      }
+        Authorization: "Bearer " + token,
+      },
     });
     return data; // Returning data if needed
   } catch (error) {
     return error.message;
   }
-}
+};
 
 const editMovie = async (movie) => {
   try {
@@ -64,13 +64,14 @@ const editMovie = async (movie) => {
     return error.message;
   }
 };
-const getOneFilm = async (slug) => {
+const getOneFilm = async (slug, token) => {
   try {
     const { data } = await axiosClient({
       method: "get",
       url: `/auth/${slug}`,
       headers: {
         "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
       },
     });
     return data;
@@ -86,7 +87,7 @@ const updateFilm = async (movie, token) => {
       url: `/auth/edit/${movie.slug}`,
       headers: {
         "Content-Type": "application/json",
-        'Authorization': `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
     });
     return data;
@@ -94,23 +95,21 @@ const updateFilm = async (movie, token) => {
     return error.message;
   }
 };
-const getListUsers = async (page,token) => {
+const getListUsers = async (page, token) => {
   try {
     const { data } = await axiosClient({
       method: "get",
       url: "/auth/getListUser?page=" + page,
       headers: {
         "Content-Type": "application/json",
-        'Authorization': 'Bearer ' + token,
-      
-      }
-    })
+        Authorization: "Bearer " + token,
+      },
+    });
     return data;
-  }
-  catch (error) {
+  } catch (error) {
     return error.message;
   }
-}
+};
 const getUser = async (id, token) => {
   try {
     const { data } = await axiosClient({
@@ -118,14 +117,56 @@ const getUser = async (id, token) => {
       url: `/auth/users/${id}`,
       headers: {
         "Content-Type": "application/json",
-        'Authorization': 'Bearer ' + token
-
-      }
-    })
+        Authorization: "Bearer " + token,
+      },
+    });
     return data;
-  }
-  catch (error) {
+  } catch (error) {
     return error.message;
-  }}
+  }
+};
 
-export { getListMovies, addMovie, getOneFilm, editMovie ,updateFilm,getListUsers,deleteMovie,getUser};
+const postComment = async (comment, token, PostID) => {
+  try {
+    const req = await axiosClient({
+      method: "post",
+      data: comment,
+      url: `users/${PostID}/Comment`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
+    return req;
+  } catch (error) {
+    return error.message;
+  }
+};
+const getMovieAPI = async (token) => {
+  try {
+    const req = await axiosClient({
+      method: "get",
+      url: "/getMovie",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
+    return req.data;
+  } catch (error) {
+    return error.message;
+  }
+};
+
+export {
+  getListMovies,
+  addMovie,
+  getOneFilm,
+  editMovie,
+  updateFilm,
+  getListUsers,
+  deleteMovie,
+  getUser,
+  postComment,
+  getMovieAPI,
+};

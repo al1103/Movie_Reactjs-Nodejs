@@ -21,9 +21,6 @@ function authenToken(req, res, next) {
     } else {
       return res.status(403).json({ error: "Unauthorized role" });
     }
-    
-
-
     next();
   } catch (e) {
     if (e.name === "JsonWebTokenError") {
