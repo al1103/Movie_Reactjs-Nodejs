@@ -9,7 +9,7 @@ function authorize(roles) {
     if (roles.includes(req.userRole)) {
       next();
     } else {
-      return res.status(403).json({ error: "Unauthorized" }); // Or provide a more specific error
+      return res.status(403).json({ error: "Unauthorized" }); 
     }
   };
 }
@@ -17,7 +17,6 @@ function authorize(roles) {
 function routes(app) {
   app.use("/auth", authenToken,  authorize(["admin"]) , authRouter);
   app.use("/users",  usersRouter);
-  app.use("/site",  siteRouter);
   app.use("/",   siteRouter);
 
 

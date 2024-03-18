@@ -33,7 +33,7 @@ class AuthController {
       next(error);
     }
   }
-  async getOneFilm(req, res, next) {
+  async getOneFilmEdit(req, res, next) {
     try {
       const movie = await Movie.findOne({ _id: req.params.id });
       if (!movie) {
@@ -45,6 +45,7 @@ class AuthController {
       next(error);
     }
   }
+  
   async editMovie(req, res, next) {
     try {
       await Movie.updateOne({ slug: req.params.slug }, req.body).then(() =>

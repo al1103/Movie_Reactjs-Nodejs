@@ -68,7 +68,7 @@ const getOneFilm = async (slug, token) => {
   try {
     const { data } = await axiosClient({
       method: "get",
-      url: `/auth/${slug}`,
+      url: `/${slug}`,
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
@@ -126,12 +126,12 @@ const getUser = async (id, token) => {
   }
 };
 
-const postComment = async (comment, token, PostID) => {
+const postComment = async (comment,  PostID,token) => {
   try {
     const req = await axiosClient({
       method: "post",
-      data: comment,
-      url: `users/${PostID}/Comment`,
+      data: {comment},
+      url: `users/${PostID}/comment`,
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
@@ -146,7 +146,7 @@ const getMovieAPI = async (token) => {
   try {
     const req = await axiosClient({
       method: "get",
-      url: "/getMovie",
+      url: "/getMovies",
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,

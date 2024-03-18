@@ -1,28 +1,24 @@
 import React, { useState } from "react";
 import { postComment } from "../../servers/api";
-import "./style.scss";
+import { toast } from "react-toastify";
 
-const Comment = (id) => {
+const Comment = (props) => {
   const token = localStorage.getItem("token");
   const [comments, setComments] = useState([]);
+  const postId = props.id;
+
+  const notify = (message) => toast(message);
 
   const handleSubmitComment = async () => {
     try {
-      if (!token) {
-        alert("Vui lòng đăng nhập để bình luận");
-        return;
-      } else if (!comments.length) {
-        alert("Vui lòng nhập bình luận");
-        return;
+      const data = await postComment(comments, postId, token);
+      if (data.status === 201) {
+        notify("Bình luận thành công");
       }
-  
-      const res = await postComment(comments, token);
-      console.log(res, "Comment submitted successfully!"); 
     } catch (error) {
-      console.error(error, "Error submitting comment:"); 
+      console.error("Đã xảy ra lỗi:", error);
     }
   };
-  
 
   return (
     <div>

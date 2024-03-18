@@ -1,16 +1,9 @@
-const User = require("../models/users_model"); 
+const User = require("../models/users_model");
 const Comment = require("../models/Comment");
+const Movie = require("../models/movies");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
-const verifyToken = (token) => {
-  try {
-    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-    return decoded.sub; // Lấy ID người dùng từ payload
-  } catch (error) {
-    return null;
-  }
-};
 class UsersController {
   async createUser(req, res) {
     try {
@@ -79,29 +72,25 @@ class UsersController {
   async postComment(req, res) {
     try {
       const token = req.headers.authorization.split(" ")[1];
-      const authorId = verifyToken(token);
-     
-      // 2. Extract content and movie ID:
-      const { content } = req.body;
-      const { movieId } = req.params.id;
-  
-      // 5. Create new comment:
+      const decodeToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+      const authorId = decodeToken.user._id;
+      const contents = req.body.comment;
+      const movieId = req.params.id; 
+
       const newComment = new Comment({
-        content,
-        author: authorId,
+        content:  contents ,
+        user: authorId,
         movie: movieId,
       });
-  
-      // 6. Save comment:
+ 
       await newComment.save();
-  
-      // 7. Send successful response:
-      res.status(201).json({ message: "Comment added successfully" });
+
+      res.status(201).json({ message: "Comment created successfully"});
     } catch (error) {
-      console.error(error);
+      console.error("Error creating comment:", error.message);
       res.status(500).json({ error: "Internal server error" }); // Avoid leaking specific error details
     }
   }
-}  
+}
 
 module.exports = new UsersController();

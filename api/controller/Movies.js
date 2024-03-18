@@ -10,15 +10,27 @@ class Movies{
             next(err);
         }
     }
-    async getMovie(req, res, next) {
+    async getMovies(req, res, next) {
         try{
             const data = await Movie.find({});
-            res.json(data);
+            res.status(200).json(data);
         }
         catch(err){
             next(err);
         }
     }
+    async getOneFilm(req, res, next) {
+        try {
+          const movie = await Movie.findOne({ slug: req.params.slug });
+          if (!movie) {
+            return res.status(404).json({ message: "Phim không có" });
+          } else {
+            res.status(200).json(movie);
+          }
+        } catch (error) {
+          next(error);
+        }
+      }
    
 
     

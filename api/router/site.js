@@ -3,7 +3,8 @@ const router = express.Router();
 
 const Movies = require('../controller/Movies');
 
+router.get('/getMovies', Movies.getMovies);
+router.get('/:slug', Movies.getOneFilm);
 router.get('/', Movies.index);
-router.get('/getMovie', Movies.getMovie);
 module.exports = router;
 

@@ -10,6 +10,7 @@ const Movies = () => {
       try {
         const data = await getMovieAPI(token);
         setListMovie(data.slice(0, 4));
+        console.log(data.slice(0, 4));
       } catch (error) {
         console.error("Đã xảy ra lỗi:", error);
       }

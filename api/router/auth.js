@@ -11,6 +11,6 @@ router.get('/getListMovies', authController.listMovie);
 router.put('/edit/:slug', authController.editMovie);
 router.post('/addMovie', authController.addMovie);
 router.delete('/deletemovie/:id', authController.deleteMovie);
-router.get('/:id', authController.getOneFilm);
+router.get('/:id', authController.getOneFilmEdit);
 router.get('/', authController.index);
 module.exports = router;
