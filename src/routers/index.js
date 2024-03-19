@@ -16,16 +16,17 @@ import ManagerMovie from "../pages/admin/AdminMovie/ManagerMovie";
 import WatchMovie from "../pages/WatchMovie";
 const RoutersManager = () => {
   const getAdmin = useSelector((state) => state.Movie.user);
-  const isAdmin =
-    JSON.parse(localStorage.getItem("user"))?.role === "admin" ||
-    getAdmin?.role === "admin";
+  // const isAdmin =
+  //   JSON.parse(localStorage.getItem("user"))?.role === "admin" ||
+  //   getAdmin?.role === "admin" || false;
 
+  const isAdmin = getAdmin?.role === "admin" || false;
   return (
     <Routes>
       <Route path="/" element={<HomeRouter />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
-      <Route path="/movie/:slug" element={<MovieDetails />} />
+      {/* <Route path="/movie/:slug" element={<MovieDetails />} /> */}
       <Route path="/:slug/:name" element={<WatchMovie />} />
       <Route
         path="/admin/userManager"

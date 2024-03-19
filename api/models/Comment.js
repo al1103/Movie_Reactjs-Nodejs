@@ -1,19 +1,13 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const commentSchema = new mongoose.Schema({
   content: {
     type: String,
-    minlength: 1, // Enforce a minimum content length for validation
+    required: true,
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true, // Ensure a user is always associated with a comment
-  }, 
-  movie: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Movie',
-    required: true, // Ensure a movie is always associated with a comment
+    ref: "User", 
   },
   createdAt: {
     type: Date,
@@ -21,8 +15,7 @@ const commentSchema = new mongoose.Schema({
   },
 });
 
-// Indexes for efficient querying
-commentSchema.index({ movie: 1 }); // Index for finding comments by movie
-commentSchema.index({ createdAt: -1 }); // Index for fetching recent comments (descending)
+commentSchema.index({ movie: 1 }); 
+commentSchema.index({ createdAt: -1 });
 
-module.exports = mongoose.model('Comment', commentSchema);
+module.exports = mongoose.model("Comment", commentSchema);

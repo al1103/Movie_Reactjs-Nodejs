@@ -17,11 +17,11 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = await getUserLogin({ email, password });
-
-    if (data && data.accessToken) {
+    console.log(data, "data")
+    if (data.token.length > 0 ) {
       handleUpdateToken(data);
       notify("Đăng nhập thành công");
-      if (data.user.role === "admin") {
+      if (data.dataUser.role === "admin") {
         Navigator("/admin");
       } else {
         Navigator("/");

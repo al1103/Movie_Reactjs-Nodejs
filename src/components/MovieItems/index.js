@@ -19,9 +19,8 @@ const MovieItems = () => {
         } else {
           const data = await getOneFilm(slug);
           setMovie(data);
-          console.log(data);
         }
-        setEpisodes(data.movie.episodes[0].items);
+        setEpisodes(data.movie.episodes[0].items || []);
       } catch (error) {
         console.error("Đã xảy ra lỗi:", error);
       } finally {

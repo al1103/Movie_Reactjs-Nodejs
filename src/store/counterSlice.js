@@ -34,12 +34,12 @@ const todoSlice = createSlice({
       }
     },
     setInfoUser(state, action) {
-      state.token = action.payload.accessToken;
+      state.token = action.payload.token;
       axios.defaults.headers.common["Authorization"] = action.payload
-        ? `Bearer ${action.payload.accessToken}`
+        ? `Bearer ${action.payload.token}`
         : null; // Update Axios headers based on token
-      localStorage.setItem("user", JSON.stringify(action.payload.user));
-      localStorage.setItem("token", action.payload.accessToken);
+      localStorage.setItem("user", JSON.stringify(action.payload.dataUser));
+      localStorage.setItem("token", action.payload.token);
        // Persist token in localStorage
     },
     logout(state) {

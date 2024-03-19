@@ -1,7 +1,7 @@
 const User = require("../models/users_model");
 const Comment = require("../models/Comment");
 const Movie = require("../models/movies");
-require("dotenv").config();
+const db = require("../db");
 const jwt = require("jsonwebtoken");
 
 class UsersController {
@@ -48,22 +48,19 @@ class UsersController {
         return res.status(404).json({ error: "User not found" });
       }
 
-      // Validate password securely using bcrypt or a similar hashing algorithm
-      const isPasswordValid = (await password) === user.password; // Assuming password is hashed in the database
-
+      const isPasswordValid = (await password) === user.password;
       if (!isPasswordValid) {
         return res.status(401).json({ error: "Incorrect password" });
       }
 
       const data = { user };
-      const token = jwt.sign(data, process.env.ACCESS_TOKEN_SECRET, {
+      const token = jwt.sign(data, "zilong-zhou", {
         expiresIn: "24h",
       });
 
       // Omit password from response for security reasons
       const dataUser = { ...user._doc, password: undefined };
-
-      return res.status(200).json({ user: dataUser, accessToken: token });
+      res.status(200).json({ token, dataUser });
     } catch (error) {
       console.error(error); // Log the error for debugging
       return res.status(500).json({ error: "Internal server error" }); // Handle unexpected errors gracefully
@@ -72,25 +69,56 @@ class UsersController {
   async postComment(req, res) {
     try {
       const token = req.headers.authorization.split(" ")[1];
-      const decodeToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+      const decodeToken = jwt.verify(token, "zilong-zhou");
       const authorId = decodeToken.user._id;
       const contents = req.body.comment;
-      const movieId = req.params.id; 
+      const movieId = req.params.id; // Assuming movie ID is in the URL path
+      if (!movieId) {
+        throw new Error("Movie ID missing"); // Handle missing ID gracefully
+      }
 
       const newComment = new Comment({
-        content:  contents ,
-        user: authorId,
-        movie: movieId,
+        content: contents,
+        User: authorId
       });
- 
       await newComment.save();
 
-      res.status(201).json({ message: "Comment created successfully"});
+      await Movie.findByIdAndUpdate(
+        movieId,
+        { $push: { comments: newComment._id } },
+        { new: true } // Return the updated document
+      );
+      res.status(201).json({ message: 'Comment created successfully', comment: newComment });
     } catch (error) {
       console.error("Error creating comment:", error.message);
       res.status(500).json({ error: "Internal server error" }); // Avoid leaking specific error details
     }
   }
+  // async GetComment(req, res) {
+  //   const userIds = req.params.id;
+
+  //   const users = db.collection("users").find({ _id: { $in: userIds } });
+
+  //   // Lấy tên và avatar của người dùng
+  //   users.forEach((user) => {
+  //     const userInfos = {
+  //       name: user.username,
+  //     };
+
+  //     // Kết hợp thông tin user với bình luận
+  //     const commentsWithUserInfo = Comment.map((comment) => {
+  //       if (comment.user === user._id) {
+  //         return {
+  //           ...comment,
+  //           user: userInfos,
+  //         };
+  //       }
+  //       return comment;
+  //     });
+
+  //     res.status(200).json(commentsWithUserInfo);
+  //   });
+  // }
 }
 
 module.exports = new UsersController();

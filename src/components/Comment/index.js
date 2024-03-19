@@ -1,14 +1,27 @@
-import React, { useState } from "react";
-import { postComment } from "../../servers/api";
+import React, { useEffect, useState } from "react";
+import { postComment, getComments } from "../../servers/api";
 import { toast } from "react-toastify";
 
 const Comment = (props) => {
   const token = localStorage.getItem("token");
   const [comments, setComments] = useState([]);
+  const [commentList, setCommentList] = useState([]);
   const postId = props.id;
 
   const notify = (message) => toast(message);
-
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getComments(postId, token);
+        console.log(data)
+        if (data.status === 200) setCommentList(data.data);
+      } catch (error) {
+        console.error("Đã xảy ra lỗi:", error);
+      }
+    };
+    fetchData();
+  }, [postId]);
+  console.log(commentList)
   const handleSubmitComment = async () => {
     try {
       const data = await postComment(comments, postId, token);
@@ -19,7 +32,7 @@ const Comment = (props) => {
       console.error("Đã xảy ra lỗi:", error);
     }
   };
-
+  
   return (
     <div>
       <div className="container mt-5 mb-5">
@@ -45,37 +58,41 @@ const Comment = (props) => {
                   <span>Submit</span>
                 </button>
               </div>
-              <div className="mt-2">
-                <div className="d-flex flex-row p-3">
-                  <img
-                    src="https://i.imgur.com/zQZSWrt.jpg"
-                    alt="Avatar"
-                    width={50}
-                    height={50}
-                    className="rounded-circle mr-3"
-                  />
+              <div>
+                {commentList.map((comment, index) => (
+                  <div key={index} className="d-flex flex-row p-3">
+                    <div className="mt-2">
+                      <div className="d-flex flex-row p-3">
+                        <img
+                          src="https://i.imgur.com/zQZSWrt.jpg"
+                          alt="Avatar"
+                          width={50}
+                          height={50}
+                          className="rounded-circle mr-3"
+                        />
 
-                  <div className="w-100">
-                    <div className="d-flex justify-content-between align-items-center">
-                      <div className="d-flex flex-row align-items-center">
-                        <span className="mr-2">Brian selter</span>
+                        <div className="w-100">
+                          <div className="d-flex justify-content-between align-items-center">
+                            <div className="d-flex flex-row align-items-center">
+                              <span className="mr-2">Brian selter</span>
+                            </div>
+                            <small>12h ago</small>
+                          </div>
+                          <p className="text-justify comment-text mb-0">
+                            {comment.content}
+                          </p>
+                          <div className="d-flex flex-row user-feed">
+                            <span className="wish">
+                              <i className="fa fa-heartbeat mr-2" />
+                              24
+                            </span>
+                            <span className="ml-3">Reply</span>
+                          </div>
+                        </div>
                       </div>
-                      <small>12h ago</small>
-                    </div>
-                    <p className="text-justify comment-text mb-0">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                      sed do eiusmod tempor incididunt ut labore et dolore magna
-                      aliqua. Ut enim ad minim veniam
-                    </p>
-                    <div className="d-flex flex-row user-feed">
-                      <span className="wish">
-                        <i className="fa fa-heartbeat mr-2" />
-                        24
-                      </span>
-                      <span className="ml-3">Reply</span>
                     </div>
                   </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>
