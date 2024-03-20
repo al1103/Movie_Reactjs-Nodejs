@@ -1,6 +1,7 @@
 const { multipleMongooseToObject } = require("../util/mongoose");
 const { mongooseToObject } = require("../util/mongoose");
 const Movie = require("../models/movies");
+const User = require("../models/users_model");
 const Comment = require("../models/Comment");
 class Movies {
   async index(req, res, next) {
@@ -31,28 +32,28 @@ class Movies {
       next(error);
     }
   }
-  async  getComments(req, res, next) {
+  async getComments(req, res, next) {
     try {
       const movieId = req.params.id;
-  
-      // Find the movie and populate comments with their user data
-      const movie = await Movie.findById(movieId).populate('user'); 
-  
-      // Check if movie exists
+
+      // Find the movie and populate comments with user data efficiently
+      const movie = await Movie.findById(movieId).populate("comments");
       if (!movie) {
         return res.status(404).json({ message: "Movie not found" });
       }
-  
-      // No need for separate commentPromises, directly access populated comments
-      const comments = movie.comments;
-  
-      res.status(200).json(comments);  // Return populated comments
+      if (!movie) {
+        return res.status(404).json({ message: "Movie not found" });
+      }
+      const comments = await Comment.find({ _id: { $in: movie.comments } }).populate(
+        "User",
+        "username avatar"
+      );
+      res.status(200).json(comments);
     } catch (error) {
       console.error("Error getting comments:", error.message);
       res.status(500).json({ message: "Internal server error" });
     }
   }
-  
 }
 
 module.exports = new Movies();

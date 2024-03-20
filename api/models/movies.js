@@ -56,10 +56,7 @@ const movieSchema = new mongoose.Schema({
       ref: 'Episode', // Reference the Episode model
     },
   ],
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', // Reference the User model
-  },
+ 
   comments: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -75,6 +72,3 @@ const movieSchema = new mongoose.Schema({
 module.exports = mongoose.model('Movie', movieSchema);
 
 
-const Movie = mongoose.model("Movie", movieSchema);
-
-module.exports = Movie;
