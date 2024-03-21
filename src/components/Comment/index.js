@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { postComment, getComments } from "../../servers/api";
 import { toast } from "react-toastify";
-
+import "./style.scss"
+import moment from 'moment';
 const Comment = (props) => {
   const token = localStorage.getItem("token");
   const [comments, setComments] = useState([]);
@@ -9,24 +10,26 @@ const Comment = (props) => {
   const postId = props.id;
 
   const notify = (message) => toast(message);
+  const fetchData = async () => {
+    try {
+      const data = await getComments(postId, token);
+      if (data.status === 200) setCommentList(data.data);
+    } catch (error) {
+      console.error("Đã xảy ra lỗi:", error);
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getComments(postId, token);
-        console.log(data)
-        if (data.status === 200) setCommentList(data.data);
-      } catch (error) {
-        console.error("Đã xảy ra lỗi:", error);
-      }
-    };
     fetchData();
   }, [postId]);
   console.log(commentList)
   const handleSubmitComment = async () => {
     try {
       const data = await postComment(comments, postId, token);
-      if (data.status === 201) {
-        notify("Bình luận thành công");
+      if (data) {
+        setComments("");
+        notify(data.message);
+        console.log("hi")
+        await fetchData();
       }
     } catch (error) {
       console.error("Đã xảy ra lỗi:", error);
@@ -61,27 +64,27 @@ const Comment = (props) => {
               <div>
                 {commentList.map((comment, index) => (
                   <div key={index} className="d-flex flex-row p-3">
-                    <div className="mt-2">
-                      <div className="d-flex flex-row p-3">
+                    <div className="mt-2 w-100">
+                      <div className="d-flex flex-row p-3 ">
                         <img
                           src="https://i.imgur.com/zQZSWrt.jpg"
                           alt="Avatar"
                           width={50}
                           height={50}
-                          className="rounded-circle mr-3"
+                          className="rounded-circle mr-3 avatar-img"
                         />
 
                         <div className="w-100">
                           <div className="d-flex justify-content-between align-items-center">
-                            <div className="d-flex flex-row align-items-center">
-                              <span className="mr-2">Brian selter</span>
+                            <div className="d-flex flex-row align-items-center w-100">
+                              <span className="mr-2 w-100">{comment.User.username}</span>
                             </div>
-                            <small>12h ago</small>
+                            <small className="timeCreateComment">{moment(comment.createdAt).startOf().fromNow()}</small>
                           </div>
                           <p className="text-justify comment-text mb-0">
-                            {comment.content}
+                          {comment.content}
                           </p>
-                          <div className="d-flex flex-row user-feed">
+                          <div className="d-flex flex-row user-feed justify-content-between w-100 pr-5">
                             <span className="wish">
                               <i className="fa fa-heartbeat mr-2" />
                               24

@@ -20,6 +20,7 @@
     "jsonwebtoken": "^9.0.2",
     "magnific-popup": "^1.1.0",
     "method-override": "^3.0.0",
+    "moment": "^2.30.1",
     "mongodb": "^6.3.0",
     "mongoose": "^8.2.0",
     "morgan": "^1.10.0",

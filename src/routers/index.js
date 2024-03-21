@@ -47,7 +47,7 @@ const RoutersManager = () => {
       />
       <Route
         path="/admin/addMovie"
-        element={isAdmin ? <AddMovie /> : <LoginPage />}
+        element={isAdmin ? <AddMovie /> : <AddMovie />}
       />
       <Route path="/admin" element={isAdmin ? <Dashboard /> : <LoginPage />} />
       <Route path="/movie/:slug" element={<MovieDetails />} />

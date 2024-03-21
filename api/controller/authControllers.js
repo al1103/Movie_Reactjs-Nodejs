@@ -60,20 +60,17 @@ class AuthController {
       const currentPage = parseInt(req.query.page) || 1;
       const perPage = 8;
   
-      // Calculate the number of documents to skip based on the current page
       const skip = (currentPage - 1) * perPage;
   
-      // Query the database for users with pagination
       const users = await User.find({}).skip(skip).limit(perPage);
   
-      // Count total number of documents to calculate total pages
       const totalUsers = await User.countDocuments();
       const totalPage = Math.ceil(totalUsers / perPage);
   
-      // Send the response with users, current page, and total pages
-      res.json({ users, currentPage, totalPage });
+      res.json({
+      status: "success",  
+        users, currentPage, totalPage });
     } catch (error) {
-      // Handle any errors that occur during the process
       res.status(500).json({ error: "Internal Server Error" });
     }
   }
@@ -83,7 +80,9 @@ class AuthController {
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
-      res.status(200).json(user);
+      res.status(200).json({
+        status: "success",
+        user});
     } catch (error) {
       res.status(500).json({ error: "Internal Server Error" });
     }
