@@ -3,7 +3,6 @@ const jwt = require("jsonwebtoken");
 
 const User = require("../models/users_model"); // Assuming your Mongoose model is named 'User'
 
-
 class AuthController {
   async index(req, res) {
     try {
@@ -45,7 +44,7 @@ class AuthController {
       next(error);
     }
   }
-  
+
   async editMovie(req, res, next) {
     try {
       await Movie.updateOne({ slug: req.params.slug }, req.body).then(() =>
@@ -55,54 +54,76 @@ class AuthController {
       next(error);
     }
   }
-  async  getListUser(req, res) {
+  async getListUser(req, res) {
     try {
       const currentPage = parseInt(req.query.page) || 1;
       const perPage = 8;
-  
+
       const skip = (currentPage - 1) * perPage;
-  
+
       const users = await User.find({}).skip(skip).limit(perPage);
-  
+
       const totalUsers = await User.countDocuments();
       const totalPage = Math.ceil(totalUsers / perPage);
-  
+
       res.json({
-      status: "success",  
-        users, currentPage, totalPage });
+        status: "success",
+        users,
+        currentPage,
+        totalPage,
+      });
     } catch (error) {
       res.status(500).json({ error: "Internal Server Error" });
     }
   }
   async getUser(req, res) {
     try {
+      console.log(req.params.id);
       const user = await User.findOne({ _id: req.params.id });
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
       res.status(200).json({
         status: "success",
-        user});
+        user,
+      });
     } catch (error) {
       res.status(500).json({ error: "Internal Server Error" });
     }
   }
-  async listMovie(req, res) {
+  async  listMovie(req, res) {
     try {
       const currentPage = parseInt(req.query.page) || 1;
       const perPage = 8;
+  
       // Lấy dữ liệu cho trang hiện tại
       const skip = (currentPage - 1) * perPage;
-      const movies = await Movie.find({}).skip(skip).limit(perPage); // Fixed variable name 'users' to 'movies'
-      // Đếm tổng số trang
-      const totalMovies = await Movie.countDocuments(); // Use countDocuments() directly
-      const totalPage = Math.ceil(totalMovies / perPage); // Calculate total pages
-      res.status(200).json({ movies, currentPage, totalPage }); // Fixed object key 'Movie' to 'movies' for consistency
+      const movies = await Movie.find({}).skip(skip).limit(perPage);
+  
+      // Đếm tổng số items
+      const totalMovies = await Movie.countDocuments();
+  
+      // Xác định có truyền query hay không
+      const hasQuery = Object.keys(req.query).length > 0;
+  
+      // Tạo response
+      let response;
+      if (hasQuery) {
+        // Có query, trả về movies và totalPage
+        const totalPage = Math.ceil(totalMovies / perPage);
+        response = { movies, currentPage, totalPage };
+      } else {
+        // Không có query, chỉ trả về totalMovies
+        response = { totalMovies };
+      }
+  
+      res.status(200).json(response);
     } catch (error) {
-      console.error(error); // Log the error for debugging purposes
+      console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   }
+  
   async deleteMovie(req, res) {
     try {
       const result = await Movie.deleteOne({ _id: req.params.id });
@@ -116,17 +137,36 @@ class AuthController {
   }
   async UpdateMovie(req, res) {
     try {
-      const result = await
-        Movie.updateOne({ _id: req.params.id }, req.body);
+      const result = await Movie.updateOne({ _id: req.params.id }, req.body);
       if (result.nModified === 0) {
         return res.status(404).json({ message: "Phim không tồn tại" });
       }
       res.json({ message: "Phim đã được cập nhật" });
-    }
-    catch (error) {
+    } catch (error) {
       res.status(500).json({ error: "Lỗi máy chủ nội bộ" });
     }
   }
+  async  getCommentUser(req, res) {
+    try {
+      const user = await User.findOne({ _id: req.params.id })
+        .populate({
+          path: "comments",
+        });
+  
+      if (!user) {
+        return res.status(404).json({ message: "User không tồn tại" });
+      }
+  
+      res.json(user);
+    } catch (error) {
+      console.error(error); // Log the actual error for debugging
+      if (error.name === 'CastError') { // Handle specific Mongoose errors
+        return res.status(400).json({ error: "Invalid user ID format" });
+      }
+      res.status(500).json({ error: "Lỗi máy chủ nội bộ" });
+    }
+  }
+  
 }
 
 module.exports = new AuthController();

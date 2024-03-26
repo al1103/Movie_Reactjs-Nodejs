@@ -9,8 +9,7 @@ const Movies = () => {
     const fetchData = async () => {
       try {
         const data = await getMovieAPI(token);
-        setListMovie(data.slice(0, 4));
-        console.log(data.slice(0, 4));
+        setListMovie(data.data);
       } catch (error) {
         console.error("Đã xảy ra lỗi:", error);
       }
@@ -37,7 +36,7 @@ const Movies = () => {
               <button className="filter-btn">Anime</button>
             </li>
           </ul>
-        </div>
+        </div>==============
         <ul className="movies-list  has-scrollbar">
           {listMovie.map((movie, index) => (
             <li key={index} >

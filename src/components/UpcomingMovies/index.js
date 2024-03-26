@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { getListMovies } from "../../servers/apiNguonC";
+import { getMovieAPI } from "../../servers/api";
 import MovieCard from "../MovieCard";
 import "./upcomingMovies.scss";
 const UpcomingMovies = () => {
   const [listMovie, setListMovie] = useState([]);
   useEffect(() => {
-    getListMovies(2).then((res) => {
-      setListMovie(res.items.slice(0, 4));
+    getMovieAPI().then((data) => {
+      if(data.status === "success"){
+
+        setListMovie(data.data);
+      }
+      else{
+        console.log(data.message);
+      }
     });
   }, []);
   return (
@@ -31,7 +37,7 @@ const UpcomingMovies = () => {
         </div>
         <ul className="movies-list  has-scrollbar">
           {listMovie.map((movie, index) => (
-            <li key={index} >
+            <li key={index}>
               <MovieCard movie={movie} />
             </li>
           ))}
@@ -40,7 +46,5 @@ const UpcomingMovies = () => {
     </div>
   );
 };
-
-
 
 export default UpcomingMovies;

@@ -24,6 +24,7 @@ class Movies {
   }
   async getOneFilm(req, res, next) {
     try {
+      console.log(req.params.slug)
       const movie = await Movie.findOne({ slug: req.params.slug });
       if (!movie) {
         return res.status(404).json({ message: "Phim không có" });
@@ -39,7 +40,7 @@ class Movies {
   async getComments(req, res, next) {
     try {
       const movieId = req.params.id;
-
+      console.log(movieId)
       // Find the movie and populate comments with user data efficiently
       const movie = await Movie.findById(movieId).populate("comments");
       if (!movie) {
@@ -48,10 +49,9 @@ class Movies {
       if (!movie) {
         return res.status(404).json({ message: "Movie not found" });
       }
-      const NumberComment = req.query.limit || 5;
       const comments = await Comment.find({
         _id: { $in: movie.comments },
-      }).populate("User", "username avatar").slice(0, NumberComment);
+      }).populate("User", "username avatar")
       res
         .status(200)
         .json({ status: "success", length: comments.length, comments });

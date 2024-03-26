@@ -13,14 +13,18 @@ const MovieItems = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await getOneFilmNguonC(slug);
-        if (data.movie) {
-          setMovie(data.movie);
-        } else {
-          const data = await getOneFilm(slug);
-          setMovie(data);
-        }
-        setEpisodes(data.movie.episodes[0].items || []);
+        const data = await getOneFilm(slug);
+        if(data.status === "success"){
+        setMovie(data.movie);
+        }        
+        // const data = await getOneFilmNguonC(slug);
+        // if (data.movie) {
+        //   setMovie(data.movie);
+        // } else {
+        //   const data = await getOneFilm(slug);
+        //   setMovie(data);
+        // }
+        // setEpisodes(data.movie.episodes[0].items || []);
       } catch (error) {
         console.error("Đã xảy ra lỗi:", error);
       } finally {
@@ -44,7 +48,6 @@ const MovieItems = () => {
   useEffect(() => {
     setBackgroundImage();
   }, [movie]);
-  console.log(movie, "movie._id");
   return (
     <>
       {isLoading ? (

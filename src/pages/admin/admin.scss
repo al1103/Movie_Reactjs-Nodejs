@@ -171,7 +171,7 @@ ul {
 }
 
 .fade:not(.show) {
-  opacity: 0;
+  display: none;
 }
 
 .collapse:not(.show) {
@@ -1637,6 +1637,7 @@ ul {
 }
 
 .profile__tabs {
+  height: 100%;
   display: none;
 }
 
@@ -1873,7 +1874,7 @@ ul {
   .profile__tabs li:last-child {
     margin-right: 0;
   }
-  .profile__tabs a {
+  .profile__tabs div {
     display: block;
     line-height: 80px;
     color: #fff;
@@ -2898,4 +2899,7 @@ ul {
 }
 .video-player{
   margin: 120px auto;
+}
+.navbar {
+  background-color: #151f30;
 }

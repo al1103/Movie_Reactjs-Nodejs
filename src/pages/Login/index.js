@@ -17,7 +17,8 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = await getUserLogin({ email, password });
-    if (data.token.length > 0 ) {
+    console.log(data)
+    if (data.status === "success") {
       handleUpdateToken(data);
       notify("Đăng nhập thành công");
       if (data.dataUser.role === "admin") {

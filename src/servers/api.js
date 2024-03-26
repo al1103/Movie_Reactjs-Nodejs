@@ -3,15 +3,27 @@ const API_KEY = process.env.REACT_APP_API_KEY;
 const axiosClient = axios.create({ baseURL: API_KEY });
 const getListMovies = async (page, token) => {
   try {
-    const { data } = await axiosClient({
-      method: "get",
-      url: "/auth/getListMovies?page=" + page,
-      headers: {
-        Authorization: "Bearer " + token,
-        "X-Requested-With": "XMLHttpRequest",
-      },
-    });
-    return data;
+    if (page === undefined) {
+      const { data } = await axiosClient({
+        method: "get",
+        url: "/auth/getListMovies",
+        headers: {
+          Authorization: "Bearer " + token,
+          "X-Requested-With": "XMLHttpRequest",
+        },
+      });
+      return data;
+    } else {
+      const { data } = await axiosClient({
+        method: "get",
+        url: "/auth/getListMovies?page=" + page,
+        headers: {
+          Authorization: "Bearer " + token,
+          "X-Requested-With": "XMLHttpRequest",
+        },
+      });
+      return data;
+    }
   } catch (error) {
     return error.message;
   }
@@ -125,12 +137,27 @@ const getUser = async (id, token) => {
     return error.message;
   }
 };
+const getCommentUser = async (id, token) => {
+  try {
+    const { data } = await axiosClient({
+      method: "get",
+      url: `/auth/getCommentUser/${id}`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
+    return data;
+  } catch (error) {
+    return error.message;
+  }
+};
 
-const postComment = async (comment,  PostID,token) => {
+const postComment = async (comment, PostID, token) => {
   try {
     const req = await axiosClient({
       method: "post",
-      data: {comment},
+      data: { comment },
       url: `users/${PostID}/comment`,
       headers: {
         "Content-Type": "application/json",
@@ -142,8 +169,8 @@ const postComment = async (comment,  PostID,token) => {
     return error.message;
   }
 };
-const getComments = async(PostID, token) => {
-  try{
+const getComments = async (PostID, token) => {
+  try {
     const req = await axiosClient({
       method: "get",
       url: `/${PostID}/comments`,
@@ -153,11 +180,10 @@ const getComments = async(PostID, token) => {
       },
     });
     return req;
-  }catch(error){
+  } catch (error) {
     return error.message;
-  
   }
-}
+};
 const getMovieAPI = async (token) => {
   try {
     const req = await axiosClient({
@@ -185,5 +211,6 @@ export {
   getUser,
   postComment,
   getMovieAPI,
-  getComments
+  getComments,
+  getCommentUser,
 };

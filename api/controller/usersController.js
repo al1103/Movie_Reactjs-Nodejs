@@ -60,7 +60,11 @@ class UsersController {
 
       // Omit password from response for security reasons
       const dataUser = { ...user._doc, password: undefined };
-      res.status(200).json({ token, dataUser });
+      res.status(200).json({
+        status: "success",
+        token,
+        dataUser,
+      });
     } catch (error) {
       console.error(error); // Log the error for debugging
       return res.status(500).json({ error: "Internal server error" }); // Handle unexpected errors gracefully
@@ -79,16 +83,37 @@ class UsersController {
 
       const newComment = new Comment({
         content: contents,
-        User: authorId
+        User: authorId,
       });
       await newComment.save();
 
-      await Movie.findByIdAndUpdate(
-        movieId,
-        { $push: { comments: newComment._id } },
-        { new: true } // Return the updated document
-      );
-      res.status(201).json({ message: 'Comment created successfully', comment: newComment });
+      const updatePromises = [];
+      if (movieId) {
+        updatePromises.push(
+          Movie.findByIdAndUpdate(
+            movieId,
+            { $push: { comments: newComment._id } },
+            { new: true }
+          )
+        );
+      }
+      if (authorId) {
+        updatePromises.push(
+          User.findByIdAndUpdate(
+            authorId,
+            { $push: { comments: newComment._id } },
+            { new: true }
+          )
+        );
+      }
+
+      if (updatePromises.length) {
+        await Promise.all(updatePromises);
+      }
+
+      res
+        .status(201)
+        .json({ message: "Comment created successfully", comment: newComment });
     } catch (error) {
       console.error("Error creating comment:", error.message);
       res.status(500).json({ error: "Internal server error" }); // Avoid leaking specific error details
