@@ -32,18 +32,7 @@ class AuthController {
       next(error);
     }
   }
-  async getOneFilmEdit(req, res, next) {
-    try {
-      const movie = await Movie.findOne({ _id: req.params.id });
-      if (!movie) {
-        return res.status(404).json({ message: "Phim không có" });
-      } else {
-        res.status(200).json(movie);
-      }
-    } catch (error) {
-      next(error);
-    }
-  }
+  
 
   async editMovie(req, res, next) {
     try {
@@ -58,24 +47,38 @@ class AuthController {
     try {
       const currentPage = parseInt(req.query.page) || 1;
       const perPage = 8;
-
-      const skip = (currentPage - 1) * perPage;
-
+  
+      const skip = (currentPage - 1) * perPage + 1;
+  
+      if (currentPage < 1) {
+        return res.status(400).json({ error: "Invalid page number" });
+      }
+  
       const users = await User.find({}).skip(skip).limit(perPage);
-
       const totalUsers = await User.countDocuments();
       const totalPage = Math.ceil(totalUsers / perPage);
-
-      res.json({
-        status: "success",
-        users,
-        currentPage,
-        totalPage,
-      });
+      const hasQuery = Object.keys(req.query).length > 0;
+  
+      if (hasQuery) {
+        return res.json({
+          status: "success",
+          users,
+          currentPage,
+          totalPage,
+        });
+      } else {
+        return res.json({
+          status: "success",
+          totalUsers,
+        });
+      }
     } catch (error) {
-      res.status(500).json({ error: "Internal Server Error" });
+      console.error('Error fetching users:', error);
+      return res.status(500).json({ error: "An error occurred." }); // More specific message
     }
   }
+  
+  
   async getUser(req, res) {
     try {
       console.log(req.params.id);

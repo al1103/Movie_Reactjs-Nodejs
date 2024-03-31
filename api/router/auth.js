@@ -12,6 +12,5 @@ router.put('/edit/:slug', authController.editMovie);
 router.get('/getListUser', authController.getListUser);
 router.get('/getListMovies', authController.listMovie);
 router.post('/addMovie', authController.addMovie);
-router.get('/:id', authController.getOneFilmEdit);
 router.get('/', authController.index);
 module.exports = router;

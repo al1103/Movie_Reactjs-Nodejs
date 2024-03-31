@@ -1,10 +1,10 @@
 const { multipleMongooseToObject } = require("../util/mongoose");
 const { mongooseToObject } = require("../util/mongoose");
 const Movie = require("../models/movies");
-const { MongoClient } = require("mongodb");
-const User = require("../models/users_model");
 const Comment = require("../models/Comment");
-const config = require("../db");
+const lunr = require("lunr");
+const { json } = require("body-parser");
+
 class Movies {
   async index(req, res, next) {
     try {
@@ -24,14 +24,14 @@ class Movies {
   }
   async getOneFilm(req, res, next) {
     try {
-      console.log(req.params.slug)
-      const movie = await Movie.findOne({ slug: req.params.slug });
+      const movie = await Movie.findOne({
+        _id: req.params.slug,
+      });
+      console.log("movie", req.params.slug);
       if (!movie) {
         return res.status(404).json({ message: "Phim không có" });
       } else {
-        res
-          .status(200)
-          .json({ status: "success", length: movie.length, movie });
+        res.json({ status: "success", length: movie.length, movie });
       }
     } catch (error) {
       next(error);
@@ -40,7 +40,7 @@ class Movies {
   async getComments(req, res, next) {
     try {
       const movieId = req.params.id;
-      console.log(movieId)
+
       // Find the movie and populate comments with user data efficiently
       const movie = await Movie.findById(movieId).populate("comments");
       if (!movie) {
@@ -51,7 +51,7 @@ class Movies {
       }
       const comments = await Comment.find({
         _id: { $in: movie.comments },
-      }).populate("User", "username avatar")
+      }).populate("User", "username avatar");
       res
         .status(200)
         .json({ status: "success", length: comments.length, comments });
@@ -62,26 +62,37 @@ class Movies {
   }
   async SearchMovie(req, res, next) {
     try {
-      let queryStr = JSON.stringify(req.query.name);
-      queryStr = queryStr.replace(
-        /\b(gte\|gt\|lte\|lt)\b/g,
-        (match) => `$${match}`
-      );
-      let data = await Movie.find(JSON.parse(queryStr));
-
-      if (req.query.sort) {
-        const sortBy = req.query.sort.split(",").join(" ");
-        return (data = data.sort(sortBy));
+      const query = req.query.name;
+      const filters = req.query; // Access other query parameters
+  
+      // Build the search query object with a $not operator for the notword
+      const searchQuery = {
+        $and: [
+          { name: { $regex: query, $options: "i" } }
+        ],
+      };
+  
+      // Add other filters as needed
+      if (filters.category) {
+        searchQuery.$and.push({ category: filters.category });
       }
-      res.status(200).json({
+      if (filters.quality) {
+        searchQuery.$and.push({ quality: filters.quality });
+      }
+  
+      const results = await Movie.find(searchQuery);
+  
+      res.json({
         status: "success",
-        length: data.length,
-        data,
+        results: results,
       });
-    } catch (err) {
-      next(err);
+    } catch (error) {
+      next(error);
     }
   }
+  
+  
+  
 }
 
 module.exports = new Movies();

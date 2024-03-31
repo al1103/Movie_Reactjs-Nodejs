@@ -14,6 +14,7 @@ import Dashboard from "../pages/admin/Dashboard";
 import MovieDetails from "../pages/MovieDetails";
 import ManagerMovie from "../pages/admin/AdminMovie/ManagerMovie";
 import WatchMovie from "../pages/WatchMovie";
+import SearchMovies from "../pages/Search";
 const RoutersManager = () => {
   const getAdmin = useSelector((state) => state.Movie.user);
   const isAdmin =
@@ -25,7 +26,8 @@ const RoutersManager = () => {
       <Route path="/" element={<HomeRouter />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
-      {/* <Route path="/movie/:slug" element={<MovieDetails />} /> */}
+      <Route path="/Search" element={<SearchMovies />} />
+      <Route path="/movie/:slug" element={<MovieDetails />} />
       <Route path="/:slug/:name" element={<WatchMovie />} />
       <Route
         path="/admin/userManager"

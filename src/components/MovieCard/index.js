@@ -2,11 +2,12 @@ import React from "react";
 
 import "./MovieCard.scss";
 const MovieCard = (props) => {
-  const { name, slug, original_name, thumb_url, poster_url, modified } =
+  
+  const { _id,name, slug, original_name, thumb_url, poster_url, modified } =
     props.movie;
   return (
     <div className="movie-card">
-      <a href={`/movie/${slug}`}>
+      <a href={`/movie/${_id}`}>
         <figure className="card-banner">
           <img src={thumb_url} alt={name} />
         </figure>

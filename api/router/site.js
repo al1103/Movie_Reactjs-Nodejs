@@ -8,6 +8,7 @@ router.get('/getMovies', Movies.getMovies);
 router.get('/Search', Movies.SearchMovie);
 router.get('/:id/comments', Movies.getComments);
 router.get('/:slug', Movies.getOneFilm);
+
 router.get('/', Movies.index);
 module.exports = router;
 

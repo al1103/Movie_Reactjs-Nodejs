@@ -1,19 +1,34 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import AdminLayout from "../../layouts/AdminLayout";
 import "./admin.scss";
-import { getListMovies } from "../../servers/api";
-
+import { getListMovies ,getListUsers} from "../../servers/api";
+const token = localStorage.getItem("token");
 const Dashboard = () => {
+  const [totalMovie, setTotalMovie] = useState(0);
+  const [totalUser, setTotalUser] = useState(0);
+  const [totalComment, setTotalComment] = useState(0);
+
+
   const getListMovie = async () => {
     try {
-      const res = await getListMovies();
-      console.log(res);
+      const res = await getListMovies(null, token);
+      setTotalMovie(res.totalMovies);
     } catch (error) {
       console.log(error);
     }
   };
+  const getListUser = async () => {
+    try {
+      const res = await getListUsers(null, token);
+      setTotalUser(res.totalUsers);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     getListMovie();
+    getListUser();
   }, []);
 
   return (
@@ -31,8 +46,8 @@ const Dashboard = () => {
             {/* stats */}
             <div className="col-12 col-sm-6 col-xl-3">
               <div className="stats">
-                <span>total movie</span>
-                <p>5 678</p>
+                <span>Total movie</span>
+                <p>{totalMovie}</p>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                   <path d="M21.92,11.6C19.9,6.91,16.1,4,12,4S4.1,6.91,2.08,11.6a1,1,0,0,0,0,.8C4.1,17.09,7.9,20,12,20s7.9-2.91,9.92-7.6A1,1,0,0,0,21.92,11.6ZM12,18c-3.17,0-6.17-2.29-7.9-6C5.83,8.29,8.83,6,12,6s6.17,2.29,7.9,6C18.17,15.71,15.17,18,12,18ZM12,8a4,4,0,1,0,4,4A4,4,0,0,0,12,8Zm0,6a2,2,0,1,1,2-2A2,2,0,0,1,12,14Z" />
                 </svg>
@@ -42,8 +57,8 @@ const Dashboard = () => {
             {/* stats */}
             <div className="col-12 col-sm-6 col-xl-3">
               <div className="stats">
-                <span>Items added this month</span>
-                <p>172</p>
+                <span>Total users</span>
+                <p>{totalUser}</p>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                   <path d="M10,13H4a1,1,0,0,0-1,1v6a1,1,0,0,0,1,1h6a1,1,0,0,0,1-1V14A1,1,0,0,0,10,13ZM9,19H5V15H9ZM20,3H14a1,1,0,0,0-1,1v6a1,1,0,0,0,1,1h6a1,1,0,0,0,1-1V4A1,1,0,0,0,20,3ZM19,9H15V5h4Zm1,7H18V14a1,1,0,0,0-2,0v2H14a1,1,0,0,0,0,2h2v2a1,1,0,0,0,2,0V18h2a1,1,0,0,0,0-2ZM10,3H4A1,1,0,0,0,3,4v6a1,1,0,0,0,1,1h6a1,1,0,0,0,1-1V4A1,1,0,0,0,10,3ZM9,9H5V5H9Z" />
                 </svg>

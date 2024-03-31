@@ -19,23 +19,32 @@ const EditMovie = () => {
   const [category, setCategory] = useState("");
   const [quality, setQuality] = useState("FullHD");
 
-
   useEffect(() => {
     const pathname = window.location;
     const slugLink = pathname.pathname.split("/").pop();
     const fetchData = async () => {
       try {
-        const data = await getOneFilm(slugLink,token);
-        const { name, original_name, slug, thumb_url, poster_url, description, category, quality } = data;
-        setName(name);
-        setOriginalName(original_name);
-        setSlug(slug);
-        setThumbUrl(thumb_url);
-        setPosterUrl(poster_url);
-        setDescription(description);
-        setCategory(category);
-        setQuality(quality);
-
+        const data = await getOneFilm(slugLink, token);
+        if (data.status === "success") {
+          const {
+            name,
+            original_name,
+            slug,
+            thumb_url,
+            poster_url,
+            description,
+            category,
+            quality,
+          } = data.movie;
+          setName(name);
+          setOriginalName(original_name);
+          setSlug(slug);
+          setThumbUrl(thumb_url);
+          setPosterUrl(poster_url);
+          setDescription(description);
+          setCategory(category);
+          setQuality(quality);
+        }
       } catch (error) {
         console.error("Đã xảy ra lỗi:", error);
       }
@@ -44,10 +53,7 @@ const EditMovie = () => {
     fetchData();
   }, []);
 
-
-
-
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const movie = {
       name,
@@ -75,7 +81,7 @@ const EditMovie = () => {
 
   return (
     <AdminLayout>
-        <main className="main">
+      <main className="main">
         <div className="container-fluid">
           <div className="row" style={{ marginTop: "100px" }}>
             <div className="col-12">
@@ -84,7 +90,7 @@ const EditMovie = () => {
               </div>
             </div>
             <div className="col-12">
-              <form  className="form">
+              <form className="form">
                 <div className="row">
                   <div className="col-12 col-md-5 form__cover">
                     <div className="row">
@@ -168,7 +174,6 @@ const EditMovie = () => {
                               setDescription(e.target.value);
                             }}
                             value={description}
-
                             name="text"
                             className="form__textarea"
                             placeholder="Description"
@@ -205,7 +210,7 @@ const EditMovie = () => {
                           </select>
                         </div>
                       </div>
-                    
+
                       <div className="col-12 col-lg-6">
                         <div className="form__group">
                           <select
@@ -240,7 +245,11 @@ const EditMovie = () => {
                   <div className="col-12">
                     <div className="row">
                       <div className="col-12">
-                        <button type="button" className="form__btn" onClick={handleSubmit}>
+                        <button
+                          type="button"
+                          className="form__btn"
+                          onClick={handleSubmit}
+                        >
                           publish
                         </button>
                       </div>

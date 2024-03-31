@@ -3,7 +3,7 @@ const API_KEY = process.env.REACT_APP_API_KEY;
 const axiosClient = axios.create({ baseURL: API_KEY });
 const getListMovies = async (page, token) => {
   try {
-    if (page === undefined) {
+    if (page === null || page === undefined) {
       const { data } = await axiosClient({
         method: "get",
         url: "/auth/getListMovies",
@@ -91,6 +91,7 @@ const getOneFilm = async (slug, token) => {
     return error.message;
   }
 };
+
 const updateFilm = async (movie, token) => {
   try {
     const { data } = await axiosClient({
@@ -109,9 +110,10 @@ const updateFilm = async (movie, token) => {
 };
 const getListUsers = async (page, token) => {
   try {
+    const url = page === null || page === undefined ? "/auth/getListUser" : "/auth/getListUser?page=" + page;
     const { data } = await axiosClient({
       method: "get",
-      url: "/auth/getListUser?page=" + page,
+      url,
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + token,
@@ -122,6 +124,7 @@ const getListUsers = async (page, token) => {
     return error.message;
   }
 };
+
 const getUser = async (id, token) => {
   try {
     const { data } = await axiosClient({
@@ -200,7 +203,21 @@ const getMovieAPI = async (token) => {
   }
 };
 
+const SearchMovie = async (name) => {
+  try {
+    const { data } = await axiosClient({
+      method: "get",
+      url: `/search?name=${name}`,
+    });
+    return data;
+  } catch (error) {
+    return error.message;
+  }
+}
+
+
 export {
+  SearchMovie,
   getListMovies,
   addMovie,
   getOneFilm,
