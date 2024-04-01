@@ -27,7 +27,6 @@ class Movies {
       const movie = await Movie.findOne({
         _id: req.params.slug,
       });
-      console.log("movie", req.params.slug);
       if (!movie) {
         return res.status(404).json({ message: "Phim không có" });
       } else {

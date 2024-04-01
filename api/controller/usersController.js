@@ -87,7 +87,6 @@ class UsersController {
       }
       const isPasswordValid = password;
 
-      console.log(isPasswordValid);
       if (!isPasswordValid) {
         return res.status(401).json({ error: "Invalid email or password" });
       }
@@ -106,7 +105,6 @@ class UsersController {
         email: user.email,
         role: user.role,
       };
-      console.log(sanitizedUserData);
       res.status(200).json({
         status: "success",
         token,
@@ -165,6 +163,44 @@ class UsersController {
     } catch (error) {
       console.error("Error creating comment:", error.message);
       res.status(500).json({ error: "Internal server error" }); // Avoid leaking specific error details
+    }
+  }
+  async updateUser(req, res) {
+    try {
+      const userId = req.params.id;
+
+      const { username, email, password ,role} = req.body.dataUser;
+      const user = await User.findByIdAndUpdate({ _id: userId });
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      // Update user fields
+      user.username = username; // Maintain existing value if not provided
+      user.email = email;
+      user.role = role;
+      user.updatedAt = new Date();
+
+      // Password handling (assuming password hashing)
+      if (password) {
+        user.password = password; // Hash using a library like bcrypt
+      }
+
+      // Mongoose validation (assuming a validation schema for User)
+      await user.validate(); // Throws an error if validation fails
+
+      await user.save();
+
+      res.status(200).json({ message: "User updated successfully" });
+    } catch (error) {
+      console.error("Error updating user:", error);
+
+      // Provide more specific error messages based on error type
+      if (error.name === "ValidationError") {
+        return res.status(400).json({ error: error.message });
+      } else {
+        return res.status(500).json({ error: "Internal server error" });
+      }
     }
   }
   // async GetComment(req, res) {

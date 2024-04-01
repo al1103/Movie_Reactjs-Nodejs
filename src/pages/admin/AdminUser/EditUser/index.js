@@ -4,16 +4,14 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getUser, getCommentUser } from "../../../../servers/api";
 import AdminLayout from "../../../../layouts/AdminLayout";
+import { updateUser } from "../../../../servers/users";
 import "../../admin.scss";
-import { set } from "mongoose";
 
 const EditUser = () => {
-  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
-  const [user, setUser] = useState({});
+  const [username, setUserName] = useState("");
 
-  const dispatch = useDispatch();
   const token = localStorage.getItem("token"); // Assuming token is in authReducer
   const pathname = window.location;
   const id = pathname.pathname.split("/").pop();
@@ -29,7 +27,6 @@ const EditUser = () => {
   const fetchDataGetUser = async () => {
     try {
       const data = await getUser(id, token);
-      console.table(data);
       return data.user;
     } catch (error) {
       console.error("Đã xảy ra lỗi:", error);
@@ -40,8 +37,7 @@ const EditUser = () => {
   const fetchDataGetComments = async () => {
     try {
       const data = await getCommentUser(id, token);
-      console.table(data);
-      return data.comments[0];
+      return data.comments;
     } catch (error) {
       console.error("Đã xảy ra lỗi:", error);
     }
@@ -54,10 +50,14 @@ const EditUser = () => {
       switch (tabName) {
         case 1:
           data = await fetchDataGetUser();
-          setUser(data);
+          setUserName(data.username);
+          setEmail(data.email);
+          setRole(data.role);
+
           break;
         case 2:
           data = await fetchDataGetComments();
+          console.log(data, "data")
           break;
         default:
           data = {};
@@ -71,6 +71,25 @@ const EditUser = () => {
   useEffect(() => {
     fetchDataForTab(toggleState);
   }, [toggleState]);
+
+  const handleChangeUser = async () => {
+    try {
+      const dataUser = {
+        username,
+        email,
+        role,
+      };
+      const data = await updateUser(id, token, dataUser);
+      if (data.status === "success") {
+        toast.success("Update user success");
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.error("Error updating user:", error);
+      toast.error("Error updating user");
+    }
+  };
 
   return (
     <AdminLayout>
@@ -95,9 +114,12 @@ const EditUser = () => {
                   {/* or red */}
                   <div className="profile__meta profile__meta--green">
                     <h3>
-                      Username: <span>{user && <span>{user.username}</span>}</span>
+                      Username:
+                      <span>
+                        {username && <span>{username.username}</span>}
+                      </span>
                     </h3>
-                    <span>ID: {user && <span>{user._id}</span>}</span>
+                    <span>ID: {username && <span>{username._id}</span>}</span>
                   </div>
                 </div>
                 {/* end profile user */}
@@ -136,11 +158,6 @@ const EditUser = () => {
                     </div>
                   </li>
                 </ul>
-                {/* end profile tabs nav */}
-                {/* profile mobile tabs nav */}
-
-                {/* end profile mobile tabs nav */}
-                {/* profile btns */}
                 <div className="profile__actions">
                   <a
                     href="#modal-status3"
@@ -194,14 +211,14 @@ const EditUser = () => {
                                   className="sign__label"
                                   htmlFor="username"
                                 >
-                                  Login
+                                  UserName
                                 </label>
                                 <input
                                   id="username"
                                   type="text"
                                   name="username"
-                                  value={tabData.username}
-                                  onChange={(e) => setTabData({ ...tabData, username: e.target.value }  )}
+                                  value={username}
+                                  onChange={(e) => setUserName(e.target.value)}
                                   className="sign__input"
                                   placeholder="UserName"
                                 />
@@ -216,29 +233,10 @@ const EditUser = () => {
                                   id="email"
                                   type="text"
                                   name="email"
-                                  value={tabData.email}
+                                  value={email}
                                   onChange={(e) => setEmail(e.target.value)}
                                   className="sign__input"
                                   placeholder="email@email.com"
-                                />
-                              </div>
-                            </div>
-                            <div className="col-12 col-md-6 col-lg-12 col-xl-6">
-                              <div className="sign__group">
-                                <label
-                                  className="sign__label"
-                                  htmlFor="firstname"
-                                >
-                                  User name
-                                </label>
-                                <input
-                                  id="firstname"
-                                  type="text"
-                                  value={tabData.password}
-                                  onChange={(e) => setUsername(e.target.value)}
-                                  name="firstname"
-                                  className="sign__input"
-                                  placeholder="John"
                                 />
                               </div>
                             </div>
@@ -251,7 +249,7 @@ const EditUser = () => {
                                 <select
                                   className="js-example-basic-single"
                                   id="rights"
-                                  value={tabData.role}
+                                  value={role}
                                   onChange={(e) => setRole(e.target.value)}
                                 >
                                   <option value="User">User</option>
@@ -260,7 +258,11 @@ const EditUser = () => {
                               </div>
                             </div>
                             <div className="col-12">
-                              <button className="sign__btn" type="button">
+                              <button
+                                className="sign__btn"
+                                type="button"
+                                onClick={handleChangeUser}
+                              >
                                 Save
                               </button>
                             </div>
@@ -363,43 +365,46 @@ const EditUser = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>
-                            <div className="main__table-text">
-                              {tabData._id}
-                            </div>
-                          </td>
+                        {toggleState === 2 && tabData.length > 0 &&
+                          tabData.map((tab) => (
+                            <tr>
+                              <td>
+                                <div className="main__table-text">
+                                  {tab._id}
+                                </div>
+                              </td>
 
-                          <td>
-                            <div className="main__table-text">John Doe</div>
-                          </td>
-                          <td>
-                            <div className="main__table-text">
-                              {tabData.content}
-                            </div>
-                          </td>
+                              <td>
+                                <div className="main__table-text">John Doe</div>
+                              </td>
+                              <td>
+                                <div className="main__table-text">
+                                  {tab.content}
+                                </div>
+                              </td>
 
-                          <td>
-                            <div className="main__table-text">
-                              {tabData.createdAt}
-                            </div>
-                          </td>
-                          <td>
-                            <div className="main__table-btns">
-                              <a
-                                href="#modal-delete"
-                                className="main__table-btn main__table-btn--delete open-modal"
-                              >
-                                <svg
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path d="M10,18a1,1,0,0,0,1-1V11a1,1,0,0,0-2,0v6A1,1,0,0,0,10,18ZM20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Zm-3-1a1,1,0,0,0,1-1V11a1,1,0,0,0-2,0v6A1,1,0,0,0,14,18Z" />
-                                </svg>
-                              </a>
-                            </div>
-                          </td>
-                        </tr>
+                              <td>
+                                <div className="main__table-text">
+                                  {tab.createdAt}
+                                </div>
+                              </td>
+                              <td>
+                                <div className="main__table-btns">
+                                  <a
+                                    href="#modal-delete"
+                                    className="main__table-btn main__table-btn--delete open-modal"
+                                  >
+                                    <svg
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path d="M10,18a1,1,0,0,0,1-1V11a1,1,0,0,0-2,0v6A1,1,0,0,0,10,18ZM20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Zm-3-1a1,1,0,0,0,1-1V11a1,1,0,0,0-2,0v6A1,1,0,0,0,14,18Z" />
+                                    </svg>
+                                  </a>
+                                </div>
+                              </td>
+                            </tr>
+                          ))}
                       </tbody>
                     </table>
                   </div>

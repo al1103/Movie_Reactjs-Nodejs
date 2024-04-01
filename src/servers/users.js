@@ -41,5 +41,22 @@ const register = async ({ username, email, password }) => {
     return error;
   }
 };
-
-export { getUserLogin, register };
+const updateUser = async ( id, token, dataUser ) => {
+  try {
+    const data = await axiosClient({
+      method: "put",
+      url: "/users/update/" + id,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+      data: {
+        dataUser,
+      },
+    });
+    return data.data;
+  } catch (error) {
+    return error;
+  }
+};
+export { getUserLogin, register, updateUser };
