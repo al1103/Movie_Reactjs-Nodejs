@@ -5,11 +5,13 @@ import "react-toastify/dist/ReactToastify.css";
 import { getUser, getCommentUser } from "../../../../servers/api";
 import AdminLayout from "../../../../layouts/AdminLayout";
 import "../../admin.scss";
+import { set } from "mongoose";
 
 const EditUser = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
+  const [user, setUser] = useState({});
 
   const dispatch = useDispatch();
   const token = localStorage.getItem("token"); // Assuming token is in authReducer
@@ -27,6 +29,7 @@ const EditUser = () => {
   const fetchDataGetUser = async () => {
     try {
       const data = await getUser(id, token);
+      console.table(data);
       return data.user;
     } catch (error) {
       console.error("Đã xảy ra lỗi:", error);
@@ -37,9 +40,8 @@ const EditUser = () => {
   const fetchDataGetComments = async () => {
     try {
       const data = await getCommentUser(id, token);
-      console.table(data)
+      console.table(data);
       return data.comments[0];
-
     } catch (error) {
       console.error("Đã xảy ra lỗi:", error);
     }
@@ -52,6 +54,7 @@ const EditUser = () => {
       switch (tabName) {
         case 1:
           data = await fetchDataGetUser();
+          setUser(data);
           break;
         case 2:
           data = await fetchDataGetComments();
@@ -61,8 +64,6 @@ const EditUser = () => {
           break;
       }
       setTabData(data);
-
-      console.log(data);
     } catch (error) {
       console.error("Đã xảy ra lỗi:", error);
     }
@@ -94,9 +95,9 @@ const EditUser = () => {
                   {/* or red */}
                   <div className="profile__meta profile__meta--green">
                     <h3>
-                      Username <span>(Approved)</span>
+                      Username: <span>{user && <span>{user.username}</span>}</span>
                     </h3>
-                    <span>ID: </span>
+                    <span>ID: {user && <span>{user._id}</span>}</span>
                   </div>
                 </div>
                 {/* end profile user */}
@@ -200,7 +201,7 @@ const EditUser = () => {
                                   type="text"
                                   name="username"
                                   value={tabData.username}
-                                  onChange={(e) => setUsername(e.target.value)}
+                                  onChange={(e) => setTabData({ ...tabData, username: e.target.value }  )}
                                   className="sign__input"
                                   placeholder="UserName"
                                 />
@@ -215,7 +216,7 @@ const EditUser = () => {
                                   id="email"
                                   type="text"
                                   name="email"
-                                  value={tabData.username}
+                                  value={tabData.email}
                                   onChange={(e) => setEmail(e.target.value)}
                                   className="sign__input"
                                   placeholder="email@email.com"

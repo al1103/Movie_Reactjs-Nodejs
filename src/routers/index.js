@@ -1,6 +1,6 @@
-import React, { Fragment, createContext, useEffect } from "react";
+import React, { Fragment, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
-import HomeRouter from "../routers/homeRouter"; // Standardized variable name
+import HomeRouter from "../routers/homeRouter";
 import LoginPage from "../pages/Login";
 import RegisterPage from "../pages/register";
 import AddMovie from "../pages/admin/AdminMovie/addMovie";
@@ -15,25 +15,36 @@ import MovieDetails from "../pages/MovieDetails";
 import ManagerMovie from "../pages/admin/AdminMovie/ManagerMovie";
 import WatchMovie from "../pages/WatchMovie";
 import SearchMovies from "../pages/Search";
-const RoutersManager = () => {
-  const getAdmin = useSelector((state) => state.Movie.user);
-  const isAdmin =
-    JSON.parse(localStorage.getItem("user"))?.role === "admin" ||
-    getAdmin?.role === "admin" || false;
 
+const RoutersManager = () => {
+  const isAdmin = useSelector((state) => {
+    // Check for null or undefined user data directly
+    if (!state.Movie.user) return false;
+  
+    try {
+      // Parse user data only if it exists
+      const user = JSON.parse(state.Movie.user);
+      return user.role === "admin";
+    } catch (error) {
+      console.error("Error parsing user data:", error);
+      // Handle parsing error (e.g., return false or display an error message)
+      return false; // Example, adjust as needed
+    }
+  });
+  
   return (
     <Routes>
       <Route path="/" element={<HomeRouter />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
-      <Route path="/Search" element={<SearchMovies />} />
+      <Route path="/search" element={<SearchMovies />} />{" "}
       <Route path="/movie/:slug" element={<MovieDetails />} />
       <Route path="/:slug/:name" element={<WatchMovie />} />
+      {/* Protect admin routes using isAdmin */}
       <Route
         path="/admin/userManager"
         element={isAdmin ? <UserManager /> : <LoginPage />}
       />
-
       <Route
         path="/admin/movieManager"
         element={isAdmin ? <ManagerMovie /> : <LoginPage />}
@@ -48,7 +59,7 @@ const RoutersManager = () => {
       />
       <Route
         path="/admin/addMovie"
-        element={isAdmin ? <AddMovie /> : <AddMovie />}
+        element={isAdmin ? <AddMovie /> : <LoginPage />}
       />
       <Route path="/admin" element={isAdmin ? <Dashboard /> : <LoginPage />} />
       <Route path="/movie/:slug" element={<MovieDetails />} />

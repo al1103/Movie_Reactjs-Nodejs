@@ -1,7 +1,7 @@
 import axios from "axios";
 const API_KEY = process.env.REACT_APP_API_KEY;
 const axiosClient = axios.create({ baseURL: API_KEY });
-const getUserLogin = async ({ email: username, password }) => {
+const getUserLogin = async ({ email, password }) => {
   try {
     const data = await axiosClient({
       method: "post",
@@ -10,7 +10,7 @@ const getUserLogin = async ({ email: username, password }) => {
         "Content-Type": "application/json",
       },
       data: {
-        username,
+        email,
         password,
       },
     });
@@ -22,7 +22,7 @@ const getUserLogin = async ({ email: username, password }) => {
 
 // đăng kí tài khoản với username và password
 
-const register = async ({ email:username, password }) => {
+const register = async ({ username, email, password }) => {
   try {
     const data = await axiosClient({
       method: "post",
@@ -32,12 +32,13 @@ const register = async ({ email:username, password }) => {
       },
       data: {
         username,
+        email,
         password,
       },
     });
     return data.data;
   } catch (error) {
-    return error.message;
+    return error;
   }
 };
 

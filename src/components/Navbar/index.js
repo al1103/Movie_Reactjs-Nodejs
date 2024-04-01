@@ -1,56 +1,54 @@
-import React, { useEffect, useState , useRef } from "react";
-import { Link, NavLink } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState, useRef } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { navItems } from "../../datas/index";
+import { logout } from "../../action";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [token, setToken] = useState("");
   const headerRef = useRef(null);
+  const dispatch = useDispatch();
 
-  
-// const navOpenBtn = document.querySelector("[data-menu-open-btn]");
-// const navCloseBtn = document.querySelector("[data-menu-close-btn]");
-// const navbar = document.querySelector("[data-navbar]");
-// const overlay = document.querySelector("[data-overlay]");
+  // const navOpenBtn = document.querySelector("[data-menu-open-btn]");
+  // const navCloseBtn = document.querySelector("[data-menu-close-btn]");
+  // const navbar = document.querySelector("[data-navbar]");
+  // const overlay = document.querySelector("[data-overlay]");
 
-// const navElemArr = [navOpenBtn, navCloseBtn, overlay];
+  // const navElemArr = [navOpenBtn, navCloseBtn, overlay];
 
-// for (let i = 0; i < navElemArr.length; i++) {
+  // for (let i = 0; i < navElemArr.length; i++) {
 
-//   navElemArr[i].addEventListener("click", function () {
+  //   navElemArr[i].addEventListener("click", function () {
 
-//     navbar.classList.toggle("active");
-//     overlay.classList.toggle("active");
-//     document.body.classList.toggle("active");
+  //     navbar.classList.toggle("active");
+  //     overlay.classList.toggle("active");
+  //     document.body.classList.toggle("active");
 
-//   });
+  //   });
 
-// }
+  // }
 
+  // /**
+  //  * header sticky
+  //  */
 
-
-// /**
-//  * header sticky
-//  */
-
-
-useEffect(() => {
-  const header = headerRef.current; // Access the element here
-  window.addEventListener("scroll", function () {
- 
-   window.scrollY >= 10 ? header.classList.add("active") : header.classList.remove("active");
-  });
-}, []); 
-
+  useEffect(() => {
+    const header = headerRef.current; // Access the element here
+    window.addEventListener("scroll", function () {
+      window.scrollY >= 10
+        ? header.classList.add("active")
+        : header.classList.remove("active");
+    });
+  }, []);
 
   useEffect(() => {
     setToken(localStorage.getItem("token"));
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    dispatch(logout());
     setToken(false);
   };
   const toggleMenu = () => {

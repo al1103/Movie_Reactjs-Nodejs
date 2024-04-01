@@ -4,6 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { register } from "../../servers/users";
 const LoginPage = () => {
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -12,15 +13,15 @@ const LoginPage = () => {
     e.preventDefault();
 
     try {
-      const response = await register({ email, password }); // Assume `register` returns a Promise
+      const response = await register({username, email, password }); // Assume `register` returns a Promise
 
-      if (response.ok) {
+      if (response.status === "success") {
         notify("Đăng ký thành công");
         localStorage.setItem("user", JSON.stringify(response.data));
         Navigator("/"); // Use directly without setTimeout
       } else {
-        const error = await response.message;
-        notify(error);
+        notify(response.response.data.error);
+        console.log(response.response.data.error)
       }
     } catch (error) {
       console.error(error);
@@ -71,6 +72,8 @@ const LoginPage = () => {
                           className="form-control"
                           id="exampleInputtext1"
                           aria-describedby="textHelp"
+                          onChange={(e) => setUsername(e.target.value)}
+
                         />
                       </div>
                       <div className="mb-3">
@@ -128,7 +131,7 @@ const LoginPage = () => {
           </div>
         </div>
       </div>
-      <toastcontainer></toastcontainer>
+      <ToastContainer></ToastContainer>
     </>
   );
 };

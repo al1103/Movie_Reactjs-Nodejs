@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import Pagination from "../../../../components/pagination";
 import AdminLayout from "../../../../layouts/AdminLayout";
-import { getListMovies, deleteMovie, editMovie } from "../../../../servers/api";
+import { getListMovies, deleteMovie } from "../../../../servers/api";
 import { Link } from "react-router-dom";
 const ManagerMovie = () => {
   const [listMovie, setListMovie] = useState([]);
@@ -37,6 +37,7 @@ const ManagerMovie = () => {
       try {
         const res = await getListMovies(selectedPage, token);
         setListMovie(res.movies);
+        console.log(res)
         setTotalPagesCalculated(res.totalPage);
       } catch (error) {
         console.error("Error fetching movies:", error);

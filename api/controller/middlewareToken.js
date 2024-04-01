@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 
+
 function authenToken(req, res, next) {
   const authorizationHeader = req.headers["authorization"];
 
@@ -13,7 +14,9 @@ function authenToken(req, res, next) {
       throw new Error("Missing ACCESS_TOKEN_SECRET environment variable. Please check server configuration.");
     }
     const decodedToken = jwt.verify(token, "zilong-zhou");
-    const userRole = decodedToken.user.role;
+
+    console.log(decodedToken)
+    const userRole = decodedToken.role;
     if (userRole === "admin") {
       req.userRole = "admin";
     } else if (userRole === "user") {

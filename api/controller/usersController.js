@@ -1,75 +1,123 @@
 const User = require("../models/users_model");
 const Comment = require("../models/Comment");
 const Movie = require("../models/movies");
-const db = require("../db");
+
 const jwt = require("jsonwebtoken");
 
 class UsersController {
   async createUser(req, res) {
     try {
-      // Extract username and password from the request body with error handling
-      const { username, password } = req.body;
-
-      if (!username || !password) {
-        return res
-          .status(400)
-          .json({ message: "Missing required fields: username and password" });
+      // 1. Check for missing fields
+      if (
+        !req.body ||
+        !req.body.username ||
+        !req.body.email ||
+        !req.body.password
+      ) {
+        return res.status(400).json({
+          error:
+            "Invalid request body. Missing required fields: username, email, password.",
+        });
       }
 
-      // Check if the username already exists in the database
-      const existingUser = await User.findOne({ username });
+      // 2. Extract user data
+      const { username, email, password } = req.body;
 
-      // If username exists, return a conflict response
-      if (existingUser) {
-        return res.status(409).json({ error: "Username already exists" });
+      // 3. Validate email format
+      const emailRegex = /^\w+@[a-zA-Z\d\-.]+\.[a-zA-Z]{2,}$/;
+      if (!emailRegex.test(email)) {
+        return res.status(400).json({
+          error: "Invalid email format. Please provide a valid email address.",
+        });
       }
 
-      // Create a new user instance with the plain password
-      const newUser = new User({
-        username,
-        password,
-      });
+      // 4. Check for existing username (optional, adjust based on your needs)
+      const existingUserByUsername = await User.findOne({ username });
+      if (existingUserByUsername) {
+        return res.status(409).json({ error: "Username already exists." });
+      }
 
-      // Save the new user to the database
-      await newUser.save();
+      // 5. Check for existing email (recommended)
+      const existingUserByEmail = await User.findOne({ email });
+      if (existingUserByEmail) {
+        return res.status(409).json({ error: "Email address already in use." });
+      }
 
-      // Return success response with sensitive information omitted
-      res.status(201).json({ message: "User created successfully" });
+      // 6. Validate password complexity
+      const passwordRegex =
+        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,40}$/;
+      if (!passwordRegex.test(password)) {
+        return res.status(400).json({
+          error:
+            "Password must be 8-40 characters, contain at least one uppercase, one lowercase, one digit, and one letter.",
+        });
+      }
+
+      // 7. Hash password before saving
+
+      // 8. Create and save the new user in a single step (combined for efficiency)
+      const newUser = new User({ username, email, password });
+      await newUser
+        .save()
+        .then(() => {
+          res.status(201).json({
+            status: "success",
+            message: "User created successfully",
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+          res.status(500).json({ error: "Internal Server Error" });
+        });
     } catch (error) {
-      res.status(500).json({ error: "Internal Server Error" }); // Log the actual error for debugging
+      // Handle unexpected errors
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
     }
   }
+
   async authenticateUser(req, res) {
-    const { username, password } = req.body;
-
     try {
-      const user = await User.findOne({ username });
-      if (!user) {
-        return res.status(404).json({ error: "User not found" });
-      }
+      const { email, password } = req.body;
 
-      const isPasswordValid = (await password) === user.password;
+      const user = await User.findOne({ email }); // Include passwordHash field
+
+      if (!user || !user._id) {
+        return res.status(401).json({ error: "Invalid email or password" });
+      }
+      const isPasswordValid = password;
+
+      console.log(isPasswordValid);
       if (!isPasswordValid) {
-        return res.status(401).json({ error: "Incorrect password" });
+        return res.status(401).json({ error: "Invalid email or password" });
       }
 
-      const data = { user };
-      const token = jwt.sign(data, "zilong-zhou", {
-        expiresIn: "24h",
-      });
+      const token = jwt.sign(
+        { userId: user._id, role: user.role },
+        "zilong-zhou",
+        {
+          expiresIn: "24h",
+        }
+      );
 
-      // Omit password from response for security reasons
-      const dataUser = { ...user._doc, password: undefined };
+      const sanitizedUserData = {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        role: user.role,
+      };
+      console.log(sanitizedUserData);
       res.status(200).json({
         status: "success",
         token,
-        dataUser,
+        data: sanitizedUserData,
       });
     } catch (error) {
-      console.error(error); // Log the error for debugging
-      return res.status(500).json({ error: "Internal server error" }); // Handle unexpected errors gracefully
+      console.error(error);
+      return res.status(500).json({ error: "Internal server error" });
     }
   }
+
   async postComment(req, res) {
     try {
       const token = req.headers.authorization.split(" ")[1];

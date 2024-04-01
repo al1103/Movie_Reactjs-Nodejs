@@ -6,23 +6,21 @@ import { useDispatch, useSelector } from "react-redux";
 import "react-toastify/dist/ReactToastify.css";
 import { getUserLogin } from "../../servers/users";
 import { setInfoUser } from "../../action";
-import image_login from "../../image/tv-series-bg.jpg";
 import "./login.scss";
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const Navigator = useNavigate();
   const dispatch = useDispatch();
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = await getUserLogin({ email, password });
-    console.log(data)
     if (data.status === "success") {
       handleUpdateToken(data);
       notify("Đăng nhập thành công");
-      if (data.dataUser.role === "admin") {
+      if (data.data.role === "admin") {
         Navigator("/admin");
+        window.location.reload();
       } else {
         Navigator("/");
       }

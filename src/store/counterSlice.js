@@ -38,17 +38,16 @@ const todoSlice = createSlice({
       axios.defaults.headers.common["Authorization"] = action.payload
         ? `Bearer ${action.payload.token}`
         : null; // Update Axios headers based on token
-      localStorage.setItem("user", JSON.stringify(action.payload.dataUser));
+      localStorage.setItem("user", JSON.stringify(action.payload.data));
       localStorage.setItem("token", action.payload.token);
-       // Persist token in localStorage
+      // Persist token in localStorage
     },
     logout(state) {
       state.token = null;
       state.user = null;
       localStorage.removeItem("user");
       localStorage.removeItem("token");
-      
-    }
+    },
   },
 });
 
