@@ -15,12 +15,14 @@ import MovieDetails from "../pages/MovieDetails";
 import ManagerMovie from "../pages/admin/AdminMovie/ManagerMovie";
 import WatchMovie from "../pages/WatchMovie";
 import SearchMovies from "../pages/Search";
+import ForgetPassword from "../pages/forgetPassword";
+import ResetPassword from "../pages/ResetPassword";
 
 const RoutersManager = () => {
   const isAdmin = useSelector((state) => {
     // Check for null or undefined user data directly
     if (!state.Movie.user) return false;
-  
+
     try {
       // Parse user data only if it exists
       const user = JSON.parse(state.Movie.user);
@@ -31,16 +33,17 @@ const RoutersManager = () => {
       return false; // Example, adjust as needed
     }
   });
-  
+
   return (
     <Routes>
       <Route path="/" element={<HomeRouter />} />
+      <Route path="/forgetPassword" element={<ForgetPassword />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/search" element={<SearchMovies />} />{" "}
       <Route path="/movie/:slug" element={<MovieDetails />} />
       <Route path="/:slug/:name" element={<WatchMovie />} />
-      {/* Protect admin routes using isAdmin */}
+      <Route path="/synthetic/resetPassword" element={<ResetPassword />} />
       <Route
         path="/admin/userManager"
         element={isAdmin ? <UserManager /> : <LoginPage />}

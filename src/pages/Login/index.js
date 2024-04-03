@@ -110,9 +110,12 @@ const LoginPage = () => {
                             Remeber this Device
                           </label>
                         </div>
-                        <a className="text-primary fw-bold" href="./index.html">
+                        <Link
+                          className="text-primary fw-bold"
+                          to="/forgetPassword"
+                        >
                           Forgot Password ?
-                        </a>
+                        </Link>
                       </div>
                       <input
                         type="submit"

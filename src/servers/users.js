@@ -41,7 +41,7 @@ const register = async ({ username, email, password }) => {
     return error;
   }
 };
-const updateUser = async ( id, token, dataUser ) => {
+const updateUser = async (id, token, dataUser) => {
   try {
     const data = await axiosClient({
       method: "put",
@@ -59,4 +59,23 @@ const updateUser = async ( id, token, dataUser ) => {
     return error;
   }
 };
-export { getUserLogin, register, updateUser };
+const changePassword = async ({ email, password, newPassword }) => {
+  try {
+    const data = await axiosClient({
+      method: "put",
+      url: "/synthetic/changePassword",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: {
+        email,
+        password,
+        newPassword,
+      },
+    });
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+export { getUserLogin, register, updateUser, changePassword };

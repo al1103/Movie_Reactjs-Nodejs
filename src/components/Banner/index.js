@@ -1,6 +1,5 @@
 import React from 'react'
 import './Banner.scss'
-import MovieCard from '../MovieCard'
 const Banner = () => {
   return (
     <div>

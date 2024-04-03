@@ -1342,4 +1342,14 @@ body { background: var(--eerie-black); }
     transform: rotate(-0.25turn);
   }
 
+}.Search{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+.logo{
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
 }

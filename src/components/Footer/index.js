@@ -1,5 +1,7 @@
 import React from "react";
 import "./footer.scss";
+import logo from "./LOGO.png";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -7,9 +9,9 @@ const Footer = () => {
       <div className="footer-top">
         <div className="container">
           <div className="footer-brand-wrapper">
-            <a href="./" className="logo">
-              <img src="./assets/images/logo.svg" alt="Zilong logo" />
-            </a>
+            <Link to="./" className="logo">
+              <img src={logo} alt="Zilong logo" />
+            </Link>
             <ul className="footer-list">
               <li>
                 <a href="./index.html" className="footer-link">Home</a>

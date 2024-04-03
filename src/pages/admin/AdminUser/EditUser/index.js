@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { getUser, getCommentUser } from "../../../../servers/api";
+import { getUser, getCommentUser,deleteComment } from "../../../../servers/api";
+import {changePassword} from "../../../../servers/users";
 import AdminLayout from "../../../../layouts/AdminLayout";
 import { updateUser } from "../../../../servers/users";
 import "../../admin.scss";
@@ -11,18 +12,38 @@ const EditUser = () => {
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
   const [username, setUserName] = useState("");
-
+  const [password, setPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const token = localStorage.getItem("token"); // Assuming token is in authReducer
   const pathname = window.location;
   const id = pathname.pathname.split("/").pop();
   const [tabData, setTabData] = useState({});
 
   const [toggleState, setToggleState] = useState(1);
-
   const toggleTab = (index) => {
     setToggleState(index);
   };
 
+
+  const handleChangePassword = async () => {
+    try {
+      if (newPassword !== confirmPassword) {
+        toast.error("Password and confirm password do not match");
+        return;
+      }
+      const data = await changePassword({ email, password, newPassword});
+      if (data.status === "success") {
+        toast.success("Change password success");
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.error("Error changing password:", error);
+      toast.error("Error changing password");
+    }
+  }
+  ///////////
   ///get user//////////
   const fetchDataGetUser = async () => {
     try {
@@ -57,7 +78,6 @@ const EditUser = () => {
           break;
         case 2:
           data = await fetchDataGetComments();
-          console.log(data, "data")
           break;
         default:
           data = {};
@@ -71,7 +91,20 @@ const EditUser = () => {
   useEffect(() => {
     fetchDataForTab(toggleState);
   }, [toggleState]);
-
+  const handleDeleteComment = async (id) => {
+    try {
+      const data = await deleteComment(id, token);
+      console.log(data)
+      if (data.status === "success") {
+        toast.success("Delete success");
+        fetchDataForTab(2);
+      } else {
+        toast.error(data);
+      }
+    } catch (error) {
+      console.error("Đã xảy ra lỗi:", error);
+    }
+  }
   const handleChangeUser = async () => {
     try {
       const dataUser = {
@@ -273,7 +306,6 @@ const EditUser = () => {
                       {/* password form */}
                       <div className="col-12 col-lg-6">
                         <form
-                          action="#"
                           className="sign__form sign__form--profile"
                         >
                           <div className="row">
@@ -289,9 +321,11 @@ const EditUser = () => {
                                   Old password
                                 </label>
                                 <input
+
                                   id="oldpass"
                                   type="password"
                                   name="oldpass"
+                                  onChange={(e) => setPassword(e.target.value)}
                                   className="sign__input"
                                 />
                               </div>
@@ -306,6 +340,7 @@ const EditUser = () => {
                                 </label>
                                 <input
                                   id="newpass"
+                                  onChange={(e)=>setNewPassword(e.target.value)}
                                   type="password"
                                   name="newpass"
                                   className="sign__input"
@@ -323,14 +358,18 @@ const EditUser = () => {
                                 <input
                                   id="confirmpass"
                                   type="password"
+                                  onChange={(e)=>setConfirmPassword(e.target.value)}
                                   name="confirmpass"
                                   className="sign__input"
                                 />
                               </div>
                             </div>
                             <div className="col-12">
-                              <button className="sign__btn" type="button">
-                                Change
+                              <button className="sign__btn" type="button" onClick={
+                                handleChangePassword
+                              
+                              }>
+                                Change password
                               </button>
                             </div>
                           </div>
@@ -366,8 +405,8 @@ const EditUser = () => {
                       </thead>
                       <tbody>
                         {toggleState === 2 && tabData.length > 0 &&
-                          tabData.map((tab) => (
-                            <tr>
+                          tabData.map((tab, index) => (
+                            <tr key={index} >
                               <td>
                                 <div className="main__table-text">
                                   {tab._id}
@@ -390,8 +429,8 @@ const EditUser = () => {
                               </td>
                               <td>
                                 <div className="main__table-btns">
-                                  <a
-                                    href="#modal-delete"
+                                  <button
+                                  onClick={() => handleDeleteComment(tab._id)}
                                     className="main__table-btn main__table-btn--delete open-modal"
                                   >
                                     <svg
@@ -400,7 +439,7 @@ const EditUser = () => {
                                     >
                                       <path d="M10,18a1,1,0,0,0,1-1V11a1,1,0,0,0-2,0v6A1,1,0,0,0,10,18ZM20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Zm-3-1a1,1,0,0,0,1-1V11a1,1,0,0,0-2,0v6A1,1,0,0,0,14,18Z" />
                                     </svg>
-                                  </a>
+                                  </button>
                                 </div>
                               </td>
                             </tr>

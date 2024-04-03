@@ -46,6 +46,13 @@ const SearchMovies = () => {
       setLoading(false);
     }
   };
+  const handleClear = () => {
+    setSearchTerm("");
+    setMovies([]);
+    setCategory("");
+    setQuality("");
+  }
+
   return (
     <div className="search-page">
       <div className="search-bar">
@@ -85,6 +92,9 @@ const SearchMovies = () => {
           <option value="FullHD">FullHD</option>
           <option value="HD">HD</option>
         </select>
+        <button className="ClearButton" onClick={handleClear}>
+          Clear
+        </button>
       </div>
 
       {loading && <div className="loading">Đang tải...</div>}

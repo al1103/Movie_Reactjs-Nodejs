@@ -1,6 +1,5 @@
 const Movie = require("../models/movies");
 const jwt = require("jsonwebtoken");
-
 const User = require("../models/users_model"); // Assuming your Mongoose model is named 'User'
 
 class AuthController {
@@ -32,7 +31,6 @@ class AuthController {
       next(error);
     }
   }
-  
 
   async editMovie(req, res, next) {
     try {
@@ -47,18 +45,18 @@ class AuthController {
     try {
       const currentPage = parseInt(req.query.page) || 1;
       const perPage = 8;
-  
+
       const skip = (currentPage - 1) * perPage + 1;
-  
+
       if (currentPage < 1) {
         return res.status(400).json({ error: "Invalid page number" });
       }
-  
+
       const users = await User.find({}).skip(skip).limit(perPage);
       const totalUsers = await User.countDocuments();
       const totalPage = Math.ceil(totalUsers / perPage);
       const hasQuery = Object.keys(req.query).length > 0;
-  
+
       if (hasQuery) {
         return res.json({
           status: "success",
@@ -73,12 +71,11 @@ class AuthController {
         });
       }
     } catch (error) {
-      console.error('Error fetching users:', error);
+      console.error("Error fetching users:", error);
       return res.status(500).json({ error: "An error occurred." }); // More specific message
     }
   }
-  
-  
+
   async getUser(req, res) {
     try {
       const user = await User.findOne({ _id: req.params.id });
@@ -93,21 +90,21 @@ class AuthController {
       res.status(500).json({ error: "Internal Server Error" });
     }
   }
-  async  listMovie(req, res) {
+  async listMovie(req, res) {
     try {
       const currentPage = parseInt(req.query.page) || 1;
       const perPage = 8;
-  
+
       // Lấy dữ liệu cho trang hiện tại
       const skip = (currentPage - 1) * perPage;
       const movies = await Movie.find({}).skip(skip).limit(perPage);
-  
+
       // Đếm tổng số items
       const totalMovies = await Movie.countDocuments();
-  
+
       // Xác định có truyền query hay không
       const hasQuery = Object.keys(req.query).length > 0;
-  
+
       // Tạo response
       let response;
       if (hasQuery) {
@@ -118,14 +115,14 @@ class AuthController {
         // Không có query, chỉ trả về totalMovies
         response = { totalMovies };
       }
-  
+
       res.status(200).json(response);
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   }
-  
+
   async deleteMovie(req, res) {
     try {
       const result = await Movie.deleteOne({ _id: req.params.id });
@@ -148,26 +145,24 @@ class AuthController {
       res.status(500).json({ error: "Lỗi máy chủ nội bộ" });
     }
   }
-  async  getCommentUser(req, res) {
+  async getCommentUser(req, res) {
     try {
-      const user = await User.findOne({ _id: req.params.id })
-        .populate({
-          path: "comments",
-        });
+      const user = await User.findOne({ _id: req.params.id }).populate({
+        path: "comments",
+      });
       if (!user) {
         return res.status(404).json({ message: "User không tồn tại" });
       }
-  
+
       res.json(user);
     } catch (error) {
       console.error(error); // Log the actual error for debugging
-      if (error.name === 'CastError') { // Handle specific Mongoose errors
+      if (error.name === "CastError") {
+        // Handle specific Mongoose errors`
         return res.status(400).json({ error: "Invalid user ID format" });
       }
       res.status(500).json({ error: "Lỗi máy chủ nội bộ" });
     }
   }
-  
 }
-
 module.exports = new AuthController();

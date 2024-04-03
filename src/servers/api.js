@@ -110,7 +110,10 @@ const updateFilm = async (movie, token) => {
 };
 const getListUsers = async (page, token) => {
   try {
-    const url = page === null || page === undefined ? "/auth/getListUser" : "/auth/getListUser?page=" + page;
+    const url =
+      page === null || page === undefined
+        ? "/auth/getListUser"
+        : "/auth/getListUser?page=" + page;
     const { data } = await axiosClient({
       method: "get",
       url,
@@ -213,13 +216,65 @@ const SearchMovie = async (name) => {
   } catch (error) {
     return error.message;
   }
+};
+const deleteComment = async (id, token) => {
+  try {
+    const { data } = await axiosClient({
+      method: "delete",
+      url: `/users/comment/${id}`,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    });
+    return data;
+  } catch (error) {
+    return error.message;
+  }
+};
+const forgetPassword = async (email) => {
+  try {
+    const data = await axiosClient({
+      method: "post",
+      url: "/synthetic/forgotPassword",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: {
+        email,
+      },
+    });
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+const ResetPassword = async (token,password) => {
+  try {
+    const data = await axiosClient({
+      method: "post",
+      url: "/synthetic/resetPassword",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: {
+        token,
+        password
+      },
+    });
+    return data;
+  } catch (error) {
+    return error;
+  }
 }
-
 
 export {
   SearchMovie,
   getListMovies,
+  ResetPassword,
   addMovie,
+  deleteComment,
+  forgetPassword,
   getOneFilm,
   editMovie,
   updateFilm,

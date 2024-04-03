@@ -120,13 +120,13 @@ class UsersController {
     try {
       const token = req.headers.authorization.split(" ")[1];
       const decodeToken = jwt.verify(token, "zilong-zhou");
-      const authorId = decodeToken.user._id;
+      const authorId = decodeToken.userId;
       const contents = req.body.comment;
       const movieId = req.params.id; // Assuming movie ID is in the URL path
       if (!movieId) {
         throw new Error("Movie ID missing"); // Handle missing ID gracefully
       }
-
+      console.log(contents, authorId, movieId);
       const newComment = new Comment({
         content: contents,
         User: authorId,
@@ -169,7 +169,7 @@ class UsersController {
     try {
       const userId = req.params.id;
 
-      const { username, email, password ,role} = req.body.dataUser;
+      const { username, email, password, role } = req.body.dataUser;
       const user = await User.findByIdAndUpdate({ _id: userId });
       if (!user) {
         return res.status(404).json({ error: "User not found" });
@@ -201,6 +201,40 @@ class UsersController {
       } else {
         return res.status(500).json({ error: "Internal server error" });
       }
+    }
+  }
+  async deleteUser(req, res) {
+    try {
+      const userId = req.params.id;
+      const user = await User.findByIdAndDelete({
+        _id: userId,
+      });
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+      res.status(200).json({ 
+        status: "success",
+        message: "User deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
+  }
+  async deleteComment(req, res) {
+    try {
+      const commentId = req.params.id;
+      const comment = await Comment.findByIdAndDelete({
+        _id: commentId,
+      });
+      if (!comment) {
+        return res.status(404).json({ error: "Comment not found" });
+      }
+      res.status(200).json({
+        status: "success",
+        message: "Comment deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting comment:", error);
+      res.status(500).json({ error: "Internal server error" });
     }
   }
   // async GetComment(req, res) {

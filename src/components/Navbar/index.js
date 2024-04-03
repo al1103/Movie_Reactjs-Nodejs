@@ -3,6 +3,8 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { navItems } from "../../datas/index";
 import { logout } from "../../action";
+import { HomeRouter } from "../../routers/index";
+import logo from "./LOGO.png"
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -58,9 +60,9 @@ const Navbar = () => {
     <div className="header" ref={headerRef}>
       <div className="container">
         <div className="overlay" data-overlay />
-        <a href="./" className="logo">
-          <img src="./assets/images/logo.svg" alt="zilong" />
-        </a>
+        <Link to="/" className="logo">
+          <img src={logo} alt="zilong"  />
+        </Link>
         <div className="header-actions">
           <button className="search-btn">
             <ion-icon name="search-outline" />
@@ -69,12 +71,33 @@ const Navbar = () => {
             <label htmlFor="language">
               <ion-icon name="globe-outline" />
             </label>
-            <select name="language" id="language">
-              <option value="en">EN</option>
-              <option value="au">AU</option>
-              <option value="ar">AR</option>
-              <option value="tu">TU</option>
-            </select>
+            <div className="Search" >
+              <Link to="/Search">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 512 512"
+                width={24}
+                height={24}
+              >
+                <path
+                  d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeMiterlimit={10}
+                  strokeWidth={32}
+                />
+                <path
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeMiterlimit={10}
+                  strokeWidth={32}
+                  d="M338.29 338.29L448 448"
+                />
+              </svg>
+              </Link>
+
+            </div>
           </div>
           {token ? (
             <button
@@ -104,9 +127,9 @@ const Navbar = () => {
           </div>
           <ul className="navbar-list">
             <li>
-              <a href="./index.html" className="navbar-link">
+              <Link to="/" className="navbar-link">
                 Home
-              </a>
+              </Link>
             </li>
             <li>
               <a href="#" className="navbar-link">
@@ -126,33 +149,6 @@ const Navbar = () => {
             <li>
               <a href="#" className="navbar-link">
                 Pricing
-              </a>
-            </li>
-          </ul>
-          <ul className="navbar-social-list">
-            <li>
-              <a href="#" className="navbar-social-link">
-                <ion-icon name="logo-twitter" />
-              </a>
-            </li>
-            <li>
-              <a href="#" className="navbar-social-link">
-                <ion-icon name="logo-facebook" />
-              </a>
-            </li>
-            <li>
-              <a href="#" className="navbar-social-link">
-                <ion-icon name="logo-pinterest" />
-              </a>
-            </li>
-            <li>
-              <a href="#" className="navbar-social-link">
-                <ion-icon name="logo-instagram" />
-              </a>
-            </li>
-            <li>
-              <a href="#" className="navbar-social-link">
-                <ion-icon name="logo-youtube" />
               </a>
             </li>
           </ul>

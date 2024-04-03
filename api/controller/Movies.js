@@ -1,9 +1,6 @@
-const { multipleMongooseToObject } = require("../util/mongoose");
-const { mongooseToObject } = require("../util/mongoose");
+
 const Movie = require("../models/movies");
 const Comment = require("../models/Comment");
-const lunr = require("lunr");
-const { json } = require("body-parser");
 
 class Movies {
   async index(req, res, next) {
