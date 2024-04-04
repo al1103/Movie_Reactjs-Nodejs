@@ -15,11 +15,11 @@ class syntheticController {
       const { email, password, newPassword } = req.body;
       const user = await User.findOne({ email });
       if (!user || !user._id) {
-        return res.status(401).json({ error: "Invalid email or password" });
+        return res.status(401).json("Invalid email or password");
       }
       const isPasswordValid = newPassword;
       if (!isPasswordValid || user.password !== password) {
-        return res.status(401).json({ error: "Invalid email or password" });
+        return res.status(401).json("Invalid email or password");
       }
       const token = jwt.sign(
         { userId: user._id, role: user.role },
@@ -110,9 +110,10 @@ class syntheticController {
       };
 
       await transporter.sendMail(mailOptions);
-      res.json({ 
+      res.json({
         status: "200",
-        message: "Password reset successful" });
+        message: "Password reset successful",
+      });
     } catch (err) {
       console.error("Error resetting password:", err);
       res.status(500).json({ error: "Failed to reset password" }); // Generic error message for security

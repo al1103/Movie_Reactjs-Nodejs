@@ -11,7 +11,7 @@ const ForgetPassword = () => {
     if (data.status === 200) {
       toast.success("Check your email to reset password");
     } else {
-      toast.error("Invalid email");
+      toast.error(data.response.data.error);
     }
     setEmail("");
 
@@ -34,14 +34,14 @@ const ForgetPassword = () => {
               <div className="col-md-8 col-lg-6 col-xxl-3">
                 <div className="card mb-0">
                   <div className="card-body login-card-body">
-                    <p className="text-center">Your Social Campaigns</p>
+                    <p className="text-center">Zilong Movie</p>
                     <form onSubmit={handleSubmit}>
                       <div className="mb-3">
                         <label
                           htmlFor="exampleInputEmail1"
                           className="form-label"
                         >
-                          Username
+                          Email address
                         </label>
                         <input
                           onChange={(e) => setEmail(e.target.value)}

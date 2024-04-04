@@ -4,37 +4,26 @@ import { useDispatch, useSelector } from "react-redux";
 import { navItems } from "../../datas/index";
 import { logout } from "../../action";
 import { HomeRouter } from "../../routers/index";
-import logo from "./LOGO.png"
+import logo from "./LOGO.png";
 
 const Navbar = () => {
-  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [token, setToken] = useState("");
   const headerRef = useRef(null);
   const dispatch = useDispatch();
 
-  // const navOpenBtn = document.querySelector("[data-menu-open-btn]");
-  // const navCloseBtn = document.querySelector("[data-menu-close-btn]");
-  // const navbar = document.querySelector("[data-navbar]");
-  // const overlay = document.querySelector("[data-overlay]");
+  const navOpenBtn = document.querySelector("[data-menu-open-btn]");
+  const navbar = document.querySelector("[data-navbar]");
+  const overlay = document.querySelector("[data-overlay]");
+  const navElemArr = [navOpenBtn, overlay];
 
-  // const navElemArr = [navOpenBtn, navCloseBtn, overlay];
-
-  // for (let i = 0; i < navElemArr.length; i++) {
-
-  //   navElemArr[i].addEventListener("click", function () {
-
-  //     navbar.classList.toggle("active");
-  //     overlay.classList.toggle("active");
-  //     document.body.classList.toggle("active");
-
-  //   });
-
-  // }
-
-  // /**
-  //  * header sticky
-  //  */
+      for (let i = 0; i < navElemArr.length; i++) {
+        navElemArr[i].addEventListener("click", function () {
+          navbar.classList.toggle("active");
+          overlay.classList.toggle("active");
+          document.body.classList.toggle("active");
+        });
+    };
 
   useEffect(() => {
     const header = headerRef.current; // Access the element here
@@ -61,7 +50,7 @@ const Navbar = () => {
       <div className="container">
         <div className="overlay" data-overlay />
         <Link to="/" className="logo">
-          <img src={logo} alt="zilong"  />
+          <img src={logo} alt="zilong" />
         </Link>
         <div className="header-actions">
           <button className="search-btn">
@@ -71,32 +60,31 @@ const Navbar = () => {
             <label htmlFor="language">
               <ion-icon name="globe-outline" />
             </label>
-            <div className="Search" >
+            <div className="Search">
               <Link to="/Search">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 512 512"
-                width={24}
-                height={24}
-              >
-                <path
-                  d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeMiterlimit={10}
-                  strokeWidth={32}
-                />
-                <path
-                  fill="none"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeMiterlimit={10}
-                  strokeWidth={32}
-                  d="M338.29 338.29L448 448"
-                />
-              </svg>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 512 512"
+                  width={24}
+                  height={24}
+                >
+                  <path
+                    d="M221.09 64a157.09 157.09 0 10157.09 157.09A157.1 157.1 0 00221.09 64z"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeMiterlimit={10}
+                    strokeWidth={32}
+                  />
+                  <path
+                    fill="none"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeMiterlimit={10}
+                    strokeWidth={32}
+                    d="M338.29 338.29L448 448"
+                  />
+                </svg>
               </Link>
-
             </div>
           </div>
           {token ? (
@@ -113,18 +101,8 @@ const Navbar = () => {
             </Link>
           )}
         </div>
-        <button className="menu-open-btn" data-menu-open-btn>
-          <ion-icon name="reorder-two" />
-        </button>
+
         <nav className="navbar" data-navbar>
-          <div className="navbar-top">
-            <a href="./index.html" className="logo">
-              <img src="./assets/images/logo.svg" alt="Filmlane logo" />
-            </a>
-            <button className="menu-close-btn" data-menu-close-btn>
-              <ion-icon name="close-outline" />
-            </button>
-          </div>
           <ul className="navbar-list">
             <li>
               <Link to="/" className="navbar-link">
@@ -153,6 +131,24 @@ const Navbar = () => {
             </li>
           </ul>
         </nav>
+      
+        <button className="menu-open-btn" data-menu-open-btn>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 512 512"
+            width={24}
+            height={24}
+          >
+            <path
+              fill="none"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeMiterlimit={10}
+              strokeWidth={32}
+              d="M80 160h352M80 256h352M80 352h352"
+            />
+          </svg>
+        </button>
       </div>
     </div>
   );
