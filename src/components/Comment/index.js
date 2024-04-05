@@ -65,13 +65,13 @@ const Comment = (props) => {
   return (
     <div>
       <div className="container mt-5 mb-5">
-        <div className="row height d-flex justify-content-center align-items-center">
+        <div className="row  height d-flex justify-content-center align-items-center">
           <div className="col-md-7">
             <div className="card">
               <div className="p-3">
                 <h6>Comments</h6>
               </div>
-              <div className="mt-3 d-flex flex-row align-items-center p-3 form-color">
+              <div className="mt-3 gap-2 d-flex flex-row align-items-center p-3 form-color">
                 <img
                   src="https://i.imgur.com/zQZSWrt.jpg"
                   width={50}
@@ -85,7 +85,7 @@ const Comment = (props) => {
                   placeholder="Enter your comment..."
                 />
                 <button onClick={handleSubmitComment} className="btn-comment">
-                  <span>Submit</span>
+                  <span >Submit</span>
                 </button>
               </div>
               <div>

@@ -1,4 +1,3 @@
-
 const Movie = require("../models/movies");
 const Comment = require("../models/Comment");
 
@@ -13,7 +12,8 @@ class Movies {
   }
   async getMovies(req, res, next) {
     try {
-      const data = await Movie.find({});
+      const limit = parseInt(req.query.limit) || 4;
+      const data = await Movie.find({}).limit(limit);
       res.status(200).json({ status: "success", length: data.length, data });
     } catch (err) {
       next(err);
@@ -60,14 +60,12 @@ class Movies {
     try {
       const query = req.query.name;
       const filters = req.query; // Access other query parameters
-  
+
       // Build the search query object with a $not operator for the notword
       const searchQuery = {
-        $and: [
-          { name: { $regex: query, $options: "i" } }
-        ],
+        $and: [{ name: { $regex: query, $options: "i" } }],
       };
-  
+
       // Add other filters as needed
       if (filters.category) {
         searchQuery.$and.push({ category: filters.category });
@@ -75,9 +73,9 @@ class Movies {
       if (filters.quality) {
         searchQuery.$and.push({ quality: filters.quality });
       }
-  
+
       const results = await Movie.find(searchQuery);
-  
+
       res.json({
         status: "success",
         results: results,
@@ -86,9 +84,6 @@ class Movies {
       next(error);
     }
   }
-  
-  
-  
 }
 
 module.exports = new Movies();

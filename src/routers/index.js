@@ -20,11 +20,11 @@ import ResetPassword from "../pages/ResetPassword";
 
 const RoutersManager = () => {
   const isAdmin = useSelector((state) => {
-    // Check for null or undefined user data directly
-    if (!state.Movie.user) return false;
-
     try {
-      // Parse user data only if it exists
+    // Check for null or undefined user data directly
+    if (!state.Movie.user || state.Movie.user === "null" || state.Movie.user ===  "undefined") return false;
+
+      console.log(state.Movie.user)
       const user = JSON.parse(state.Movie.user);
       return user.role === "admin";
     } catch (error) {

@@ -11,19 +11,19 @@ const Navbar = () => {
   const [token, setToken] = useState("");
   const headerRef = useRef(null);
   const dispatch = useDispatch();
+  const navbarRef = useRef(null);
+  const overlayRef = useRef(null);
+  const navOpenBtnRef = useRef(null);
+  const navCloseBtnRef = useRef(null); 
+  
 
-  const navOpenBtn = document.querySelector("[data-menu-open-btn]");
-  const navbar = document.querySelector("[data-navbar]");
-  const overlay = document.querySelector("[data-overlay]");
-  const navElemArr = [navOpenBtn, overlay];
 
-      for (let i = 0; i < navElemArr.length; i++) {
-        navElemArr[i].addEventListener("click", function () {
-          navbar.classList.toggle("active");
-          overlay.classList.toggle("active");
-          document.body.classList.toggle("active");
-        });
+    const handleNavClick = (event) => {
+      navbarRef.current.classList.toggle('active');
+      overlayRef.current.classList.toggle('active');
+      document.body.classList.toggle('active');
     };
+
 
   useEffect(() => {
     const header = headerRef.current; // Access the element here
@@ -48,7 +48,7 @@ const Navbar = () => {
   return (
     <div className="header" ref={headerRef}>
       <div className="container">
-        <div className="overlay" data-overlay />
+        <div className="overlay" ref={overlayRef} onClick={handleNavClick} />
         <Link to="/" className="logo">
           <img src={logo} alt="zilong" />
         </Link>
@@ -102,7 +102,7 @@ const Navbar = () => {
           )}
         </div>
 
-        <nav className="navbar" data-navbar>
+        <nav className="navbar" ref={navbarRef}>
           <ul className="navbar-list">
             <li>
               <Link to="/" className="navbar-link">
@@ -129,10 +129,14 @@ const Navbar = () => {
                 Pricing
               </a>
             </li>
+            <li>
+              <Link to="Search" className="navbar-link">
+                Search
+              </Link>
+            </li>
           </ul>
         </nav>
-      
-        <button className="menu-open-btn" data-menu-open-btn>
+        <button className="menu-open-btn" onClick={handleNavClick } ref={navOpenBtnRef} >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 512 512"

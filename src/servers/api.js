@@ -190,14 +190,13 @@ const getComments = async (PostID, token) => {
     return error.message;
   }
 };
-const getMovieAPI = async (token) => {
+const getMovieAPI = async (limit) => {
   try {
     const req = await axiosClient({
       method: "get",
-      url: "/getMovies",
+      url: "/getMovies?limit=" + limit,
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
       },
     });
     return req.data;

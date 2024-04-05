@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getOneFilmNguonC } from "../../servers/apiNguonC";
 import { Link } from "react-router-dom";
 import MovieItemsLayout from "../../layouts/MovieItemLayout";
-import Comment from "./comment";
+import Comment from "../../components/Comment";
 
 const WatchMovie = () => {
   const [movie, setMovie] = useState({});
