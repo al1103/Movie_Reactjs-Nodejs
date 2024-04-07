@@ -18,6 +18,9 @@ npm install
 **API:**
 
 1. **Mở thư mục:** Mở thư mục `api` trong terminal.
+```
+cd api
+```
 
 2. **Chạy ứng dụng:** Chạy ứng dụng Node.js bằng lệnh sau:
 
