@@ -37,6 +37,10 @@ const movieSchema = new mongoose.Schema({
       message: (props) => `${props.value} is not a valid URL!`,
     },
   },
+  modified: {
+    type: Date,
+    default: Date.now,
+  },
   category: {
     type: String,
     // enum: ['ACTION', 'COMEDY', 'DRAMA', 'THRILLER', 'HORROR', 'SCI-FI', 'OTHER'], // Optional: Define allowed categories
@@ -63,10 +67,7 @@ const movieSchema = new mongoose.Schema({
       ref: 'Comment', // Reference the Comment model
     },
   ],
-  modified: {
-    type: Date,
-    default: Date.now,
-  },
+  
 });
 
 module.exports = mongoose.model('Movie', movieSchema);
