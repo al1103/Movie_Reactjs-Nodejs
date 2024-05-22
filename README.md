@@ -1,3 +1,6 @@
+Video Demo : https://youtu.be/oDpxz1HKym8?si=vTZJmtbYgI8DeQ_E 
+
+
 ## Hướng dẫn cài đặt và chạy ứng dụng
 
 **Cài đặt:**
@@ -15,6 +18,9 @@ npm install
 **API:**
 
 1. **Mở thư mục:** Mở thư mục `api` trong terminal.
+```
+cd api
+```
 
 2. **Chạy ứng dụng:** Chạy ứng dụng Node.js bằng lệnh sau:
 
