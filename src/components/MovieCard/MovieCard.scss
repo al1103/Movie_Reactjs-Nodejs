@@ -5,17 +5,19 @@
 }
 
 .movie-card {
+ 
+  background-color: var(--card-color);
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  border-radius: 6px;
 }
 
 .movie-card .card-banner {
   position: relative;
   background: var(--gunmetal-1);
   aspect-ratio: 2 / 3;
-  border-radius: 6px;
   overflow: hidden;
   margin-bottom: 20px;
   transition: var(--transition-1);
@@ -39,6 +41,7 @@
 }
 
 .movie-card .title-wrapper {
+  padding: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -47,7 +50,7 @@
 }
 
  .card-title {
-  color: var(--white);
+  color: var(--text-color);
   font-size: var(--fs-9);
   transition: var(--transition-1);
   display: -webkit-box;
@@ -57,7 +60,7 @@
   text-overflow: ellipsis;
 }
 .des{
-  color: var(--white);
+  color: var(--text-color);
   font-size: var(--fs-9);
   transition: var(--transition-1);
   display: -webkit-box;
@@ -71,7 +74,7 @@
 .card-title:is(:hover, :focus) { color: var(--citrine); }
 
 .movie-card .title-wrapper time {
-  color: var(--citrine);
+  color: var(--background-color);
   font-size: var(--fs-9);
   font-weight: var(--fw-500);
 }
@@ -81,6 +84,8 @@
   justify-content: flex-start;
   align-items: center;
   gap: 15px;
+  padding: 10px;
+  
 }
 
 .movie-card .badge { color: var(--citrine); }
@@ -99,5 +104,15 @@
 .movie-card :is(.duration, .rating) ion-icon {
   font-size: 13px;
   --ionicon-stroke-width: 50px;
-  color: var(--citrine);
+  color: var(--background-color);
+}
+.movie-card time {
+  color: var(--text-color);
+  font-size: var(--fs-9);
+  font-weight: var(--fw-500);
+}
+.movie-card .rating {
+  color: var(--text-color);
+  font-size: var(--fs-9);
+  font-weight: var(--fw-500);
 }

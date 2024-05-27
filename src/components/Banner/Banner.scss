@@ -85,7 +85,7 @@
 .h1,
 .h2,
 .h3 {
-  color: var(--text-color);
+  color: white;
   line-height: 1.2;
 }
 
@@ -120,20 +120,20 @@
  */
 
 .badge {
-  color: var(--text-color);
+  color: white;
   font-size: var(--fs-12);
   font-weight: var(--fw-700);
   border: 2px solid transparent;
   padding: 2px 10px;
 }
 
-.badge-fill {
-  background: var(--text-color);
-  color: var(--raisin-black);
-}
+// .badge-fill {
+//   background: white;
+
+// }
 
 .badge-outline {
-  border-color: var(--text-color);
+  border-color: white;
 }
 
 /**
@@ -159,7 +159,7 @@
 }
 
 .ganre-wrapper > a {
-  color: var(--gainsboro);
+  color:  white;
   font-size: var(--fs-9);
   font-weight: var(--fw-500);
   transition: var(--transition-1);
@@ -177,7 +177,7 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  color: var(--gainsboro);
+  color: white;
   font-size: var(--fs-9);
   font-weight: var(--fw-500);
 }
@@ -257,6 +257,7 @@
 \*-----------------------------------*/
 
 .header {
+  background: var(--header-color);
   position: fixed;
   top: 0;
   left: 0;
@@ -267,7 +268,7 @@
 }
 
 .header.active {
-  background: var(--eerie-black);
+  background: var(--header-color);
   padding-block: 20px;
 }
 
@@ -585,7 +586,7 @@
 \*-----------------------------------*/
 
 .tv-series {
-  background: url("../images/tv-series-bg.jpg") no-repeat;
+  background-color: var(--backgeound-color);
   background-size: cover;
   background-position: center;
   padding-block: var(--section-padding);
@@ -786,7 +787,7 @@
 }
 
 .details-actions .title {
-  color: var(--text-color);
+  color: white;
   font-weight: var(--fw-700);
 }
 

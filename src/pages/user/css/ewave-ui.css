@@ -1335,7 +1335,7 @@ textarea.form-control {
 }
 .form-group {
   margin-bottom: 15px;
-  color: #ffffff;
+  color: var(--text-color);
 }
 .checkbox, .radio {
   position: relative;

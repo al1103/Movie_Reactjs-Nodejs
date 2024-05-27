@@ -41,8 +41,9 @@
 
 .filter {
   display: flex;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   flex-direction: row;
+  align-items: center;
 }
 
 .filter-category,

@@ -1,6 +1,6 @@
 
 .footer-top {
-    background: url("../images/footer-bg.jpg") no-repeat;
+
     background-size: cover;
     background-position: center;
     padding-block: 80px 50px;
@@ -23,7 +23,7 @@
   }
   
   .footer-link {
-    color: var(--light-gray);
+    color: var(--text-color);
     font-size: var(--fs-9);
     font-weight: var(--fw-700);
     text-transform: uppercase;
@@ -43,7 +43,7 @@
   .quicklink-list { margin-bottom: 20px; }
   
   .quicklink-link {
-    color: var(--gray-x);
+    color: var(--text-color);
     font-size: var(--fs-10);
     font-weight: var(--fw-500);
     text-transform: uppercase;

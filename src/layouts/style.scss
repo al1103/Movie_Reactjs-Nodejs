@@ -5817,7 +5817,7 @@ fieldset:disabled .btn {
   font-size: var(--bs-badge-font-size);
   font-weight: var(--bs-badge-font-weight);
   line-height: 1;
-  color: var(--bs-badge-color);
+  color: white;
   text-align: center;
   white-space: nowrap;
   vertical-align: baseline;
@@ -16915,10 +16915,10 @@ ul {
   background-color: #151f30;
 }
 
-.background{
-  background-color: #171c22;
-}
+// .background{
+//   background-color: #171c22;
+// }
 
 .background{
-  background-color: var(--bs-body-bg-rgb);
+  background-color: var(--background);
 }

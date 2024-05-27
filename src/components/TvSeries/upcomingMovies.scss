@@ -3,7 +3,6 @@
 }
 
 .upcoming {
-  background: url("../images/upcoming-bg.png") no-repeat;
   background-size: cover;
   background-position: center;
   padding-block: var(--section-padding);
@@ -81,7 +80,7 @@
   background-color: #0066ff !important;
 } 
 .filter-btn {
-  color: var(--text-color);
+  color: white;
   background: var(--raisin-black);
   font-size: var(--fs-11);
   font-weight: var(--fw-500);
