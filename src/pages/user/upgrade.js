@@ -3,7 +3,7 @@ import { getUser } from "../../servers/api";
 import { UpdateService } from "../../servers/users";
 import { ToastContainer, toast } from "react-toastify";
 import UserLayout from "../../layouts/UserLayout";
-
+import Loading from "../../components/Loading";
 
 const CovertDate = (dateString) => {
   const date = new Date(dateString);
@@ -13,15 +13,13 @@ const CovertDate = (dateString) => {
   const year = date.getFullYear();
   const formattedDate = `${day}/${month}/${year}`;
 
- return formattedDate;
-}
+  return formattedDate;
+};
 
 const Upgrade = () => {
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
 
-  
-  
   useEffect(() => {
     const token = localStorage.getItem("token");
     const id = JSON.parse(localStorage.getItem("user"))._id;
@@ -38,7 +36,11 @@ const Upgrade = () => {
     getUserData();
   }, []);
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <Loading></Loading>
+      </div>
+    );
   }
 
   const Upgrade = async ({
@@ -63,7 +65,6 @@ const Upgrade = () => {
     } catch (error) {
       toast.error("Đã xảy ra lỗi khi nâng cấp");
     }
-    
 
     const id = JSON.parse(localStorage.getItem("user"))._id;
     const updatedUserData = await getUser(id, token);
@@ -81,21 +82,21 @@ const Upgrade = () => {
     <UserLayout>
       <div className="container member-container clearfix">
         <div className="member-right">
-          <h2 className="member-title">Nâng cấp goi dich vu</h2>
+          <h2 className="member-title">Upgrade Service Package</h2>
           <form className="form-horizontal center-block">
             <div className="form-group">
               <label className="col-xs-4 col-sm-2 control-label">
-                Nhóm thành viên hiện tại
+                Current Membership Group
               </label>
               <div className="col-xs-8 col-sm-6">
                 <p className="form-control-static pt-xs-0">
-                  {user.package[0].subscriptionPlan}
+                  {user.package[0]?.subscriptionPlan}
                 </p>
               </div>
             </div>
             <div className="form-group">
               <label className="col-xs-4 col-sm-2 control-label">
-                Số điểm còn lại
+                Remaining Points
               </label>
               <div className="col-xs-8 col-sm-6">
                 <p className="form-control-static pt-xs-0">{user.points}</p>
@@ -103,7 +104,7 @@ const Upgrade = () => {
             </div>
             <div className="form-group">
               <label className="col-xs-4 col-sm-2 control-label">
-                Ngày hết hạn
+                Expiration Date
               </label>
               <div className="col-xs-8 col-sm-6">
                 <p className="form-control-static pt-xs-0">
@@ -116,13 +117,14 @@ const Upgrade = () => {
               <div className="col-xs-8 col-sm-6">
                 <p className="form-control-static pt-xs-0">
                   <span className="text-red">
-                    Nhấp vào nhóm thành viên và thời gian cần mua để nâng cấp
+                    Click on the membership group and the duration you want to
+                    purchase to upgrade
                   </span>
                 </p>
               </div>
             </div>
             <div className="form-group">
-              <label className="col-sm-2 control-label">Nâng cấp gói</label>
+              <label className="col-sm-2 control-label">Upgrade Package</label>
               <div className="col-sm-10">
                 <ul className="row member-upgrade">
                   <li className="col-xs-6 col-md-3 col-lg-6 col-xl-3">
@@ -135,7 +137,7 @@ const Upgrade = () => {
                         });
                       }}
                     >
-                      Bao tuần: 7 điểm
+                      Weekly: 7 points
                     </div>
                   </li>
                   <li className="col-xs-6 col-md-3 col-lg-6 col-xl-3">
@@ -147,9 +149,9 @@ const Upgrade = () => {
                         });
                       }}
                       className="member-upgrade-item ewave-confirm btn member-btn btn-block btn-danger"
-                      data-tip="Xác nhận nâng cấp lên 【{$vo.group_name}】? Cần chi trả 【{$vo.group_points_month}】 điểm"
+                      data-tip="Confirm upgrade to 【{$vo.group_name}】? Costs 【{$vo.group_points_month}】 points"
                     >
-                      Bao tháng: 30 điểm
+                      Monthly: 30 points
                     </div>
                   </li>
                   <li className="col-xs-6 col-md-3 col-lg-6 col-xl-3">
@@ -162,7 +164,7 @@ const Upgrade = () => {
                         });
                       }}
                     >
-                      Bao năm: 365 điểm
+                      Yearly: 365 points
                     </div>
                   </li>
                 </ul>

@@ -48,8 +48,24 @@
 
  .card-title {
   color: var(--white);
-  font-size: var(--fs-7);
+  font-size: var(--fs-9);
   transition: var(--transition-1);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.des{
+  color: var(--white);
+  font-size: var(--fs-9);
+  transition: var(--transition-1);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
 }
 
 .card-title:is(:hover, :focus) { color: var(--citrine); }

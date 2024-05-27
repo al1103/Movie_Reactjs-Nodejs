@@ -1,80 +1,85 @@
-
 .movies-list {
-    display: grid;
-    gap: 50px;
-  }
-  
-  .movie-card {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  .search-page {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-  }
-  
-  .search-bar {
-    display: flex;
-    margin-bottom: 20px;
-  }
-  
-  .search-input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    flex-grow: 1; /* Allow input to grow horizontally */
-    margin-right: 10px;
-  }
-  
-  .search-button {
-    padding: 10px 20px;
-    background-color: #333;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .filter {
-    display: flex;
-    margin-bottom: 20px;
-    flex-direction: row;
-  }
-  
-  .filter-category,
-  .filter-quality {
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-right: 10px;
-  }
-  
-  .loading,
-  .error {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    margin-bottom: 10px;
-  }
-  
-  .loading {
-    text-align: center;
-  }
-  
-  .error {
-    color: red;
-  }
-  
-  .ClearButton {
-    background-color: #333;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    padding: 10px 20px;
-    margin-left: 10px;
-  }
+  display: grid;
+  gap: 50px;
+}
+
+.movie-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.search-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.search-bar {
+  display: flex;
+  margin-bottom: 20px;
+  width: 80%;
+}
+
+.search-input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  flex-grow: 1; /* Allow input to grow horizontally */
+  margin-right: 10px;
+}
+
+.search-button {
+  padding: 10px 20px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.filter {
+  display: flex;
+  margin-bottom: 20px;
+  flex-direction: row;
+}
+
+.filter-category,
+.filter-quality {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.loading,
+.error {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.loading {
+  text-align: center;
+}
+
+.error {
+  color: red;
+}
+
+.ClearButton {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 10px 20px;
+  margin-left: 10px;
+}
+.search-input {
+  border-radius: 5px;
+  padding-right: 40px;
+  font-size: 16px;
+}

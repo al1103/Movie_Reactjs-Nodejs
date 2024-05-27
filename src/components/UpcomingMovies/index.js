@@ -3,7 +3,7 @@ import { getMovieAPI } from "../../servers/api";
 import MovieCard from "../MovieCard";
 import "./upcomingMovies.scss";
 const UpcomingMovies = () => {
-  const [limit, setLimit] = useState(4); // [1,2,3,4,5,6,7,8,9,10
+  const [limit, setLimit] = useState(4); 
   const [listMovie, setListMovie] = useState([]);
   useEffect(() => {
     getMovieAPI(limit).then((data) => {
@@ -11,9 +11,7 @@ const UpcomingMovies = () => {
 
         setListMovie(data.data);
       }
-      else{
-        console.log(data.message);
-      }
+      
     });
   }, [limit]);
 

@@ -12,10 +12,10 @@ const Homepage = () => {
     <>
       <NavbarFooter>
         <UpcomingMovies/>
-        <TvSeries></TvSeries>
-        <TopRatedMovies></TopRatedMovies>
-        <Movies></Movies>
-        <Menbership></Menbership>
+        {/* <TvSeries></TvSeries> */}
+        {/* <TopRatedMovies></TopRatedMovies> */}
+        {/* <Movies></Movies> */}
+        {/* <Menbership></Menbership> */}
       </NavbarFooter>
     </>
   );

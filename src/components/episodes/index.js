@@ -2,7 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const Episode = ({ movie, slug }) => {
-  const episodes = movie.episodes[0].items;
+  console.log(movie);
+  const episodes = movie?.episodes[0]?.items || [];
 
   return (
     <div className="background-episodes">

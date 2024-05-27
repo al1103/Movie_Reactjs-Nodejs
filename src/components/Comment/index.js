@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { postComment, getComments,deleteComment } from "../../servers/api";
-import {ToastContainer, toast } from "react-toastify";
-
+import { postComment, getComments } from "../../servers/api";
+import { ToastContainer, toast } from "react-toastify";
 import "./style.scss";
 import moment from "moment";
+
 const Comment = (props) => {
   const token = localStorage.getItem("token");
   const [comments, setComments] = useState("");
@@ -14,12 +14,12 @@ const Comment = (props) => {
   const fetchData = async () => {
     try {
       const data = await getComments(postId, token);
-      if (data.status === 200) setCommentList(data.data.comments);
+      setCommentList(data.data.data); // Corrected path to comments
     } catch (error) {
-      console.error("Đã xảy ra lỗi:", error);
+      console.error("Error:", error);
     }
   };
-
+  console.log("commentList", commentList);
   useEffect(() => {
     if (postId) {
       setPostIdReady(true);
@@ -32,60 +32,54 @@ const Comment = (props) => {
     }
   }, [postIdReady]);
 
-
-
- 
   const handleSubmitComment = async () => {
     try {
       if (!comments) {
-          setComments("");
-
+        setComments("");
         return toast.error("Please enter your comment");
       }
-      if(!token) {
+      if (!token) {
         setComments("");
-        return toast.error("Please login to comment")
-      };
-
+        return toast.error("Please login to comment");
+      }
 
       const data = await postComment(comments, postId, token);
-      if (data.status === 201){
+      if (data.status === 201) {
+        // Assuming successful status code is 201
         setComments("");
-        toast.success("Comment success");
-        fetchData();
-
-      }else{  
-        toast.error(data);
-      } 
+        fetchData(); // Refresh the comment list after successful posting
+      }
     } catch (error) {
-      console.error("Đã xảy ra lỗi:", error);
+      console.error("Error:", error);
+      toast.error("An error occurred");
     }
   };
 
   return (
-    <div>
-      <div className="container mt-5 mb-5">
+    <div className="comment">
+      <div className="container py-5">
         <div className="row  height d-flex justify-content-center align-items-center">
           <div className="col-md-7">
             <div className="card">
               <div className="p-3">
                 <h6>Comments</h6>
               </div>
-              <div className="mt-3 gap-2 d-flex flex-row align-items-center p-3 form-color">
+              <div className="mt-3 gap-2 d-flex flex-row align-items-center p-3 form-color ">
                 <img
-                  src="https://i.imgur.com/zQZSWrt.jpg"
+                  src=""
                   width={50}
                   className="rounded-circle mr-2"
+                  alt="avatar"
                 />
                 <input
-                value={comments}
+                  value={comments}
                   onChange={(e) => setComments(e.target.value)}
                   type="text"
                   className="form-control"
                   placeholder="Enter your comment..."
                 />
                 <button onClick={handleSubmitComment} className="btn-comment">
-                  <span >Submit</span>
+                  <span>Submit</span>
                 </button>
               </div>
               <div>
@@ -94,7 +88,7 @@ const Comment = (props) => {
                     <div className=" w-100">
                       <div className="d-flex flex-row p-3 ">
                         <img
-                          src="https://i.imgur.com/zQZSWrt.jpg"
+                          src={comment.User.avatar}
                           alt="Avatar"
                           width={50}
                           height={50}
@@ -112,10 +106,9 @@ const Comment = (props) => {
                               {moment(comment.createdAt).startOf().fromNow()}
                             </small>
                           </div>
-                          <div >
-                            <p className="text-justify comment-text mb-0 comment-text" >
-
-                            {comment.content}
+                          <div>
+                            <p className="text-justify comment-text mb-0 comment-text">
+                              {comment.content}
                             </p>
                           </div>
                           <div className="d-flex flex-row user-feed justify-content-between w-100 pr-5">
@@ -177,7 +170,7 @@ const Comment = (props) => {
           </div>
         </div>
       </div>
-      <ToastContainer></ToastContainer>
+      {/* <ToastContainer></ToastContainer> */}
     </div>
   );
 };

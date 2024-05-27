@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getListMovies } from "../../servers/apiNguonC";
+import { getListMovies } from "../../servers/api";
 import MovieCard from "../MovieCard";
 import "./TopRatedMovies.scss";
 const TopRatedMovies = () => {

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { getOneFilmNguonC } from "../../servers/apiNguonC";
-import { Link } from "react-router-dom";
+import { getOneFilm } from "../../servers/api";
 import MovieItemsLayout from "../../layouts/MovieItemLayout";
-import Comment from "../../components/Comment";
+import "./style.scss";
+import Episode from "../../components/episodes";
 
 const WatchMovie = () => {
   const [movie, setMovie] = useState({});
@@ -16,45 +16,55 @@ const WatchMovie = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await getOneFilmNguonC(name);
-        setMovie(data.movie);
-        console.log(data.movie);
-        setEpisodes(data.movie.episodes[0].items);
-        const targetEpisode = episodes.find((episode) => episode.slug === slug);
-        console.log(targetEpisode);
-        if (targetEpisode) {
-          // setSrcVideo(targetEpisode.embed);
-        }
+        const data = await getOneFilm(name);
+        setMovie(data);
+        setEpisodes(data.episodes[0].items);
+        data.episodes[0].items.find((ep) => {
+          if (ep.slug === slug) {
+            setSrcVideo(ep.embed);
+          }
+        });
       } catch (error) {
-        console.error("Đã xảy ra lỗi:", error);
+        console.error("Error fetching movie details:", error);
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchData();
-  }, []); // Empty dependency array to fetch data only once
+  }, [slug, name]);
 
-  const VideoPlayer = ({ srcVideo }) => {
-    return (
-      <div className="container video-player">
-        {srcVideo && (
-          <iframe src={srcVideo} className="video w-100 jw-video" controls />
-        )}
-        {!srcVideo && <p>No video available</p>}
-      </div>
-    );
-  };
-
-  // [episodes, slug] dependency array to run effect whenever episodes or slug changes
-
+  const VideoPlayer = ({ srcVideo }) => (
+    <div className="container video-player">
+      {srcVideo && (
+        <iframe
+          src={srcVideo}
+          className="video w-100 jw-video boder"
+          allowFullScreen
+          frameBorder="0"
+          title="video player"
+          allow="fullscreen"
+        />
+      )}
+      {!srcVideo && <p>No video available</p>}
+    </div>
+  );
+  
+  useEffect(() => {
+    const ads = "https://img.streamvd.club/public/images/i9/pc.gif";
+    const img = document.querySelector(`img[src="${ads}"]`);
+    
+    if (img) {
+      img.style.display = "none";
+    }
+  }, []);
   return (
     <>
       <MovieItemsLayout>
         {isLoading ? (
           <div>Loading movie details...</div>
-        ) : movie ? (
-          <div>
+        ) : (
+          <div className="container">
             <div>
               <div>
                 <article>
@@ -62,29 +72,18 @@ const WatchMovie = () => {
                     className="w-100"
                     srcVideo={srcVideo}
                   ></VideoPlayer>
-                  <div id="episodes" className="sbox fixidtab container my-5">
-                    <h2>Chọn tập phim</h2>
-                    <div id="seasons">
-                      <div className="se-c">
-                        <div className="se-q"></div>
-                        <div className="se-a" style={{ display: "block" }}>
-                          <ul className="episodios">
-                            {episodes &&
-                              episodes.map((ep, index) => (
-                                <li key={index}>
-                                  <Link
-                                    to={`/${movie.slug}/${ep.slug}`}
-                                    className="btn btn-outline-info m-1"
-                                  >
-                                    {ep.name}
-                                  </Link>
-                                </li>
-                              ))}
-                          </ul>
-                        </div>
-                      </div>
+                  <div className="server-info">
+                    <p>
+                      Nếu xem phim bị giật lag, hãy chuyển server khác bên dưới.
+                    </p>
+                    <div>
+                      <h2>Chọn server</h2>
+                      <a href={srcVideo} target="blank">
+                        <button>Server 1</button>
+                      </a>
                     </div>
                   </div>
+                  <Episode slug={slug} movie={movie}></Episode>
                   {/* 
     - #TV SERIES
   */}
@@ -99,10 +98,7 @@ const WatchMovie = () => {
               </div>
             </div>
           </div>
-        ) : (
-          <div>Movie data not found.</div>
         )}
-        <Comment></Comment>
       </MovieItemsLayout>
     </>
   );

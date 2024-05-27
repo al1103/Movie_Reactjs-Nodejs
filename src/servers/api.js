@@ -1,29 +1,23 @@
 import axios from "axios";
 const API_KEY = process.env.REACT_APP_API_KEY;
 const axiosClient = axios.create({ baseURL: API_KEY });
-const getListMovies = async (page, token) => {
+const getListMovies = async (page = 1, token) => {
   try {
-    if (page === null || page === undefined) {
-      const { data } = await axiosClient({
-        method: "get",
-        url: "/auth/getListMovies",
-        headers: {
-          Authorization: "Bearer " + token,
-          "X-Requested-With": "XMLHttpRequest",
-        },
-      });
-      return data;
-    } else {
-      const { data } = await axiosClient({
-        method: "get",
-        url: "/auth/getListMovies?page=" + page,
-        headers: {
-          Authorization: "Bearer " + token,
-          "X-Requested-With": "XMLHttpRequest",
-        },
-      });
-      return data;
+    const requestOptions = {
+      method: "get",
+      url: "/auth/movies",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "X-Requested-With": "XMLHttpRequest",
+      },
+    };
+
+    if (page !== null && page !== undefined) {
+      requestOptions.url = "/auth/movies?page=" + page;
     }
+
+    const { data } = await axiosClient(requestOptions);
+    return data;
   } catch (error) {
     return error.message;
   }
@@ -34,10 +28,10 @@ const addMovie = async (movie, token) => {
     const { data } = await axiosClient({
       method: "post",
       data: movie,
-      url: "/auth/addMovie",
+      url: "/auth/movies",
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
+        Authorization: `Bearer ${token}`,
       },
     });
     return data;
@@ -49,10 +43,10 @@ const deleteMovie = async (id, token) => {
   try {
     const { data } = await axiosClient({
       method: "delete",
-      url: `/auth/deletemovie/${id}`,
+      url: `/auth/movies/${id}`,
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
+        Authorization: `Bearer ${token}`,
       },
     });
     return data; // Returning data if needed
@@ -61,21 +55,6 @@ const deleteMovie = async (id, token) => {
   }
 };
 
-const editMovie = async (movie) => {
-  try {
-    const { data } = await axiosClient({
-      method: "put",
-      data: movie,
-      url: "/auth/editMovie",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    return data;
-  } catch (error) {
-    return error.message;
-  }
-};
 const getOneFilm = async (slug, token) => {
   try {
     const { data } = await axiosClient({
@@ -83,10 +62,10 @@ const getOneFilm = async (slug, token) => {
       url: `/${slug}`,
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
+        Authorization: `Bearer ${token}`,
       },
     });
-    return data;
+    return data.data;
   } catch (error) {
     return error.message;
   }
@@ -97,7 +76,7 @@ const updateFilm = async (movie, token) => {
     const { data } = await axiosClient({
       method: "put",
       data: movie,
-      url: `/auth/edit/${movie.slug}`,
+      url: `/auth/movies/${movie._id}`,
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -112,14 +91,14 @@ const getListUsers = async (page, token) => {
   try {
     const url =
       page === null || page === undefined
-        ? "/auth/getListUser"
-        : "/auth/getListUser?page=" + page;
+        ? "/auth/users"
+        : "/auth/users?page=" + page;
     const { data } = await axiosClient({
       method: "get",
       url,
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
+        Authorization: `Bearer ${token}`,
       },
     });
     return data;
@@ -132,13 +111,13 @@ const getUser = async (id, token) => {
   try {
     const { data } = await axiosClient({
       method: "get",
-      url: `/auth/users/${id}`,
+      url: `/synthetic/users/${id}`,
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
+        Authorization: `Bearer ${token}`,
       },
     });
-    return data;
+    return data.data;
   } catch (error) {
     return error.message;
   }
@@ -147,10 +126,10 @@ const getCommentUser = async (id, token) => {
   try {
     const { data } = await axiosClient({
       method: "get",
-      url: `/auth/getCommentUser/${id}`,
+      url: `/auth/comments/${id}`,
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
+        Authorization: `Bearer ${token}`,
       },
     });
     return data;
@@ -167,7 +146,7 @@ const postComment = async (comment, PostID, token) => {
       url: `users/${PostID}/comment`,
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
+        Authorization: `Bearer ${token}`,
       },
     });
     return req;
@@ -179,10 +158,10 @@ const getComments = async (PostID, token) => {
   try {
     const req = await axiosClient({
       method: "get",
-      url: `/${PostID}/comments`,
+      url: `comments/${PostID}`,
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
+        Authorization: `Bearer ${token}`,
       },
     });
     return req;
@@ -194,7 +173,7 @@ const getMovieAPI = async (limit) => {
   try {
     const req = await axiosClient({
       method: "get",
-      url: "/getMovies?limit=" + limit,
+      url: "/latestMovies?limit=" + limit,
       headers: {
         "Content-Type": "application/json",
       },
@@ -205,11 +184,34 @@ const getMovieAPI = async (limit) => {
   }
 };
 
-const SearchMovie = async (name) => {
+const SearchMovie = async (name,category="") => {
   try {
     const { data } = await axiosClient({
       method: "get",
-      url: `/search?name=${name}`,
+      url: `/search?name=${name}&category=${category}`,
+    });
+    return data;
+  } catch (error) {
+    return error.message;
+  }
+};
+const latestMovies = async () => {
+  try {
+    const { data } = await axiosClient({
+      method: "get",
+      url: "/latestMovies",
+    });
+    return data;
+  } catch (error) {
+    return error.message;
+  }
+}
+
+const FilterMovie = async (category, limit) => {
+  try {
+    const { data } = await axiosClient({
+      method: "get",
+      url: `/filter?category=${category}&limit=${limit}`,
     });
     return data;
   } catch (error) {
@@ -223,7 +225,7 @@ const deleteComment = async (id, token) => {
       url: `/users/comment/${id}`,
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer " + token,
+        Authorization: `Bearer ${token}`,
       },
     });
     return data;
@@ -248,7 +250,7 @@ const forgetPassword = async (email) => {
     return error;
   }
 };
-const ResetPassword = async (token,password) => {
+const ResetPassword = async (token, password) => {
   try {
     const data = await axiosClient({
       method: "post",
@@ -258,14 +260,14 @@ const ResetPassword = async (token,password) => {
       },
       data: {
         token,
-        password
+        password,
       },
     });
     return data;
   } catch (error) {
     return error;
   }
-}
+};
 
 export {
   SearchMovie,
@@ -275,7 +277,6 @@ export {
   deleteComment,
   forgetPassword,
   getOneFilm,
-  editMovie,
   updateFilm,
   getListUsers,
   deleteMovie,
@@ -284,4 +285,6 @@ export {
   getMovieAPI,
   getComments,
   getCommentUser,
+  FilterMovie,
+  latestMovies
 };

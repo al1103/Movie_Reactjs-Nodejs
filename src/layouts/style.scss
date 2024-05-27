@@ -8,6 +8,7 @@
 // @import "../libs/simplebar/dist/simplebar.css";
 :root,
 [data-bs-theme="light"] {
+  --background: #fff;
   --bs-blue: #5d87ff;
   --bs-indigo: #6610f2;
   --bs-purple: #6f42c1;
@@ -233,24 +234,6 @@ hr {
   border: 0;
   border-top: var(--bs-border-width) solid;
   opacity: 0.25;
-}
-.h1,
-.h2,
-.h3,
-.h4,
-.h5,
-.h6,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  margin-top: 0;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-  line-height: 1.2;
-  color: var(--bs-heading-color, inherit);
 }
 .h1,
 h1 {
@@ -2434,7 +2417,7 @@ progress {
 .form-label {
   margin-bottom: 0.5rem;
   font-weight: 600;
-  color: #2a3547;
+  color: #ffffff;
 }
 .col-form-label {
   padding-top: calc(8px + var(--bs-border-width));
@@ -5827,7 +5810,7 @@ fieldset:disabled .btn {
   --bs-badge-padding-y: 5px;
   --bs-badge-font-size: 0.875rem;
   --bs-badge-font-weight: 400;
-  --bs-badge-color: #fff;
+  --bs-badge-color: white;
   --bs-badge-border-radius: 4px;
   display: inline-block;
   padding: var(--bs-badge-padding-y) var(--bs-badge-padding-x);
@@ -16673,9 +16656,12 @@ fieldset:disabled .btn {
 }
 .page-wrapper {
   position: relative;
+  background-color: #151f30;
 }
 .body-wrapper {
   position: relative;
+  background-color: #151f30;
+
 }
 .body-wrapper > .container-fluid,
 .body-wrapper > .container-lg,
@@ -16926,4 +16912,13 @@ ul {
 }
 .login-card-body{
   padding: 30px;
+  background-color: #151f30;
+}
+
+.background{
+  background-color: #171c22;
+}
+
+.background{
+  background-color: var(--bs-body-bg-rgb);
 }

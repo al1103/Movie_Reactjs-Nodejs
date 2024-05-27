@@ -3,10 +3,6 @@ import './Banner.scss'
 const Banner = () => {
   return (
     <div>
-  
-  
-
-    
         <section className="hero">
           <div className="container">
             <div className="hero-content">
@@ -41,28 +37,7 @@ const Banner = () => {
             </div>
           </div>
         </section>
-        {/* 
-    - #UPCOMING
-  */}
-     
-   
-
-        {/* 
-    - #TV SERIES
-  */}
-   
-        {/* 
-    - #CTA
-  */}
-     
     
-    {/* 
-      - #FOOTER
-    */}
-    
-    {/* 
-      - #GO TO TOP
-    */}
    
   </div>
   

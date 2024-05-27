@@ -43,11 +43,6 @@ html {
   -ms-text-size-adjust: 100%;
 }
 
-html,
-body {
-  height: 100%;
-}
-
 body {
   font-family: "Inter", sans-serif;
   font-weight: 400;
@@ -56,44 +51,11 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-button {
-  padding: 0;
-  border: none;
-  background-color: transparent;
-  transition: 0.5s ease;
-  transition-property: color, background-color, border-color;
-  cursor: pointer;
-}
-
-button:focus {
-  outline: none;
-}
-
-a {
-  transition: 0.5s ease;
-  transition-property: color, background-color, border-color;
-}
-
 a:hover,
 a:active,
 a:focus {
   outline: none;
   text-decoration: none;
-}
-
-input,
-textarea,
-select {
-  padding: 0;
-  margin: 0;
-  border-radius: 0;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  -ms-appearance: none;
-  appearance: none;
-  box-shadow: none;
-  transition: 0.5s ease;
-  transition-property: color, border-color;
 }
 
 input:focus,
@@ -109,6 +71,9 @@ select::-ms-expand {
 ul {
   margin: 0;
   padding: 0;
+  list-style: none;
+}
+li {
   list-style: none;
 }
 
@@ -480,6 +445,7 @@ ul {
 
 .main {
   position: relative;
+  background-color: #131720;
   margin-top: 70px;
   padding: 20px 0 0;
 }
@@ -579,11 +545,6 @@ ul {
   text-transform: uppercase;
   font-weight: 500;
   margin-left: auto;
-}
-
-.main__title-link:hover {
-  color: #151f30;
-  background-color: #fff;
 }
 
 .main__table-wrap {
@@ -1327,7 +1288,7 @@ ul {
   padding: 15px 20px;
   resize: none;
 }
-.form__img__input{
+.form__img__input {
   background-color: #151f30;
   border: 1px solid transparent;
   border-radius: 16px;
@@ -1338,10 +1299,10 @@ ul {
   width: 100%;
   padding: 15px 20px;
   resize: none;
-
 }
 
-.form__textarea:focus , .form__img__input:focus{
+.form__textarea:focus,
+.form__img__input:focus {
   background-color: #151f30;
   border-color: #2f80ed;
 }
@@ -1359,11 +1320,6 @@ ul {
   color: #e0e0e0;
   text-transform: uppercase;
   font-weight: 500;
-}
-
-.form__btn:hover {
-  color: #151f30;
-  background-color: #fff;
 }
 
 .form__radio {
@@ -1491,10 +1447,6 @@ ul {
   border-radius: 16px;
 }
 
-
-
-
-
 .form__gallery label:before {
   content: "";
   pointer-events: none;
@@ -1522,7 +1474,7 @@ ul {
   overflow: hidden;
 }
 
-.form__img input{
+.form__img input {
   width: 100%;
   height: 100%;
   background-color: transparent;
@@ -1534,7 +1486,6 @@ ul {
   padding: 15px 20px;
   resize: none;
 }
-
 
 .form__img label:hover {
   color: #fff;
@@ -2228,6 +2179,7 @@ ul {
 .sign__label {
   font-weight: 400;
   font-size: 14px;
+  display: block;
   color: #e0e0e0;
   margin-bottom: 5px;
 }
@@ -2881,15 +2833,16 @@ ul {
 //////////////////
 //episodios//
 ////////////////
-/// 
+///
 
 .episodios {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
+  gap: 10px;
 }
 
-.episodios li a{
+.episodios li a {
   width: 60px;
 }
 
@@ -2897,6 +2850,17 @@ ul {
   aspect-ratio: 4 / 2;
   margin: 0 auto;
 }
-.video-player{
-  margin: 120px auto;
+.video-player {
+  margin: 180px auto;
+}
+.js-example-basic-single {
+  margin-top: 15px;
+}
+:where(.css-dev-only-do-not-override-1uweeqc).ant-tag,
+:where(.css-dev-only-do-not-override-1uweeqc).ant-tag a,
+:where(.css-dev-only-do-not-override-1uweeqc).ant-tag a:hover {
+  color: #fff !important;
+}
+:where(.css-dev-only-do-not-override-1uweeqc).ant-flex {
+  flex-wrap: wrap;
 }

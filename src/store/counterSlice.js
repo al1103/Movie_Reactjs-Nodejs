@@ -4,10 +4,13 @@ const initialState = {
   todos: [], // Array to store todos (assuming you have todo functionality)
   token: localStorage.getItem("token") || null,
   user: localStorage.getItem("user") || null,
+  fav: [],
+  mode: 'light',
 };
 
 const todoSlice = createSlice({
   name: "todos",
+
   initialState,
   reducers: {
     addTodo(state, action) {
@@ -48,6 +51,13 @@ const todoSlice = createSlice({
       localStorage.removeItem("user");
       localStorage.removeItem("token");
     },
+    getFav(state, action) {
+      state.fav = action.payload;
+    },
+    toggleTheme(state, action){
+      state.mode = action.payload;
+    }
+
   },
 });
 

@@ -163,3 +163,18 @@
     transform: translateY(-50%);
   }
   
+  .icon-eye {
+    display: block;
+  }
+  .icon-eye-slash {
+    display: none;
+  }
+.toggleShowPassword{
+    position: absolute;
+    top: 50%;
+    right: 0.75rem;
+    transform: translateY(-50%);
+  }
+  .password{
+    position: relative;
+  }

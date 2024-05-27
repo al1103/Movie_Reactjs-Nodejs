@@ -3,13 +3,15 @@ import React from "react";
 import "./MovieCard.scss";
 const MovieCard = (props) => {
   
-  const { _id,name, slug, original_name, thumb_url, poster_url, modified } =
-    props.movie;
+  const { _id,name, slug, original_name, poster_url, modified ,quality} =
+    props.movie ? props.movie : props.movie._id;
+    console.log(props.movie);
+
   return (
     <div className="movie-card">
-      <a href={`/movie/${_id}`}>
+      <a href={`/movie/${slug}`}>
         <figure className="card-banner">
-          <img src={thumb_url} alt={name} />
+          <img src={poster_url} alt={name} />
         </figure>
       </a>
 
@@ -17,10 +19,10 @@ const MovieCard = (props) => {
         <a href="./movie-details.html">
           <h3 className="card-title">{name}</h3>
         </a>
-        <time dateTime={modified}>{original_name}</time>
+        <p className="des" dateTime={modified}>{original_name }</p>
       </div>
       <div className="card-meta">
-        <div className="badge badge-outline">HD</div>
+        <div className="badge badge-outline">{quality}</div>
         <div className="duration">
           <ion-icon name="time-outline" />
           <time dateTime="PT137M">137 min</time>

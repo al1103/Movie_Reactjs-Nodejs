@@ -1,38 +1,51 @@
 import React, { useEffect, useState } from "react";
-import { getOneFilmNguonC } from "../../servers/apiNguonC";
-import { getOneFilm } from "../../servers/api";
+import { getOneFilm, getUser } from "../../servers/api";
 import { Link } from "react-router-dom";
+import "./style.scss";
 import Comment from "../Comment";
+import Episode from "../episodes";
+import { Button } from "antd";
+import { AddFavorite } from "../../servers/users";
+import { ToastContainer, toast } from "react-toastify";
 
 const MovieItems = () => {
   const [movie, setMovie] = useState({});
   const pathname = window.location;
   const slug = pathname.pathname.split("/").pop();
   const [isLoading, setIsLoading] = useState(true);
-  const [episodes, setEpisodes] = useState([]);
+  const [category, setCategory] = useState([]);
+  const [age, setAge] = useState(0);
+  const [checkUser, setCheckUser] = useState(true);
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await getOneFilm(slug);
-        if(data.status === "success"){
-        setMovie(data.movie);
-        }        
-        // const data = await getOneFilmNguonC(slug);
-        // if (data.movie) {
-        //   setMovie(data.movie);
-        // } else {
-        //   const data = await getOneFilm(slug);
-        //   setMovie(data);
-        // }
-        // setEpisodes(data.movie.episodes[0].items || []);
+        setMovie(data);
+        const categoryArray = Object.values(data.category).reduce(
+          (acc, categoryItem) => {
+            if (Array.isArray(categoryItem.list)) {
+              categoryItem.list.forEach((listItem) => {
+                if (listItem && listItem.name) {
+                  acc.push(listItem.name);
+                }
+              });
+            }
+            return acc;
+          },
+          []
+        );
+
+        setCategory(categoryArray);
       } catch (error) {
         console.error("Đã xảy ra lỗi:", error);
       } finally {
-        setIsLoading(false); // Always set loading to false after fetching
+        setIsLoading(false); // Luôn đặt isLoading thành false sau khi fetch xong
       }
     };
+
     fetchData();
-  }, [slug]); //
+  }, [slug]);
+
 
   const setBackgroundImage = () => {
     if (movie.poster_url) {
@@ -45,17 +58,54 @@ const MovieItems = () => {
     }
   };
 
+  const handleAddToFavorite = async () => {
+    const info = {
+      name: movie.name,
+      slug: movie.slug,
+      thumb_url: movie.thumb_url,
+    };
+    const token = localStorage.getItem("token");
+    const movieidfav = JSON.stringify(info);
+    if (!token) {
+      const fav = localStorage.getItem("favorite");
+      const favorite = JSON.parse(fav) || [];
+
+      if (!favorite.some((favInfo) => JSON.stringify(favInfo) === movieidfav)) {
+        favorite.push(info);
+        localStorage.setItem("favorite", JSON.stringify(favorite));
+        toast.success("Đã thêm vào yêu thích");
+      } else {
+        toast.warning("Phim đã có trong danh sách yêu thích");
+      }
+    } else {
+      const data = await AddFavorite(info, token);
+      if (data.status === "success") {
+        const fav = localStorage.getItem("favorite");
+        const favorite = JSON.parse(fav) || [];
+        if (
+          !favorite.some((favInfo) => JSON.stringify(favInfo) === movieidfav)
+        ) {
+          favorite.push(info);
+          localStorage.setItem("favorite", JSON.stringify(favorite));
+          toast.success("Đã thêm vào yêu thích");
+        } else {
+          alert("Phim đã có trong danh sách yêu thích");
+        }
+      } else {
+        toast.warning("Phim đã có trong danh sách yêu thích");
+      }
+    }
+  };
+
+  console.log(movie);
   useEffect(() => {
     setBackgroundImage();
   }, [movie]);
   return (
-    <>
+    <div>
       {isLoading ? (
         <div>Loading movie details...</div>
       ) : movie ? (
-        <div>
-          <div>
-            <div>
               <article>
                 <section className="movie-detail">
                   <div className="container">
@@ -66,25 +116,23 @@ const MovieItems = () => {
                       </button>
                     </figure>
                     <div className="movie-detail-content">
-                      <p className="detail-subtitle">New Episodes</p>
+                      <p className="detail-subtitle">{movie.language}</p>
                       <h1 className="h1 detail-title">{movie.name}</h1>
                       <div className="meta-wrapper">
                         <div className="badge-wrapper">
-                          <div className="badge badge-fill">PG 13</div>
                           <div className="badge badge-outline">
                             {movie.quality}
                           </div>
                         </div>
                         <div className="ganre-wrapper">
-                          {/* <a>{movie.category[2].list[0].name}</a> */}
+                          {movie?.category[2].list.map((item, index) => (
+                            <span key={index} className="badge badge-outline">
+                              {item.name}
+                            </span>
+                          ))}
                         </div>
+
                         <div className="date-time">
-                          <div>
-                            <ion-icon name="calendar-outline" />
-                            <time dateTime={movie.created}>
-                              {movie.created}
-                            </time>
-                          </div>
                           <div>
                             <ion-icon name="time-outline" />
                             <time dateTime="PT115M">{movie.time}</time>
@@ -106,175 +154,26 @@ const MovieItems = () => {
                           <span>Watch Now</span>
                         </button>
                       </div>
-
-                      <a href="" download className="download-btn">
-                        <span>Download</span>
-                        <ion-icon name="download-outline" />
-                      </a>
                     </div>
                   </div>
                 </section>
-                <div id="episodes" className="sbox fixidtab container my-5">
-                  <h2>Chọn tập phim</h2>
-                  <div id="seasons">
-                    <div className="se-c">
-                      <div className="se-q"></div>
-                      <div className="se-a" style={{ display: "block" }}>
-                        <ul className="episodios">
-                          {episodes.map((ep, index) => (
-                            <li key={index}>
-                              <Link
-                                to={`/${movie.slug}/${ep.slug}`}
-                                className="btn btn-outline-info m-1"
-                              >
-                                {ep.name}
-                              </Link>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
+                <div className="container">
+                  <Button onClick={handleAddToFavorite} type="primary">
+                    add to favorites
+                  </Button>
                 </div>
-                {/* 
-    - #TV SERIES
-  */}
-                <section className="tv-series">
-                  <div className="container">
-                    <p className="section-subtitle">Best TV Series</p>
-                    <h2 className="h2 section-title">World Best TV Series</h2>
-                    <ul className="movies-list">
-                      <li>
-                        <div className="movie-card">
-                          <a href="./movie-details.html">
-                            <figure className="card-banner">
-                              <img
-                                src="./assets/images/series-1.png"
-                                alt="Moon Knight movie poster"
-                              />
-                            </figure>
-                          </a>
-                          <div className="title-wrapper">
-                            <a href="./movie-details.html">
-                              <h3 className="card-title">Moon Knight</h3>
-                            </a>
-                            <time dateTime={2022}>2022</time>
-                          </div>
-                          <div className="card-meta">
-                            <div className="badge badge-outline">2K</div>
-                            <div className="duration">
-                              <ion-icon name="time-outline" />
-                              <time dateTime="PT47M">47 min</time>
-                            </div>
-                            <div className="rating">
-                              <ion-icon name="star" />
-                              <data>8.6</data>
-                            </div>
-                          </div>
-                        </div>
-                      </li>
-                      <li>
-                        <div className="movie-card">
-                          <a href="./movie-details.html">
-                            <figure className="card-banner">
-                              <img
-                                src="./assets/images/series-2.png"
-                                alt="Halo movie poster"
-                              />
-                            </figure>
-                          </a>
-                          <div className="title-wrapper">
-                            <a href="./movie-details.html">
-                              <h3 className="card-title">Halo</h3>
-                            </a>
-                            <time dateTime={2022}>2022</time>
-                          </div>
-                          <div className="card-meta">
-                            <div className="badge badge-outline">2K</div>
-                            <div className="duration">
-                              <ion-icon name="time-outline" />
-                              <time dateTime="PT59M">59 min</time>
-                            </div>
-                            <div className="rating">
-                              <ion-icon name="star" />
-                              <data>8.8</data>
-                            </div>
-                          </div>
-                        </div>
-                      </li>
-                      <li>
-                        <div className="movie-card">
-                          <a href="./movie-details.html">
-                            <figure className="card-banner">
-                              <img
-                                src="./assets/images/series-3.png"
-                                alt="Vikings: Valhalla movie poster"
-                              />
-                            </figure>
-                          </a>
-                          <div className="title-wrapper">
-                            <a href="./movie-details.html">
-                              <h3 className="card-title">Vikings: Valhalla</h3>
-                            </a>
-                            <time dateTime={2022}>2022</time>
-                          </div>
-                          <div className="card-meta">
-                            <div className="badge badge-outline">2K</div>
-                            <div className="duration">
-                              <ion-icon name="time-outline" />
-                              <time dateTime="PT51M">51 min</time>
-                            </div>
-                            <div className="rating">
-                              <ion-icon name="star" />
-                              <data>8.3</data>
-                            </div>
-                          </div>
-                        </div>
-                      </li>
-                      <li>
-                        <div className="movie-card">
-                          <a href="./movie-details.html">
-                            <figure className="card-banner">
-                              <img
-                                src="./assets/images/series-4.png"
-                                alt="Money Heist movie poster"
-                              />
-                            </figure>
-                          </a>
-                          <div className="title-wrapper">
-                            <a href="./movie-details.html">
-                              <h3 className="card-title">Money Heist</h3>
-                            </a>
-                            <time dateTime={2017}>2017</time>
-                          </div>
-                          <div className="card-meta">
-                            <div className="badge badge-outline">4K</div>
-                            <div className="duration">
-                              <ion-icon name="time-outline" />
-                              <time dateTime="PT70M">70 min</time>
-                            </div>
-                            <div className="rating">
-                              <ion-icon name="star" />
-                              <data>8.3</data>
-                            </div>
-                          </div>
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                </section>
+                <div className="background-episodes">
+                  <Episode movie={movie}></Episode>
+                </div>
+
               </article>
-            </div>
-          </div>
-        </div>
       ) : (
         <div>Movie data not found.</div>
       )}
       <Comment id={movie._id}></Comment>
-    </>
+      <ToastContainer />
+    </div>
   );
 };
 
 export default MovieItems;
-
-

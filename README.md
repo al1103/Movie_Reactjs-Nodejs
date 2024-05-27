@@ -1,4 +1,10 @@
+<<<<<<< Updated upstream
 Video Demo : https://youtu.be/oDpxz1HKym8?si=vTZJmtbYgI8DeQ_E 
+=======
+
+Video Demo : 
+
+>>>>>>> Stashed changes
 
 
 ## Hướng dẫn cài đặt và chạy ứng dụng

@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { getOneFilm, updateFilm } from "../../../../servers/api";
 import { updateMovie } from "../../../../action";
 import AdminLayout from "../../../../layouts/AdminLayout";
+import { Flex, Tag } from "antd";
 import "../../admin.scss";
 
 const EditMovie = () => {
@@ -18,6 +19,51 @@ const EditMovie = () => {
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [quality, setQuality] = useState("FullHD");
+  const [_id, setId] = useState("");
+  const categoryArray = [
+    "hành động",
+    "hoạt hình",
+    "kinh dị",
+    "tình cảm",
+    "tâm lý",
+    "gia đình",
+    "hình sự",
+    "chiến tranh",
+    "bi kịch",
+    "cổ trang",
+    "chính kịch",
+    "phim hài",
+    "ca nhạc",
+    "khoa học viễn tưởng",
+    "tài liệu",
+    "hài dài tập",
+    "phiêu lưu",
+    "kỳ ảo",
+    "trinh thám",
+    "tội phạm",
+    "lãng mạn",
+    "lịch sử",
+    "gây cấn"
+];
+
+
+
+
+
+
+
+
+
+
+
+
+
+  const handleChange = (tag, checked) => {
+    const nextSelectedTags = checked
+      ? [...category, tag]
+      : category.filter((t) => t !== tag);
+    setCategory(nextSelectedTags);
+  };
 
   useEffect(() => {
     const pathname = window.location;
@@ -25,26 +71,27 @@ const EditMovie = () => {
     const fetchData = async () => {
       try {
         const data = await getOneFilm(slugLink, token);
-        if (data.status === "success") {
+
+        console.log("data", );
           const {
+            _id,
             name,
             original_name,
             slug,
             thumb_url,
             poster_url,
             description,
-            category,
             quality,
-          } = data.movie;
+          } = data;
+          setId(_id);
           setName(name);
           setOriginalName(original_name);
           setSlug(slug);
           setThumbUrl(thumb_url);
           setPosterUrl(poster_url);
           setDescription(description);
-          setCategory(category);
+          setCategory(data.category[2].list.map((item) => item.name.toLowerCase()));
           setQuality(quality);
-        }
       } catch (error) {
         console.error("Đã xảy ra lỗi:", error);
       }
@@ -52,10 +99,13 @@ const EditMovie = () => {
 
     fetchData();
   }, []);
+  console.log("category", category);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const movie = {
+      _id,
       name,
       original_name,
       slug,
@@ -68,7 +118,7 @@ const EditMovie = () => {
 
     try {
       const data = await updateFilm(movie, token);
-      if (data.message === "Phim đã được cập nhật") {
+      if (data.status === "success") {
         dispatch(updateMovie(movie, token));
         toast.success("Cập nhật phim thành công");
       } else {
@@ -198,6 +248,7 @@ const EditMovie = () => {
                       <div className="col-12 col-sm-6 col-lg-3">
                         <div className="form__group">
                           <select
+                            multiple
                             onChange={(e) => {
                               setQuality(e.target.value);
                             }}
@@ -210,35 +261,21 @@ const EditMovie = () => {
                           </select>
                         </div>
                       </div>
-
-                      <div className="col-12 col-lg-6">
-                        <div className="form__group">
-                          <select
-                            className="js-example-basic-multiple"
-                            id="genre"
-                            multiple="multiple"
-                            onChange={(e) => {
-                              setCategory(e.target.value);
-                            }}
-                            value={category}
+                    
+                      <div className="col-12 col-sm-12 col-lg-12">
+                      
+                      <Flex gap={4} wrap align="center">
+                        <span>Categories:</span>
+                        {categoryArray.map((tag) => (
+                          <Tag.CheckableTag
+                            key={tag}
+                            checked={category.includes(tag)}
+                            onChange={(checked) => handleChange(tag, checked)}
                           >
-                            <option value="Action">Action</option>
-                            <option value="Animation">Animation</option>
-                            <option value="Comedy">Comedy</option>
-                            <option value="Crime">Crime</option>
-                            <option value="Drama">Drama</option>
-                            <option value="Fantasy">Fantasy</option>
-                            <option value="Historical">Historical</option>
-                            <option value="Horror">Horror</option>
-                            <option value="Romance">Romance</option>
-                            <option value="Science-fiction">
-                              Science-fiction
-                            </option>
-                            <option value="Thriller">Thriller</option>
-                            <option value="Western">Western</option>
-                            <option value="Otheer">Otheer</option>
-                          </select>
-                        </div>
+                            {tag}
+                          </Tag.CheckableTag>
+                        ))}
+                      </Flex>
                       </div>
                     </div>
                   </div>

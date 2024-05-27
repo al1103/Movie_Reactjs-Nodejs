@@ -20,6 +20,7 @@ const UserManager = () => {
     const fetchListMovies = async () => {
       try {
         const res = await getListUsers(selectedPage, token);
+        console.log(res);
         setListUser(res.users);
         setTotalPagesCalculated(res.totalPage);
       } catch (error) {
@@ -29,7 +30,7 @@ const UserManager = () => {
     fetchListMovies();
   }, [selectedPage, token]);
 
-  const getFullYear = (date) => {
+  const getFullYear = (date) => { 
     const newDate = new Date(date);
     const year = newDate.getFullYear();
     return year;
@@ -48,11 +49,7 @@ const UserManager = () => {
                     <span className="filter__item-label">Sort by:</span>
                     <div
                       className="filter__item-btn dropdown-toggle"
-                      role="navigation"
-                      id="filter-sort"
-                      data-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
+
                     >
                       <input type="button" defaultValue="Date created" />
                       <span />

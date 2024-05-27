@@ -2,6 +2,20 @@ import React, { useEffect, useState } from "react";
 import UserLayout from "../../layouts/UserLayout";
 import { Link } from "react-router-dom";
 import { getUser } from "../../servers/api";
+import Loading from "../../components/Loading";
+
+const CovertDate = (dateString) => {
+  const date = new Date(dateString);
+
+  const day = date.getDate();
+  const month = date.getMonth() + 1; // Month index starts from 0, so add 1
+  const year = date.getFullYear();
+  const formattedDate = `${day}/${month}/${year}`;
+
+  return formattedDate;
+};
+
+
 
 const UserPage = () => {
   const [loading, setLoading] = useState(true);
@@ -37,20 +51,23 @@ const UserPage = () => {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <Loading></Loading>
+      </div>
+    );
   }
 
   return (
     <UserLayout>
       <div className="member-right">
-        <h2 className="member-title">Thông tin của tôi</h2>
+        <h2 className="member-title">My Information</h2>
         <div className="member-tab-list">
           <ul className="clearfix">
-            <li className="active">Thông tin cơ bản</li>
+            <li className="active">Basic Information</li>
             <li>
-              <Link to="info">Chỉnh sửa thông tin</Link>
+              <Link to="info">Edit Information</Link>
             </li>
-            
           </ul>
         </div>
         <div className="member-listcon">
@@ -60,7 +77,7 @@ const UserPage = () => {
                 htmlFor="img"
                 className="col-xs-4 col-md-3 col-xl-2 control-label"
               >
-                Ảnh đại diện
+                Profile Picture
               </label>
               <div className="col-xs-8 col-sm-8">
                 <img
@@ -74,7 +91,7 @@ const UserPage = () => {
 
             <div className="form-group">
               <label className="col-xs-4 col-md-3 col-xl-2 control-label">
-                Tên người dùng
+                Username
               </label>
               <div className="col-xs-8 col-md-9 col-xl-10 layer-col-12">
                 <p className="form-control-static pt-xs-0">{user.username}</p>
@@ -82,26 +99,26 @@ const UserPage = () => {
             </div>
             <div className="form-group">
               <label className="col-xs-4 col-md-3 col-xl-2 control-label">
-                Nhóm người dùng
+                User Group
               </label>
               <div className="col-xs-8 col-md-9 col-xl-10 layer-col-12">
-                {/* <p className="form-control-static pt-xs-0">{user.package[0].name}</p> */}
+                <p className="form-control-static pt-xs-0">{user?.package[0].name}</p>
               </div>
             </div>
             <div className="form-group">
               <label className="col-xs-4 col-md-3 col-xl-2 control-label">
-                Thời hạn thành viên
+                Membership Expiration
               </label>
               <div className="col-xs-8 col-md-9 col-xl-10 layer-col-12">
                 <p className="form-control-static pt-xs-0">
-                  {subscriptionExpiration}
+                  {CovertDate(subscriptionExpiration)}
                 </p>
               </div>
             </div>
 
             <div className="form-group">
               <label className="col-xs-4 col-md-3 col-xl-2 control-label">
-                Địa chỉ Email
+                Email Address
               </label>
               <div className="col-xs-8 col-md-9 col-xl-10 layer-col-12">
                 <p className="form-control-static pt-xs-0">{user.email}</p>
@@ -109,19 +126,19 @@ const UserPage = () => {
             </div>
             <div className="form-group">
               <label className="col-xs-4 col-md-3 col-xl-2 control-label">
-                Thời gian đăng ký
+                Registration Date
               </label>
               <div className="col-xs-8 col-md-9 col-xl-10 layer-col-12">
-                <p className="form-control-static pt-xs-0">{user.createdAt}</p>
+                <p className="form-control-static pt-xs-0">{CovertDate(user.createdAt)}</p>
               </div>
             </div>
 
             <div className="form-group">
               <label className="col-xs-4 col-md-3 col-xl-2 control-label">
-                Điểm tích lũy
+                Accumulated Points
               </label>
               <div className="col-xs-8 col-md-9 col-xl-10 layer-col-12">
-                <p className="form-control-static pt-xs-0">Điểm_tích_lũy_mẫu</p>
+                <p className="form-control-static pt-xs-0">Sample_Points</p>
               </div>
             </div>
           </form>

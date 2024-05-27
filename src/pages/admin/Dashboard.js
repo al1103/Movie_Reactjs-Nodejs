@@ -7,12 +7,13 @@ const Dashboard = () => {
   const [totalMovie, setTotalMovie] = useState(0);
   const [totalUser, setTotalUser] = useState(0);
   const [totalComment, setTotalComment] = useState(0);
+  
 
 
   const getListMovie = async () => {
     try {
       const res = await getListMovies(null, token);
-      setTotalMovie(res.totalMovies);
+      setTotalMovie(res.totalPages * 10);
     } catch (error) {
       console.log(error);
     }
@@ -509,8 +510,6 @@ const Dashboard = () => {
                 </div>
               </div>
             </div>
-            {/* end dashbox */}
-            {/* dashbox */}
             <div className="col-12 col-xl-6">
               <div className="dashbox">
                 <div className="dashbox__title">
