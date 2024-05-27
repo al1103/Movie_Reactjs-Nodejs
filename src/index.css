@@ -18,12 +18,10 @@ code {
 
 /* 
 Reset */
-
+/* 
 :root {
 
-  /**
-   * colors
-   */
+  
 
   --rich-black-fogra-29: hsl(225, 25%, 9%);
   --rich-black-fogra-39: hsl(170, 21%, 5%);
@@ -39,10 +37,6 @@ Reset */
   --white: hsl(0, 100%, 100%);
   --black: hsl(0, 0%, 0%);
   --jet: hsl(0, 0%, 20%);
-
-  /**
-   * typography
-   */
 
   --ff-poppins: 'Poppins', sans-serif;
 
@@ -62,19 +56,31 @@ Reset */
   --fw-500: 500;
   --fw-700: 700;
 
-  /**
-   * transition
-   */
+
 
   --transition-1: 0.15s ease;
   --transition-2: 0.25s ease-in;
 
-  /**
-   * spacing
-   */
+ 
 
   --section-padding: 100px;
 
+} */
+
+
+/* Global styles */
+:root {
+  --bg-color: #fff; /* Light mode background */
+  --text-color: #333; /* Light mode text */
 }
 
+.app.dark {
+  --bg-color: #222; /* Dark mode background */
+  --text-color: #eee; /* Dark mode text */
+}
 
+/* Component-specific styles */
+.my-component {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
