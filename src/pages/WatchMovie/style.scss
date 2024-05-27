@@ -1,0 +1,39 @@
+.boder{
+    border: 1px solid #707070;
+}
+.server-info {
+    margin-top: 1rem;
+    padding: 1rem;
+  
+    p {
+      margin-bottom: 0.5rem;
+    }
+  
+    h2 {
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+    }
+  
+    a {
+      display: inline-block;
+      margin-right: 0.5rem;
+      padding: 0.5rem 1rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      text-decoration: none;
+      color: #ffffff;
+  
+      &:hover {
+        background-color: #ccc;
+      }
+    }
+  }
+  
+
+body{
+  background-color: #131720;
+}
+.active{
+  color: #000;
+  border-color: #fff;
+}

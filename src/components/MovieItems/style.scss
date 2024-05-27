@@ -1,0 +1,117 @@
+// body {
+//     background-color: #eee;
+//   }
+  
+//   .card {
+//     background-color: #fff;
+//     border: none;
+//   }
+  
+//   .form-color {
+//     background-color: #fafafa;
+//   }
+  
+//   .form-control {
+//     height: 48px;
+//     border-radius: 25px;
+//   }
+  
+//   .form-control:focus {
+//     color: #495057;
+//     background-color: #fff;
+//     border-color: #35b69f;
+//     outline: 0;
+//     box-shadow: none;
+//     text-indent: 10px;
+//   }
+  
+//   .c-badge {
+//     background-color: #35b69f;
+//     color: white;
+//     height: 20px;
+//     font-size: 11px;
+//     width: 92px;
+//     border-radius: 5px;
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     margin-top: 2px;
+//   }
+  
+//   .comment-text {
+//     font-size: 13px;
+//   }
+  
+//   .wish {
+//     color: #35b69f;
+//   }
+  
+//   .user-feed {
+//     font-size: 14px;
+//     margin-top: 12px;
+//   }
+//   .flex-row img {
+//     width: 40px;
+//     height: 40px;
+//     border-radius: 50%;
+//     margin-right: 10px;
+//   }
+  
+//   .btn-comment {
+//     margin: 1rem;
+//     position: relative;
+//     width: auto;
+  
+//     height: 40px;
+//     font-size: 10px;
+//     background-image: linear-gradient(45deg, #141e30 0%, #243b55 100%);
+//     color: white;
+//     border: none;
+//     border-radius: 5px;
+//     cursor: pointer;
+//     padding: 0 20px;
+//     line-height: 40px;
+//     display: flex;
+//   }
+  
+  .background-episodes{
+      background-color: var(--background-color);
+  }
+
+  // .popup{
+  //     opacity: 1;
+  //     height: 100vh;
+  //     width: 100%;
+  //     flex-shrink: 0;
+  //     border-radius: 3px;
+  //     z-index: 3;
+  //     display: flex;
+  //     align-items: center;
+  //     justify-content: center;
+  //     transition: all 0.2s ease
+  // }
+  
+  
+  // .content{
+  //     --offset: 0;
+  //     position: absolute;
+  //     left: var(--offset);
+  //     right: var(--offset);
+  //     bottom: var(--offset);
+  //     top: var(--offset);
+  //     display: flex;
+  //     align-items: center;
+  //     justify-content: center;
+  //     opacity: 1;
+  //     transition: all 0.35s ease 0.75s;
+  //     z-index: 10;
+  // }
+  
+  // .content-wrapper{
+  //     text-align: center;
+  // }
+  
+  // .content{
+  //     opacity: 1;
+  //     transform: none;
+  // }

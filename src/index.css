@@ -1,0 +1,86 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* 
+Reset */
+/* 
+:root {
+
+  
+
+  --rich-black-fogra-29: hsl(225, 25%, 9%);
+  --rich-black-fogra-39: hsl(170, 21%, 5%);
+  --raisin-black: hsl(228, 13%, 15%);
+  --eerie-black: hsl(207, 19%, 11%);
+  --light-gray: hsl(0, 3%, 80%);
+  --gunmetal-1: hsl(229, 15%, 21%);
+  --gunmetal-2: hsl(216, 22%, 18%);
+  --gainsboro: hsl(0, 7%, 88%);
+  --citrine: hsl(57, 97%, 45%);
+  --xiketic: hsl(253, 21%, 13%);
+  --gray-x: hsl(0, 0%, 74%);
+  --white: hsl(0, 100%, 100%);
+  --black: hsl(0, 0%, 0%);
+  --jet: hsl(0, 0%, 20%);
+
+  --ff-poppins: 'Poppins', sans-serif;
+
+  --fs-1: 36px;
+  --fs-2: 32px;
+  --fs-3: 30px;
+  --fs-4: 24px;
+  --fs-5: 20px;
+  --fs-6: 18px;
+  --fs-7: 16px;
+  --fs-8: 15px;
+  --fs-9: 14px;
+  --fs-10: 13px;
+  --fs-11: 12px;
+  --fs-12: 11px;
+
+  --fw-500: 500;
+  --fw-700: 700;
+
+
+
+  --transition-1: 0.15s ease;
+  --transition-2: 0.25s ease-in;
+
+ 
+
+  --section-padding: 100px;
+
+} */
+
+
+/* Global styles */
+:root {
+  --bg-color: #fff; /* Light mode background */
+  --text-color: #333; /* Light mode text */
+}
+
+.app.dark {
+  --bg-color: #222; /* Dark mode background */
+  --text-color: #eee; /* Dark mode text */
+}
+
+/* Component-specific styles */
+.my-component {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
