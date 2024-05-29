@@ -36,7 +36,7 @@ const Movies = () => {
               <button className="filter-btn">Anime</button>
             </li>
           </ul>
-        </div>==============
+        </div>
         <ul className="movies-list  has-scrollbar">
           {listMovie.map((movie, index) => (
             <li key={index} >

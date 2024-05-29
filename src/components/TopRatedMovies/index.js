@@ -7,7 +7,7 @@ const TopRatedMovies = () => {
   const token = localStorage.getItem("token");
   useEffect(() => {
     getListMovies(1, token).then((res) => {
-      setListTopMovie(res.items.slice(0, 4));
+      setListTopMovie(res.data.slice(0,4));
     });
   }, []);
   return (

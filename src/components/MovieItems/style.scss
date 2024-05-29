@@ -92,20 +92,20 @@
   // }
   
   
-  // .content{
-  //     --offset: 0;
-  //     position: absolute;
-  //     left: var(--offset);
-  //     right: var(--offset);
-  //     bottom: var(--offset);
-  //     top: var(--offset);
-  //     display: flex;
-  //     align-items: center;
-  //     justify-content: center;
-  //     opacity: 1;
-  //     transition: all 0.35s ease 0.75s;
-  //     z-index: 10;
-  // }
+  .content{
+      --offset: 0;
+      position: absolute;
+      left: var(--offset);
+      right: var(--offset);
+      bottom: var(--offset);
+      top: var(--offset);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 1;
+      transition: all 0.35s ease 0.75s;
+      z-index: 10;
+  }
   
   // .content-wrapper{
   //     text-align: center;
